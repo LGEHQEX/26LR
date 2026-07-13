@@ -314,7 +314,7 @@
         <div class="section-header">
             <div class="section-tag">Education</div>
             <h2>과정 안내</h2>
-            <p>경영사상을 조직에 전달하는 강사로서, 리인벤트 2.0의 문제드러내기와 이기는 실행을 스스로 체득하고 현장에 전파할 수 있는 역량을 갖춘다</p>
+            <p style="max-width:1000px;">경영사상을 조직에 전달하는 강사로서, 리인벤트 2.0의 문제드러내기와 이기는 실행을 스스로 체득하고 현장에 전파할 수 있는 역량을 갖춘다</p>
         </div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:0 0 28px;align-items:stretch;">
             <div style="background:var(--lg-white);border:1px solid var(--lg-border);border-radius:12px;padding:16px 20px;">
@@ -331,15 +331,97 @@
             </div>
         </div>
 
-        <div style="background:#fffbf0;border:1px solid #ffe08a;border-radius:14px;padding:18px 20px;">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
-                <span style="font-size:1.2rem;">💻</span>
-                <strong style="font-size:0.9rem;color:var(--lg-accent);">사내 노트북 준비</strong>
+        <div style="margin:28px 0 6px;">
+            <div style="font-size:0.82rem;font-weight:800;color:var(--lg-dark);margin-bottom:14px;display:flex;align-items:center;gap:8px;">
+                <span style="display:inline-block;width:4px;height:16px;background:var(--lg-red);border-radius:2px;"></span>
+                준비물 및 사전과제
             </div>
-            <p style="font-size:0.82rem;color:#7a5c00;line-height:1.6;">사내에서 제공된 노트북을 지참해 주세요. 개인 소유 PC 지참 시, 사전 방문신청을 통해 노트북 정보를 기재해 주셔야 반입이 가능합니다.</p>
+
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+                <div style="background:#fffbf0;border:1px solid #ffe08a;border-radius:14px;padding:18px 18px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                        <span style="font-size:1.15rem;">💻</span>
+                        <strong style="font-size:0.86rem;color:var(--lg-accent);">사내 노트북 준비</strong>
+                    </div>
+                    <p style="font-size:0.78rem;color:#7a5c00;line-height:1.6;">사내 노트북을 지참해 주세요. 개인 소유 PC는 사전 방문신청 후 반입 가능합니다.</p>
+                </div>
+
+                <div onclick="openPrereqModal('prereq1')" style="cursor:pointer;background:var(--lg-white);border:1px solid var(--lg-border);border-radius:14px;padding:18px 18px;box-shadow:var(--card-shadow);transition:border-color 0.2s;" onmouseover="this.style.borderColor='#d0a0a8'" onmouseout="this.style.borderColor='var(--lg-border)'">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                        <span style="font-size:1.15rem;">📝</span>
+                        <strong style="font-size:0.86rem;color:var(--lg-dark);">[사전과제 1] 진원 찾기 실습</strong>
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--lg-gray);line-height:1.6;">'진원 찾기' 실습을 위해, 업무 중 경험한 문제 상황 사례 1건을 자유 양식으로 작성해 주세요. 실습에서는 해당 사례를 바탕으로 현상과 진짜 원인(진원인)을 구분하고 검증하는 활동을 진행합니다.</p>
+                    <div style="margin-top:8px;font-size:0.74rem;color:var(--lg-red);font-weight:700;">자세히 보기 →</div>
+                </div>
+
+                <div onclick="openPrereqModal('prereq2')" style="cursor:pointer;background:var(--lg-white);border:1px solid var(--lg-border);border-radius:14px;padding:18px 18px;box-shadow:var(--card-shadow);transition:border-color 0.2s;" onmouseover="this.style.borderColor='#d0a0a8'" onmouseout="this.style.borderColor='var(--lg-border)'">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+                        <span style="font-size:1.15rem;">📝</span>
+                        <strong style="font-size:0.86rem;color:var(--lg-dark);">[사전과제 2] 멘탈 건강 진단</strong>
+                    </div>
+                    <p style="font-size:0.78rem;color:var(--lg-gray);line-height:1.6;">8/7(금)까지 멘탈 건강 검진(약 10분) 참여 후, 결과 PDF를 저장해 교육 당일 지참해 주세요.</p>
+                    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px;">
+                        <div style="font-size:0.74rem;color:var(--lg-red);font-weight:700;">자세히 보기 →</div>
+                        <a href="https://bi.oasims.com/member/member.html" target="_blank" onclick="event.stopPropagation()" style="flex-shrink:0;display:inline-block;padding:6px 12px;background:var(--lg-red);color:#fff;font-size:0.72rem;font-weight:700;border-radius:8px;text-decoration:none;white-space:nowrap;">🔗 바로 진단하기</a>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+<!-- ===== 사전과제 모달 ===== -->
+<div id="prereqModal-prereq1" style="visibility:hidden;opacity:0;transition:opacity 0.2s;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;">
+    <div onclick="closePrereqModal('prereq1')" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);"></div>
+    <div style="position:relative;background:#fff;border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);">
+        <button onclick="closePrereqModal('prereq1')" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;color:#666;">✕</button>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <span style="font-size:1.3rem;">📝</span>
+            <h3 style="font-size:1.1rem;font-weight:800;color:var(--lg-dark);">[사전과제 1] 진원(眞原) 찾기 실습 준비</h3>
+        </div>
+        <p style="font-size:0.9rem;color:#444;line-height:1.85;margin-bottom:14px;">이번 교육과정에서는 "진원 찾기" 활동을 통해 현상 너머의 진짜 원인을 찾아가는 실습을 진행합니다.<br>이를 위해 사전에 본인 업무 영역에서 겪었던 문제 상황(사례)을 준비해 주시기 바랍니다. (자유 양식)<br>준비하신 사례는 실습 중 함께 논의하며, 겉으로 드러난 현상인지 문제의 본질(진원인)인지를 직접 검증해 보는 과정으로 활용됩니다.</p>
+        <div class="notice-banner" style="margin:0;padding:12px 16px;">
+            <span class="notice-icon" style="font-size:1.1rem;">📌</span>
+            <p style="font-size:0.85rem;">발표자는 현장에서 무작위로 선정되니, 전원 준비해 오시기 바랍니다.</p>
+        </div>
+    </div>
+</div>
+
+<div id="prereqModal-prereq2" style="visibility:hidden;opacity:0;transition:opacity 0.2s;position:fixed;top:0;left:0;width:100%;height:100%;z-index:1100;display:flex;align-items:center;justify-content:center;padding:20px;">
+    <div onclick="closePrereqModal('prereq2')" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.5);"></div>
+    <div style="position:relative;background:#fff;border-radius:20px;padding:32px;max-width:600px;width:100%;max-height:85vh;overflow-y:auto;box-shadow:0 24px 60px rgba(0,0,0,0.2);">
+        <button onclick="closePrereqModal('prereq2')" style="position:absolute;top:16px;right:16px;width:32px;height:32px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;color:#666;">✕</button>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px;">
+            <span style="font-size:1.3rem;">📝</span>
+            <h3 style="font-size:1.1rem;font-weight:800;color:var(--lg-dark);">[사전과제 2] 리더 멘탈 건강 진단 실시</h3>
+        </div>
+        <p style="font-size:0.9rem;color:#444;line-height:1.85;margin-bottom:14px;">교육 마지막 세션에서는 변화관리를 주도하시는 리더분들의 멘탈 건강을 다루는 시간이 진행됩니다.<br>이에 앞서, 사전에 본인의 멘탈 건강 상태를 진단해 보실 수 있는 검진 링크를 송부드립니다.<br>안내에 따라 검진에 참여하신 후, 검진 결과(PDF)를 저장하여 교육 당일 지참해 주시기 바랍니다.<br>교육 중에는 준비해 오신 진단 결과를 함께 해석하고, 향후 멘탈 건강 관리를 위한 Tip과 프로그램을 소개해 드릴 예정입니다.</p>
+
+        <div style="text-align:center;margin-bottom:14px;">
+            <a href="https://bi.oasims.com/member/member.html" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--lg-red);color:#fff;font-size:0.9rem;font-weight:700;border-radius:10px;text-decoration:none;">🔗 바로 진단하기</a>
+        </div>
+
+        <table class="info-table" style="margin-bottom:14px;">
+            <tr><th>검진 링크</th><td><a href="https://bi.oasims.com/member/member.html" target="_blank" style="color:var(--lg-red);font-weight:600;">bi.oasims.com/member/member.html</a></td></tr>
+            <tr><th>검진 기간</th><td>~8/7(금)까지</td></tr>
+            <tr><th>소요 시간</th><td>약 10분 (총 102문항)</td></tr>
+            <tr><th>결과 보관</th><td>PDF 파일로 저장 (교육 당일 지참)</td></tr>
+        </table>
+
+        <div style="background:#fef8f9;border:1px solid #f0e0e3;border-radius:10px;padding:16px 18px;">
+            <div style="font-size:0.82rem;font-weight:700;color:var(--lg-red);margin-bottom:8px;">참여 방법</div>
+            <ol style="padding-left:18px;font-size:0.84rem;color:#444;line-height:2;">
+                <li><a href="https://bi.oasims.com/member/member.html" target="_blank" style="color:var(--lg-red);">bi.oasims.com/member/member.html</a> 링크로 접속</li>
+                <li>우측 상단 <strong>[처음 오셨나요?]</strong> 클릭</li>
+                <li>회사명에 <strong>'LG전자(마음건진테스트)'</strong> 입력 후 선택</li>
+                <li>본인 정보 입력(이름, 생년월일, 전화번호 등) 후 <strong>[등록]</strong></li>
+                <li><strong>[마음건강검진 실시]</strong> 클릭 → 문항 체크 → 완료</li>
+                <li><strong>[결과보기]</strong>로 개인 보고서 즉시 확인</li>
+            </ol>
+        </div>
+    </div>
+</div>
 
 <!-- Timetable -->
 <section class="timetable-section">
@@ -390,7 +472,7 @@
 
         <div class="notice-banner" style="margin-top:0;margin-bottom:28px;">
             <span class="notice-icon">📌</span>
-            <p style="flex:1;"><strong>※ A반 / B반의 시간표가 서로 다릅니다.</strong> 우측 모바일 명찰 확인하기 버튼을 클릭하여 본인이 속한 반을 확인 후 참석해 주세요. 모바일 명찰은 교육 전일 활성화됩니다.</p>
+            <p style="flex:1;">우측 모바일 명찰 확인하기 버튼을 클릭하여 본인이 속한 반을 확인 후 참석해 주세요. 모바일 명찰은 교육 전일 활성화됩니다.</p>
             <a href="https://lgehqex.github.io/26LR/DNT" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:10px 20px;background:#1a1a2e;color:#fff;font-size:0.82rem;font-weight:700;border-radius:8px;text-decoration:none;white-space:nowrap;flex-shrink:0;">🪪 모바일 명찰 확인하기</a>
         </div>
 
@@ -431,7 +513,7 @@
                         </tr>
                         <tr>
                             <td colspan="3" style="background:#fef5f6;font-weight:700;color:var(--lg-dark);font-size:0.88rem;padding:10px 14px;">
-                                🏫 채움관 201호
+                                🏫 채움관
                             </td>
                         </tr>
                         <tr>
@@ -489,7 +571,7 @@
                         </tr>
                         <tr>
                             <td colspan="3" style="background:#f0ecf8;font-weight:700;color:var(--lg-dark);font-size:0.88rem;padding:10px 14px;">
-                                🏫 채움관 205호
+                                🏫 채움관
                             </td>
                         </tr>
                         <tr>
@@ -604,7 +686,7 @@
                 <div class="venue-block-title">🏫 강의 장소</div>
                 <table class="info-table">
                     <tr><th>주소</th><td>경기도 평택시 진위면 엘지로 222</td></tr>
-                    <tr><th>강의실</th><td>러닝센터 나눔관(대강당) · 러닝센터 채움관(분반 강의장)<span class="notice-text"> ※A반 201호 · B반 205호</span></td></tr>
+                    <tr><th>강의실</th><td>러닝센터 나눔관(대강당) · 러닝센터 채움관(분반 강의장)</td></tr>
                     <tr><th>주차</th><td>사전 설문 내 차량번호 기입 시 러닝센터 내 주차 가능</td></tr>
                     <tr><th>식사</th><td>HOUSE 1958 PDR룸</td></tr>
                 </table>
@@ -653,7 +735,7 @@
                     </tr>
                     <tr>
                         <td style="padding:16px 20px;border:1px solid #c8c0b0;background:#f7f2ec;font-weight:700;text-align:center;color:#333;font-size:0.95rem;">과정명</td>
-                        <td style="padding:16px 20px;border:1px solid #c8c0b0;background:#fff;color:#333;font-weight:500;">리더십 REINVENT 2.0 강사양성과정 (A반 / B반)</td>
+                        <td style="padding:16px 20px;border:1px solid #c8c0b0;background:#fff;color:#333;font-weight:500;">리더십 REINVENT 2.0 강사양성과정</td>
                     </tr>
                     <tr>
                         <td style="padding:16px 20px;border:1px solid #c8c0b0;background:#f7f2ec;font-weight:700;text-align:center;color:#333;font-size:0.95rem;">교육일자</td>
@@ -670,7 +752,7 @@
                 </table>
                 <div style="text-align:center;margin-top:40px;padding-top:28px;">
                     <p style="font-size:0.95rem;color:#555;line-height:1.8;">러닝센터에서 운영하는 교육과정 참석자임을 확인합니다.</p>
-                    <p style="font-size:1.2rem;font-weight:700;color:#1a1a1a;margin-top:16px;">교육서비스센터 · 교육운영파트</p>
+                    <p style="font-size:1.2rem;font-weight:700;color:#1a1a1a;margin-top:16px;">Employee eXperience담당</p>
                 </div>
                 <div style="margin-top:40px;padding:20px 24px;background:#f7f2ec;border-radius:10px;border-left:4px solid var(--lg-accent);">
                     <h4 style="font-size:0.9rem;font-weight:800;color:var(--lg-accent);margin-bottom:10px;text-decoration:underline;">출입 Process</h4>
@@ -751,7 +833,7 @@
                 <div class="contact-card">
                     <div class="contact-icon">🎓</div>
                     <h4>이헌정 사원</h4>
-                    <div class="contact-role">교육서비스센터 · 교육운영파트 · 운영 관련 문의</div>
+                    <div class="contact-role">교육서비스센터 · 운영 관련 문의</div>
                     <div class="contact-info">
                         <a href="mailto:heonjeong.lee@lgepartner.com">heonjeong.lee@lgepartner.com</a>
                     </div>
@@ -762,7 +844,7 @@
 </section>
 <footer>
     <p>리더십 REINVENT 2.0 강사양성과정 — 경영사상을 내재화하고 현장에 전파하는 강사 역량을 갖춘다</p>
-    <p style="margin-top:8px;opacity:0.4;">© 2026 LG Electronics | 교육서비스센터. All rights reserved.</p>
+    <p style="margin-top:8px;opacity:0.4;">© 2026 LG Electronics | Employee eXperience. All rights reserved.</p>
 </footer>
 <script>
 document.querySelectorAll('a[href^="#"]').forEach(a => {
@@ -825,6 +907,18 @@ function openDrawer() {
 function closeDrawer() {
     document.getElementById('centerLifeDrawer').style.right = '-100%';
     document.getElementById('drawerOverlay').style.display = 'none';
+    document.body.style.overflow = '';
+}
+function openPrereqModal(id) {
+    const m = document.getElementById('prereqModal-' + id);
+    m.style.visibility = 'visible';
+    m.style.opacity = '1';
+    document.body.style.overflow = 'hidden';
+}
+function closePrereqModal(id) {
+    const m = document.getElementById('prereqModal-' + id);
+    m.style.visibility = 'hidden';
+    m.style.opacity = '0';
     document.body.style.overflow = '';
 }
 function openSurveyHistoryModal() {
