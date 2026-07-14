@@ -273,6 +273,35 @@
     margin-bottom:4px;
   }
 
+  .modal-overlay{
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.5);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    z-index:100;
+  }
+  .modal-box{
+    width:100%;
+    max-width:400px;
+    background:#fff;
+    border-radius:16px;
+    padding:28px 24px;
+    box-shadow:0 12px 40px rgba(0,0,0,0.2);
+    position:relative;
+    z-index:2;
+  }
+  #confetti-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    z-index:1;
+  }
+
   .hidden{display:none;}
   .loading-dot{
     font-size:13px;
@@ -318,20 +347,24 @@
       <div class="score-sub" id="score-sub">점 / 100점 만점</div>
     </div>
 
-    <div id="coupon-block" class="hidden">
-      <div class="coupon-banner">
-        🎉 축하합니다! 만점으로 <b>커피쿠폰 발송 대상</b>이 되셨습니다.<br>
-        쿠폰 받으실 휴대폰 번호를 입력해주세요.
-      </div>
-      <label for="input-phone">휴대폰 번호 <span style="color:var(--lg-red)">*필수</span></label>
-      <input type="text" id="input-phone" placeholder="예: 010-1234-5678">
-      <button class="btn-primary" id="btn-coupon-submit">쿠폰 받고 제출 완료하기</button>
-    </div>
-
     <div id="review-list"></div>
     <div class="loading-dot" id="save-status"></div>
   </div>
 
+</div>
+
+<!-- 쿠폰 번호 입력 팝업 (만점 시에만 표시) -->
+<div id="coupon-modal-overlay" class="modal-overlay hidden">
+  <canvas id="confetti-canvas"></canvas>
+  <div class="modal-box">
+    <div class="coupon-banner">
+      🎉 축하합니다! 만점으로 <b>커피쿠폰 발송 대상</b>이 되셨습니다.<br>
+      쿠폰 받으실 휴대폰 번호를 입력해주세요.
+    </div>
+    <label for="input-phone">휴대폰 번호 <span style="color:var(--lg-red)">*필수</span></label>
+    <input type="text" id="input-phone" placeholder="예: 010-1234-5678">
+    <button class="btn-primary" id="btn-coupon-submit">쿠폰 받고 제출 완료하기</button>
+  </div>
 </div>
 
 <script>
@@ -491,12 +524,77 @@ function submitQuiz(){
   finalCorrectCount = correctCount;
 
   if(score === 100){
-    // 만점: 휴대폰 번호를 입력받은 뒤에 저장
-    document.getElementById('coupon-block').classList.remove('hidden');
+    // 만점: 팝업으로 휴대폰 번호를 입력받은 뒤에 저장
+    document.getElementById('coupon-modal-overlay').classList.remove('hidden');
+    launchConfetti();
   } else {
     // 만점이 아니면 바로 저장
     saveToSheet(score, correctCount, '');
   }
+}
+
+/* =========================================================
+   ③ 만점 축하 컨페티 효과 (외부 라이브러리 없이 가벼운 canvas 구현)
+   ========================================================= */
+function launchConfetti(){
+  const canvas = document.getElementById('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  const dpr = window.devicePixelRatio || 1;
+
+  function resize(){
+    canvas.width = window.innerWidth * dpr;
+    canvas.height = window.innerHeight * dpr;
+    canvas.style.width = window.innerWidth + 'px';
+    canvas.style.height = window.innerHeight + 'px';
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  }
+  resize();
+
+  const colors = ['#A50034', '#f4b8c8', '#ffd166', '#4dabf7', '#69db7c'];
+  const pieceCount = 140;
+  const pieces = [];
+
+  for(let i = 0; i < pieceCount; i++){
+    pieces.push({
+      x: Math.random() * window.innerWidth,
+      y: -20 - Math.random() * window.innerHeight * 0.5,
+      size: 6 + Math.random() * 6,
+      color: colors[Math.floor(Math.random() * colors.length)],
+      speedY: 2 + Math.random() * 3,
+      speedX: (Math.random() - 0.5) * 2,
+      rotation: Math.random() * 360,
+      rotationSpeed: (Math.random() - 0.5) * 10
+    });
+  }
+
+  const duration = 2600;
+  const startTime = performance.now();
+
+  function frame(now){
+    const elapsed = now - startTime;
+    ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+
+    pieces.forEach(p => {
+      p.y += p.speedY;
+      p.x += p.speedX;
+      p.rotation += p.rotationSpeed;
+
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate((p.rotation * Math.PI) / 180);
+      ctx.fillStyle = p.color;
+      ctx.globalAlpha = elapsed > duration - 500 ? Math.max(0, (duration - elapsed) / 500) : 1;
+      ctx.fillRect(-p.size / 2, -p.size / 4, p.size, p.size / 2);
+      ctx.restore();
+    });
+
+    if(elapsed < duration){
+      requestAnimationFrame(frame);
+    } else {
+      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+    }
+  }
+  requestAnimationFrame(frame);
 }
 
 document.getElementById('btn-coupon-submit').addEventListener('click', () => {
@@ -550,9 +648,11 @@ function saveToSheet(score, correctCount, phone){
   .then(res => res.json())
   .then(data => {
     statusEl.textContent = data.ok ? '결과가 저장되었습니다.' : '저장 중 오류가 발생했습니다.';
-    if(data.ok && score === 100){
-      document.getElementById('coupon-block').innerHTML =
-        '<div class="coupon-banner">✅ 쿠폰 신청이 완료되었습니다. 담당자가 확인 후 발송해드립니다.</div>';
+    if(score === 100){
+      document.getElementById('coupon-modal-overlay').classList.add('hidden');
+      if(data.ok){
+        statusEl.textContent = '결과가 저장되었습니다. 쿠폰 신청도 완료되어, 담당자가 확인 후 발송해드립니다.';
+      }
     }
   })
   .catch(() => {
