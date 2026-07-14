@@ -263,6 +263,16 @@
     font-size:13px;
   }
 
+  .coupon-banner{
+    background:var(--lg-red-light);
+    color:var(--lg-red-dark);
+    font-size:14px;
+    line-height:1.7;
+    padding:16px 18px;
+    border-radius:10px;
+    margin-bottom:4px;
+  }
+
   .hidden{display:none;}
   .loading-dot{
     font-size:13px;
@@ -307,6 +317,17 @@
       <div class="score-num" id="score-num">0</div>
       <div class="score-sub" id="score-sub">점 / 100점 만점</div>
     </div>
+
+    <div id="coupon-block" class="hidden">
+      <div class="coupon-banner">
+        🎉 축하합니다! 만점으로 <b>커피쿠폰 발송 대상</b>이 되셨습니다.<br>
+        쿠폰 받으실 휴대폰 번호를 입력해주세요.
+      </div>
+      <label for="input-phone">휴대폰 번호 <span style="color:var(--lg-red)">*필수</span></label>
+      <input type="text" id="input-phone" placeholder="예: 010-1234-5678">
+      <button class="btn-primary" id="btn-coupon-submit">쿠폰 받고 제출 완료하기</button>
+    </div>
+
     <div id="review-list"></div>
     <div class="loading-dot" id="save-status"></div>
   </div>
@@ -341,13 +362,15 @@ const QUESTIONS = [
 /* =========================================================
    ② 구글 시트 저장 연동 — Apps Script 배포 후 웹앱 URL만 넣으면 됩니다.
    ========================================================= */
-const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxrGnSzUuDq8UJPrSqUHteMOuoWUNAQUnsmSbzLreEguv9T1mcmpLjGPRNbcGoORp73ng/exec";
+const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxPLEuEq83qOqfxF5NBdsVxlN2SBy_Ha4t063qmneLQADoQeWrWuiXMsE1hf_Nngn0mXw/exec";
 
 /* ========================================================= */
 
 let answers = new Array(QUESTIONS.length).fill(null);
 let reasons = new Array(QUESTIONS.length).fill('');
 let userInfo = { name: "", empno: "" };
+let finalScore = 0;
+let finalCorrectCount = 0;
 
 const screenStart = document.getElementById('screen-start');
 const screenQuiz = document.getElementById('screen-quiz');
@@ -464,10 +487,33 @@ function submitQuiz(){
   document.getElementById('score-num').textContent = score;
   document.getElementById('score-sub').textContent = `점 / 100점 만점  (${correctCount} / ${QUESTIONS.length} 문항 정답)`;
 
-  saveToSheet(score, correctCount);
+  finalScore = score;
+  finalCorrectCount = correctCount;
+
+  if(score === 100){
+    // 만점: 휴대폰 번호를 입력받은 뒤에 저장
+    document.getElementById('coupon-block').classList.remove('hidden');
+  } else {
+    // 만점이 아니면 바로 저장
+    saveToSheet(score, correctCount, '');
+  }
 }
 
-function saveToSheet(score, correctCount){
+document.getElementById('btn-coupon-submit').addEventListener('click', () => {
+  const phoneInput = document.getElementById('input-phone');
+  const phone = phoneInput.value.trim();
+
+  if(!phone){
+    alert('휴대폰 번호를 입력해주세요.');
+    phoneInput.focus();
+    return;
+  }
+
+  document.getElementById('btn-coupon-submit').disabled = true;
+  saveToSheet(finalScore, finalCorrectCount, phone);
+});
+
+function saveToSheet(score, correctCount, phone){
   const statusEl = document.getElementById('save-status');
 
   if(!GAS_WEBAPP_URL || GAS_WEBAPP_URL.indexOf('http') !== 0){
@@ -484,6 +530,8 @@ function saveToSheet(score, correctCount){
     score: score,
     correctCount: correctCount,
     totalCount: QUESTIONS.length,
+    couponEligible: score === 100,
+    phone: phone || '',
     answers: QUESTIONS.map((q, idx) => ({
       question: q.text,
       selected: q.choices[answers[idx]],
@@ -502,6 +550,10 @@ function saveToSheet(score, correctCount){
   .then(res => res.json())
   .then(data => {
     statusEl.textContent = data.ok ? '결과가 저장되었습니다.' : '저장 중 오류가 발생했습니다.';
+    if(data.ok && score === 100){
+      document.getElementById('coupon-block').innerHTML =
+        '<div class="coupon-banner">✅ 쿠폰 신청이 완료되었습니다. 담당자가 확인 후 발송해드립니다.</div>';
+    }
   })
   .catch(() => {
     statusEl.textContent = '저장 중 오류가 발생했습니다. (네트워크 확인 필요)';
