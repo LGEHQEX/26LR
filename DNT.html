@@ -1717,7 +1717,8 @@
         if (arrow) arrow.textContent = '✓';
         if (secBtn) secBtn.style.background = 'linear-gradient(135deg,#e8f5e9,#c8e6c9)';
         if (qbSec) qbSec.textContent = '✅ 서약완료';
-        if (qbSecBtn) qbSecBtn.classList.remove('qb-security-pulse');
+        const qbSecBtnEl = document.getElementById('qbSecurity');
+        if (qbSecBtnEl) qbSecBtnEl.classList.remove('qb-security-pulse');
         alert('보안 서약서 제출이 완료되었습니다.');
       } else {
         alert('제출 실패: ' + (result.message || '다시 시도해주세요.'));
