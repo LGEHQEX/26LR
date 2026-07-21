@@ -627,6 +627,16 @@
     color: #888; cursor: pointer; font-family: inherit; font-weight: 500;
   }
 
+
+  /* ── 보안서약서 pulse ── */
+  .qb-security-pulse {
+    animation: securityPulse 2s ease-in-out infinite;
+  }
+  @keyframes securityPulse {
+    0%, 100% { box-shadow: 0 2px 10px rgba(165,0,52,0.2); border-color: rgba(165,0,52,0.4); }
+    50%       { box-shadow: 0 2px 20px rgba(165,0,52,0.5), 0 0 0 5px rgba(165,0,52,0.08); border-color: rgba(165,0,52,0.8); }
+  }
+
   /* ── 보안 서약서 팝업 ── */
   .security-overlay {
     display: none; position: fixed; inset: 0;
@@ -851,10 +861,10 @@
               <div class="qb-icon">🎫</div>
               <div class="qb-label">식권</div>
             </button>
-            <a class="quick-btn qb-facility" id="qbFacility" href="#" target="_blank" onclick="handleQuickClick(event,'facility')">
-              <div class="qb-icon">🏢</div>
-              <div class="qb-label">러닝센터 안내</div>
-            </a>
+            <button type="button" class="quick-btn qb-facility" id="qbSecurity" onclick="openSecurityPledge()">
+              <div class="qb-icon">🔏</div>
+              <div class="qb-label" id="qbSecurityLabel">보안서약서</div>
+            </button>
             <a class="quick-btn qb-it disabled" id="qbIt" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" onclick="handleQuickClick(event,'it')" style="display:none; grid-column: span 2;">
               <div class="qb-icon">💻</div>
               <div class="qb-label">실습관련 IT 문의</div>
@@ -898,14 +908,14 @@
               </div>
               <span class="btn-arrow" id="securityBtnArrow">›</span>
             </button>
-            <button class="action-btn survey" disabled style="opacity:0.5;cursor:default;">
-              <div class="btn-icon">⚙️</div>
+            <a class="action-btn facility" id="facilityBtn" href="#" target="_blank" onclick="handleBtnClick(event,'facility')">
+              <div class="btn-icon">🏢</div>
               <div class="btn-text">
-                <div class="btn-label">기능 준비중</div>
-                <div class="btn-desc">새로운 기능을 준비하고 있습니다</div>
+                <div class="btn-label">러닝센터 시설안내</div>
+                <div class="btn-desc">시설 이용 안내를 확인하세요</div>
               </div>
               <span class="btn-arrow">›</span>
-            </button>
+            </a>
           </div>
         </div>
         <div class="back-footer">
@@ -933,17 +943,6 @@
     </div>
     <button class="notice-btn" onclick="closeNoticeAndOpenPasscode()">지금 출결하기</button>
     <button class="notice-skip" onclick="closeNotice()">나중에 할게요</button>
-
-    <!-- 보안서약서 안내 -->
-    <div style="margin-top:16px;padding-top:16px;border-top:1px solid rgba(0,0,0,0.08);">
-      <div style="display:flex;align-items:flex-start;gap:10px;background:#fff5f5;border-radius:10px;padding:12px 14px;text-align:left;">
-        <span style="font-size:18px;flex-shrink:0;">🔏</span>
-        <div>
-          <div style="font-size:13px;font-weight:700;color:#A50034;margin-bottom:4px;">보안 서약서 작성 필수</div>
-          <div style="font-size:12px;color:#555;line-height:1.6;">명찰 뒷면 <strong style="color:#333;">보안 서약서 서명</strong> 버튼을 눌러<br>반드시 서명을 완료해 주세요.</div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
@@ -1288,8 +1287,11 @@
     }
 
     setQuickBtn('qbPreot',    d.preOtUrl);
-    setQuickBtn('qbFacility', d.facilityUrl);
     setQuickBtn('qbSurvey',   d.surveyUrl);
+
+    // 앞면 보안서약서 버튼 pulse (미완료 시)
+    const qbSecBtn = document.getElementById('qbSecurity');
+    if (qbSecBtn) qbSecBtn.classList.add('qb-security-pulse');
 
     // 리더십 리인벤트 퀴즈 URL 반영
     const quizHtmlBtn = document.getElementById('quizHtml');
@@ -1710,9 +1712,12 @@
         const secBtn = document.getElementById('securityBtn');
         const desc = document.getElementById('securityBtnDesc');
         const arrow = document.getElementById('securityBtnArrow');
+        const qbSec = document.getElementById('qbSecurityLabel');
         if (desc) desc.textContent = '✅ 서명 완료';
         if (arrow) arrow.textContent = '✓';
         if (secBtn) secBtn.style.background = 'linear-gradient(135deg,#e8f5e9,#c8e6c9)';
+        if (qbSec) qbSec.textContent = '✅ 서약완료';
+        if (qbSecBtn) qbSecBtn.classList.remove('qb-security-pulse');
         alert('보안 서약서 제출이 완료되었습니다.');
       } else {
         alert('제출 실패: ' + (result.message || '다시 시도해주세요.'));
