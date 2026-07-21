@@ -626,6 +626,122 @@
     border-radius: 10px; background: white; font-size: 14px;
     color: #888; cursor: pointer; font-family: inherit; font-weight: 500;
   }
+
+  /* ── 보안 서약서 팝업 ── */
+  .security-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); z-index: 400;
+    align-items: flex-start; justify-content: center;
+    overflow-y: auto; padding: 20px 0;
+  }
+  .security-overlay.open { display: flex; }
+  .security-popup {
+    background: white; border-radius: 20px;
+    width: calc(100% - 32px); max-width: 420px;
+    padding: 24px 20px; margin: auto;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+  }
+  .security-header { text-align: center; margin-bottom: 20px; }
+  .security-header h2 { font-size: 16px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .security-header p { font-size: 12px; color: #888; }
+  .security-info-box {
+    background: #f9f9f9; border-radius: 10px;
+    padding: 14px 16px; margin-bottom: 16px;
+    font-size: 13px; line-height: 1.8;
+  }
+  .security-info-row { display: flex; gap: 8px; }
+  .security-info-lbl { color: #888; min-width: 80px; font-size: 12px; }
+  .security-info-val { color: #111; font-weight: 600; font-size: 12px; }
+  .security-content {
+    background: #fafafa; border: 1px solid #eee;
+    border-radius: 10px; padding: 14px 16px;
+    font-size: 12px; color: #333; line-height: 1.8;
+    max-height: 220px; overflow-y: auto;
+    margin-bottom: 16px;
+  }
+  .security-content p { margin-bottom: 8px; }
+  .security-content ol { padding-left: 16px; }
+  .security-content li { margin-bottom: 6px; }
+  .security-sign-label {
+    font-size: 13px; font-weight: 600; color: #111;
+    margin-bottom: 8px;
+  }
+  .security-canvas-wrap {
+    border: 1.5px solid #ddd; border-radius: 10px;
+    background: white; position: relative;
+    margin-bottom: 8px; overflow: hidden;
+  }
+  #securityCanvas { display: block; width: 100%; height: 120px; cursor: crosshair; touch-action: none; }
+  .security-canvas-hint {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-size: 12px; color: #ccc; pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .security-clear-btn {
+    font-size: 12px; color: #888; background: none; border: none;
+    cursor: pointer; padding: 2px 0; margin-bottom: 16px;
+    text-decoration: underline;
+  }
+  .security-submit-btn {
+    width: 100%; padding: 14px; background: var(--lg-red);
+    color: white; border: none; border-radius: 10px;
+    font-size: 15px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+    margin-bottom: 8px;
+  }
+  .security-submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .security-cancel-btn {
+    width: 100%; padding: 12px; background: white;
+    color: #888; border: 1px solid #eee; border-radius: 10px;
+    font-size: 14px; font-family: inherit; cursor: pointer;
+  }
+  .security-done-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #e8f5e9; color: #1a7a4a;
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 12px; font-weight: 700;
+    margin-top: 8px;
+  }
+
+  /* ── 숙소 팝업 ── */
+  .lodging-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.5); z-index: 300;
+    backdrop-filter: blur(3px);
+    align-items: center; justify-content: center;
+  }
+  .lodging-overlay.open { display: flex; }
+  .lodging-popup {
+    background: white; border-radius: 20px;
+    width: calc(100% - 48px); max-width: 360px;
+    padding: 24px 20px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.25);
+    animation: qpopIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .lodging-popup-title { font-size: 17px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .lodging-notice {
+    font-size: 12px; color: #888; background: #f9f9f9;
+    border-radius: 8px; padding: 10px 12px; margin-bottom: 16px; line-height: 1.6;
+  }
+  .lodging-row {
+    display: flex; align-items: flex-start; gap: 12px;
+    padding: 12px 0; border-bottom: 1px solid #f0f0f0;
+  }
+  .lodging-row:last-of-type { border-bottom: none; }
+  .lodging-lbl { font-size: 12px; color: #999; min-width: 72px; padding-top: 1px; }
+  .lodging-val { font-size: 14px; font-weight: 600; color: #111; flex: 1; }
+  .lodging-code {
+    font-family: 'DM Mono', monospace; font-size: 22px; font-weight: 700;
+    color: var(--lg-red); letter-spacing: 0.1em;
+    background: #fff0f3; border-radius: 8px; padding: 10px 14px;
+    text-align: center; margin: 12px 0 4px;
+  }
+  .lodging-code-note { font-size: 11px; color: #999; text-align: center; margin-bottom: 16px; }
+  .lodging-cancel {
+    width: 100%; padding: 13px; border: 1px solid #eee;
+    border-radius: 10px; background: white; font-size: 14px;
+    color: #888; cursor: pointer; font-family: inherit; font-weight: 500;
+  }
 </style>
 </head>
 <body>
@@ -771,18 +887,18 @@
               </div>
               <span class="btn-arrow">›</span>
             </button>
-            <button class="action-btn survey" disabled style="opacity:0.5;cursor:default;">
-              <div class="btn-icon">🏨</div>
+            <button class="action-btn facility" id="securityBtn" onclick="openSecurityPledge()">
+              <div class="btn-icon">🔏</div>
               <div class="btn-text">
-                <div class="btn-label">나의 숙소 확인하기 (준비중)</div>
-                <div class="btn-desc">새로운 기능을 준비하고 있습니다.</div>
+                <div class="btn-label">보안 서약서 서명</div>
+                <div class="btn-desc" id="securityBtnDesc">서명을 진행해주세요</div>
               </div>
-              <span class="btn-arrow">›</span>
+              <span class="btn-arrow" id="securityBtnArrow">›</span>
             </button>
-            <button class="action-btn facility" disabled style="opacity:0.5;cursor:default;">
+            <button class="action-btn survey" disabled style="opacity:0.5;cursor:default;">
               <div class="btn-icon">⚙️</div>
               <div class="btn-text">
-                <div class="btn-label">기능 추가 중</div>
+                <div class="btn-label">기능 준비중</div>
                 <div class="btn-desc">새로운 기능을 준비하고 있습니다</div>
               </div>
               <span class="btn-arrow">›</span>
@@ -1167,6 +1283,9 @@
       if (d.quizUrl) { quizHtmlBtn.href = d.quizUrl; quizHtmlBtn.style.opacity = '1'; quizHtmlBtn.style.pointerEvents = 'auto'; }
       else { quizHtmlBtn.href = '#'; quizHtmlBtn.style.opacity = '0.4'; quizHtmlBtn.style.pointerEvents = 'none'; }
     }
+
+    // 숙소 정보 반영
+    renderLodging(d.lodging || null);
     // IT 문의 버튼: 로그인 정보(loginId/loginPw)가 있을 때만 표시
     const itBtn = document.getElementById('qbIt');
     if (itBtn) {
@@ -1415,7 +1534,147 @@
   renderRecentList();
   document.getElementById('sanoInput').addEventListener('keydown', e => { if (e.key === 'Enter') lookupEmployee(); });
 
-  function openQuizPopup() {
+
+  // ── 보안 서약서 ──────────────────────────────────────
+  let signatureCanvas, signatureCtx, isSigning = false, hasSignature = false;
+
+  function openSecurityPledge() {
+    const d = currentData;
+    if (!d) return;
+
+    // 정보 세팅
+    document.getElementById('sDept').textContent = d.dept || '';
+    document.getElementById('sName').textContent = d.name || '';
+
+    // 업무수행기간: 교육 시작일 ~ +1년
+    const startRaw = d.startDate || '';
+    let periodStr = '';
+    try {
+      const start = new Date(startRaw);
+      const end = new Date(start);
+      end.setFullYear(end.getFullYear() + 1);
+      const fmt = dt => `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`;
+      periodStr = fmt(start) + ' ~ ' + fmt(end) + ' (12개월)';
+    } catch(e) { periodStr = startRaw; }
+    document.getElementById('sPeriod').textContent = periodStr;
+
+    // 작성일: 오늘
+    const today = new Date();
+    document.getElementById('sDate').textContent =
+      `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+
+    document.getElementById('securityOverlay').classList.add('open');
+
+    // 캔버스 초기화
+    setTimeout(() => {
+      signatureCanvas = document.getElementById('securityCanvas');
+      const wrap = signatureCanvas.parentElement;
+      signatureCanvas.width  = wrap.offsetWidth;
+      signatureCanvas.height = 120;
+      signatureCtx = signatureCanvas.getContext('2d');
+      signatureCtx.strokeStyle = '#111';
+      signatureCtx.lineWidth = 2.5;
+      signatureCtx.lineCap = 'round';
+      signatureCtx.lineJoin = 'round';
+      hasSignature = false;
+      setupCanvasEvents();
+    }, 100);
+  }
+
+  function closeSecurityPledge() {
+    document.getElementById('securityOverlay').classList.remove('open');
+  }
+
+  function setupCanvasEvents() {
+    const c = signatureCanvas;
+    const getPos = (e) => {
+      const rect = c.getBoundingClientRect();
+      const scaleX = c.width / rect.width;
+      const scaleY = c.height / rect.height;
+      const pt = e.touches ? e.touches[0] : e;
+      return { x: (pt.clientX - rect.left) * scaleX, y: (pt.clientY - rect.top) * scaleY };
+    };
+    const start = (e) => { e.preventDefault(); isSigning = true; const p = getPos(e); signatureCtx.beginPath(); signatureCtx.moveTo(p.x, p.y); };
+    const move  = (e) => { e.preventDefault(); if (!isSigning) return; const p = getPos(e); signatureCtx.lineTo(p.x, p.y); signatureCtx.stroke(); hasSignature = true; document.getElementById('canvasHint').style.opacity = '0'; };
+    const end   = (e) => { e.preventDefault(); isSigning = false; };
+    c.addEventListener('mousedown',  start);
+    c.addEventListener('mousemove',  move);
+    c.addEventListener('mouseup',    end);
+    c.addEventListener('touchstart', start, { passive: false });
+    c.addEventListener('touchmove',  move,  { passive: false });
+    c.addEventListener('touchend',   end,   { passive: false });
+  }
+
+  function clearSignature() {
+    if (!signatureCtx) return;
+    signatureCtx.clearRect(0, 0, signatureCanvas.width, signatureCanvas.height);
+    hasSignature = false;
+    document.getElementById('canvasHint').style.opacity = '1';
+  }
+
+  async function submitSecurityPledge() {
+    if (!hasSignature) { alert('서명을 먼저 진행해주세요.'); return; }
+    const btn = document.getElementById('securitySubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
+
+    try {
+      const d = currentData;
+      const imageData = signatureCanvas.toDataURL('image/png').split(',')[1];
+      const today = new Date();
+      const dateStr = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}`;
+      const fileName = `${dateStr}_${d.sano}_${d.name}_${d.dept}`;
+
+      const res = await fetch(API_URL + '?action=saveSignature', {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ imageData, fileName, sano: d.sano, name: d.name, dept: d.dept })
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        closeSecurityPledge();
+        // 완료 뱃지 표시
+        const secBtn = document.getElementById('securityBtn');
+        const desc = document.getElementById('securityBtnDesc');
+        const arrow = document.getElementById('securityBtnArrow');
+        if (desc) desc.textContent = '✅ 서명 완료';
+        if (arrow) arrow.textContent = '✓';
+        if (secBtn) { secBtn.style.background = 'linear-gradient(135deg,#e8f5e9,#c8e6c9)'; }
+        alert('보안 서약서 서명이 완료되었습니다.');
+      } else {
+        alert('제출 실패: ' + (result.message || '다시 시도해주세요.'));
+        btn.disabled = false;
+        btn.textContent = '서약서 제출';
+      }
+    } catch(err) {
+      alert('오류가 발생했습니다. 다시 시도해주세요.');
+      btn.disabled = false;
+      btn.textContent = '서약서 제출';
+    }
+  }
+
+  function openLodgingPopup() {
+    document.getElementById('lodgingOverlay').classList.add('open');
+  }
+  function closeLodgingPopup() {
+    document.getElementById('lodgingOverlay').classList.remove('open');
+  }
+  function renderLodging(lodging) {
+    const btn = document.getElementById('lodgingBtn');
+    if (!lodging || !lodging.room) {
+      if (btn) { btn.disabled = true; btn.style.opacity = '0.5'; btn.style.cursor = 'default'; }
+      return;
+    }
+    // 팝업 데이터 세팅
+    document.getElementById('lodgingRoom').textContent    = lodging.room     || '-';
+    document.getElementById('lodgingCheckIn').textContent  = lodging.checkIn  || '-';
+    document.getElementById('lodgingCheckOut').textContent = lodging.checkOut || '-';
+    document.getElementById('lodgingCode').textContent     = lodging.doorCode ? lodging.doorCode + ' + *' : '-';
+    // 버튼 활성화
+    if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+  }
+
     document.getElementById('quizOverlay').classList.add('open');
   }
   function closeQuizPopup() {
@@ -1423,6 +1682,72 @@
   }
 </script>
 
+
+
+<!-- 보안 서약서 팝업 -->
+<div class="security-overlay" id="securityOverlay">
+  <div class="security-popup">
+    <div class="security-header">
+      <h2>🔏 보안 서약서</h2>
+      <p>생성형 AI 서비스 이용 보안 서약</p>
+    </div>
+
+    <div class="security-info-box">
+      <div class="security-info-row"><span class="security-info-lbl">소속</span><span class="security-info-val" id="sDept"></span></div>
+      <div class="security-info-row"><span class="security-info-lbl">성명</span><span class="security-info-val" id="sName"></span></div>
+      <div class="security-info-row"><span class="security-info-lbl">업무수행기간</span><span class="security-info-val" id="sPeriod"></span></div>
+      <div class="security-info-row"><span class="security-info-lbl">주요과제내역</span><span class="security-info-val">AI교육 실습</span></div>
+      <div class="security-info-row"><span class="security-info-lbl">작성일</span><span class="security-info-val" id="sDate"></span></div>
+    </div>
+
+    <div class="security-content">
+      <p>본인은 생성형 AI 서비스(챗지피티의 5개사이트)에 접근하여 업무를 수행함에 있어 아래사항을 준수할 것을 서약합니다.</p>
+      <ol>
+        <li>본인은 LG전자의 정보보안 규정 및 지적재산권 보호 등을 위하여 필요한 관련규정과 회사의 정보보안을 위하여 모든 제반 규정을 준수하고 이를 성실히 이행할 것을 서약합니다.</li>
+        <li>생성형 AI 서비스의 입력 데이터(프롬프트) 값에 사내에 자료 및 기밀자료 내용을 입력하지 않겠습니다.</li>
+        <li>사내 데이터가 생성형 AI 서버에 저장되어 외부로 유출될 수 있음을 인지하고, 외부로 유출되어서는 안될 정보를 입력하지 않겠습니다.(개인정보, 제품 컨셉 정보, 신기능 정보 등. 사진/이미지 포함)</li>
+        <li>본인은 회사가 본 비밀유지서약에 의거하여 이의 준수를 위한 정보보안 모니터링에 동의하며, 보안감사에 필요한 정보를 즉각 제공하는 것에 동의합니다.</li>
+        <li>보안에 위반되는 행위에 대한 책임은 본인에게 있으며, 정보보안 규정에 의해 징계등의 인사조치를 받을 수 있음에 동의합니다.</li>
+      </ol>
+    </div>
+
+    <div class="security-sign-label">✍️ 서명란</div>
+    <div class="security-canvas-wrap">
+      <canvas id="securityCanvas"></canvas>
+      <div class="security-canvas-hint" id="canvasHint">이 곳에 서명하세요</div>
+    </div>
+    <button class="security-clear-btn" onclick="clearSignature()">서명 지우기</button>
+
+    <button class="security-submit-btn" id="securitySubmitBtn" onclick="submitSecurityPledge()">서약서 제출</button>
+    <button class="security-cancel-btn" onclick="closeSecurityPledge()">닫기</button>
+  </div>
+</div>
+
+<!-- 숙소 확인 팝업 -->
+<div class="lodging-overlay" id="lodgingOverlay" onclick="if(event.target===this)closeLodgingPopup()">
+  <div class="lodging-popup">
+    <div class="lodging-popup-title">🏨 숙소 안내</div>
+    <div class="lodging-notice">
+      ※ Check-In 19:00 / Check-Out 09:00<br>
+      출입코드는 타인과 공유 또는 양도를 금지합니다.
+    </div>
+    <div class="lodging-row">
+      <span class="lodging-lbl">건물/호실</span>
+      <span class="lodging-val" id="lodgingRoom">-</span>
+    </div>
+    <div class="lodging-row">
+      <span class="lodging-lbl">체크인</span>
+      <span class="lodging-val" id="lodgingCheckIn">-</span>
+    </div>
+    <div class="lodging-row">
+      <span class="lodging-lbl">체크아웃</span>
+      <span class="lodging-val" id="lodgingCheckOut">-</span>
+    </div>
+    <div class="lodging-code" id="lodgingCode">-</div>
+    <div class="lodging-code-note">위 코드를 스마트도어록에 입력 후 * 를 누르세요</div>
+    <button class="lodging-cancel" onclick="closeLodgingPopup()">닫기</button>
+  </div>
+</div>
 
 <!-- 퀴즈 선택 팝업 -->
 <div class="quiz-overlay" id="quizOverlay" onclick="if(event.target===this)closeQuizPopup()">
@@ -1432,7 +1757,7 @@
     <div class="quiz-option-list">
       <a class="quiz-option" id="quizHtml" href="#" target="_blank">
         <span class="qo-icon">💻</span>
-        <span><span class="qo-label">리더십 리인벤트 퀴즈</span><span class="qo-desc">자체 제작 퀴즈 사이트</span></span>
+        <span><span class="qo-label">리더십 리인벤트 스탬프 투어</span><span class="qo-desc">자체 제작 퀴즈 사이트</span></span>
         <span class="qo-arrow">›</span>
       </a>
       <a class="quiz-option" id="quizMenti" href="https://www.mentimeter.com/" target="_blank">
