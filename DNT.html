@@ -1108,29 +1108,8 @@
 
   // ── 출결 안내 팝업 ──────────────────────────────────────
   function showCheckinNotice() {
-    // 스텝 초기화
-    document.getElementById('noticeStep1').style.display = 'block';
-    document.getElementById('noticeStep2').style.display = 'none';
-    document.getElementById('stepDot1').style.opacity = '1';
-    document.getElementById('stepDot2').style.opacity = '0.35';
-    document.getElementById('stepDot1').querySelector('div').style.background = 'var(--lg-red)';
     document.getElementById('noticeOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
-  }
-
-  function goToNoticeStep2() {
-    // STEP 2로 전환
-    document.getElementById('noticeStep1').style.display = 'none';
-    document.getElementById('noticeStep2').style.display = 'block';
-    // 스텝 인디케이터 업데이트
-    const dot1 = document.getElementById('stepDot1');
-    const dot2 = document.getElementById('stepDot2');
-    dot1.querySelector('div').style.background = '#1a7a4a';
-    dot1.querySelector('div').textContent = '✓';
-    dot1.querySelector('span').style.color = '#1a7a4a';
-    dot2.style.opacity = '1';
-    dot2.querySelector('div').style.background = 'var(--lg-red)';
-    dot2.querySelector('span').style.color = 'var(--lg-red)';
   }
 
   function closeNoticeAndOpenSecurity() {
