@@ -294,10 +294,13 @@
     padding: 14px 18px; border-bottom: 1px solid var(--line); flex-shrink: 0;
   }
   .qna-head h3 { font-size: 15px; font-weight: 700; }
-  .qna-close {
-    border: none; background: none; font-size: 16px; color: var(--gray);
-    cursor: pointer; padding: 4px 6px; line-height: 1;
+  .modal-qna .qna-close {
+    width: auto; margin-top: 0; background: transparent; color: var(--gray);
+    border: none; font-size: 20px; font-weight: 400;
+    padding: 4px 6px; line-height: 1; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
   }
+  .modal-qna .qna-close:active { color: var(--ink); }
   .qna-iframe { flex: 1; width: 100%; border: none; }
 
   @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
