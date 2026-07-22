@@ -237,6 +237,16 @@
         /* ── CONFIRMATION FORM ── */
         #printArea table { border-collapse:collapse; }
 
+        
+        /* ── 우측 슬라이딩 드로어 ── */
+        .side-drawer { position:fixed; top:0; right:-42%; width:40%; height:100vh; background:#fff; z-index:1200; box-shadow:-8px 0 40px rgba(0,0,0,0.18); transition:right 0.4s cubic-bezier(0.4,0,0.2,1); display:flex; flex-direction:column; }
+        .side-drawer.open { right:0; }
+        .side-drawer-header { flex-shrink:0; background:#fff; border-bottom:1px solid #f0e8e8; padding:16px 20px; display:flex; align-items:center; justify-content:space-between; }
+        .side-drawer-header h3 { font-size:1rem; font-weight:800; color:#1a1a1a; }
+        .side-drawer-body { flex:1; overflow-y:auto; }
+        .side-drawer-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1199; }
+        .side-drawer-overlay.open { display:block; }
+        @media(max-width:768px){ .side-drawer { width:92%; right:-96%; } .side-drawer.open { right:0; } }
         /* ── RESPONSIVE ── */
         .tt-mobile-tabs { display:none; }
 
@@ -416,7 +426,7 @@
         <a href="#faq" class="tab-item">FAQ</a>
         <a href="#contact" class="tab-item">담당자 연락처</a>
 
-        <a href="#" onclick="window.open('https://26lr.netlify.app/reg_new','_blank'); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;">📝 사전 설문</a>
+        <a href="#" onclick="openSurveyDrawer('https://26lr.netlify.app/reg_new'); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;">📝 사전 설문</a>
         <a href="#center-life" onclick="openDrawer(); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;border-bottom:2px solid var(--lg-red);">🏨 러닝센터 생활안내</a>
     </div>
 </div>
@@ -599,7 +609,7 @@
         <div style="text-align:center;margin-top:20px;">
             <p style="font-size:0.88rem;color:var(--lg-gray);margin-bottom:12px;">📌 교육 차수 및 숙소 신청을 위한 사전 설문에 참여해 주세요.</p>
             <div style="display:inline-flex;gap:12px;flex-wrap:wrap;justify-content:center;">
-                <button onclick="window.open('https://26lr.netlify.app/reg_new','_blank')" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--lg-red);color:#fff;font-size:0.95rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;box-shadow:0 4px 16px rgba(165,0,52,0.25);transition:all 0.2s;" onmouseover="this.style.background='#8a0028';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--lg-red)';this.style.transform='translateY(0)'">
+                <button onclick="openSurveyDrawer('https://26lr.netlify.app/reg_new')" style="display:inline-flex;align-items:center;gap:10px;padding:14px 32px;background:var(--lg-red);color:#fff;font-size:0.95rem;font-weight:700;border:none;border-radius:12px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;box-shadow:0 4px 16px rgba(165,0,52,0.25);transition:all 0.2s;" onmouseover="this.style.background='#8a0028';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--lg-red)';this.style.transform='translateY(0)'">
                     📝 사전 설문 참여하기 <span style="font-size:0.85rem;opacity:0.8;">→</span>
                 </button>
             </div>
@@ -693,7 +703,7 @@
 
 <!-- ===== 러닝센터 생활안내 드로어 ===== -->
 
-<div id="centerLifeDrawer" style="position:fixed;top:0;right:-100%;width:50%;height:100vh;background:#fff;z-index:1000;box-shadow:-8px 0 40px rgba(0,0,0,0.15);transition:right 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;">
+<div id="centerLifeDrawer" style="position:fixed;top:0;right:-100%;width:40%;height:100vh;background:#fff;z-index:1000;box-shadow:-8px 0 40px rgba(0,0,0,0.15);transition:right 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;">
     <div style="flex-shrink:0;background:#fff;border-bottom:1px solid var(--lg-border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
         <div>
             <div style="font-size:0.76rem;color:var(--lg-red);font-weight:700;text-transform:uppercase;letter-spacing:1px;font-family:'DM Sans',sans-serif;margin-bottom:2px;">Center Life</div>
@@ -814,7 +824,7 @@
             <h2>담당자 연락처</h2>
             <p>과정 운영으로 유선 연결이 어려운 경우가 많아, 문의하기 버튼을 이용해 주시면 가능한 빠른 회신 드리겠습니다!</p>
             <div style="margin-top:16px;">
-                <a href="https://26lr.netlify.app/qna" target="_blank" style="display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:var(--lg-red);color:#fff;font-size:0.92rem;font-weight:700;border-radius:12px;text-decoration:none;box-shadow:0 4px 16px rgba(165,0,52,0.25);transition:all 0.2s;" onmouseover="this.style.background='#8a0028';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--lg-red)';this.style.transform='translateY(0)'">
+                <a href="#" onclick="openQnaDrawer(); return false;" style="display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:var(--lg-red);color:#fff;font-size:0.92rem;font-weight:700;border-radius:12px;text-decoration:none;box-shadow:0 4px 16px rgba(165,0,52,0.25);transition:all 0.2s;" onmouseover="this.style.background='#8a0028';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--lg-red)';this.style.transform='translateY(0)'">
                     ✉️ 문의하기 →
                 </a>
             </div>
@@ -1095,20 +1105,6 @@ function closeBeaconModal() {
     m.style.opacity = '0';
 }
 
-function window.open('https://26lr.netlify.app/reg_new','_blank') {
-    if (window.innerWidth < 768) {
-        window.open('https://surveyl.ink/BBOoz2', '_blank');
-        return;
-    }
-    document.getElementById('surveyDrawer').style.right = '0';
-    document.getElementById('surveyOverlay').style.display = 'block';
-    document.body.style.overflow = 'hidden';
-}
-function closeSurveyDrawer() {
-    document.getElementById('surveyDrawer').style.right = '-100%';
-    document.getElementById('surveyOverlay').style.display = 'none';
-    document.body.style.overflow = '';
-}
 function openDrawer() {
     if (window.innerWidth < 768) {
         window.open('https://lgehqex.github.io/learningcenter/', '_blank');
@@ -1150,6 +1146,55 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll('.day-card,.tt-table-wrap,.direction-card,.faq-item,.contact-card,.must-read-card,.venue-block').forEach(el => {
     el.style.opacity='0'; el.style.transform='translateY(20px)'; el.style.transition='opacity 0.6s ease,transform 0.6s ease'; observer.observe(el);
 });
+
+    // ── 사이드 드로어 공통 ──
+    function openSideDrawer(id) {
+        document.querySelectorAll('.side-drawer').forEach(function(d){ d.classList.remove('open'); });
+        var el = document.getElementById(id);
+        if (el) el.classList.add('open');
+        var ov = document.getElementById('sideDrawerOverlay');
+        if (ov) ov.classList.add('open');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeSideDrawer() {
+        document.querySelectorAll('.side-drawer').forEach(function(d){ d.classList.remove('open'); });
+        var ov = document.getElementById('sideDrawerOverlay');
+        if (ov) ov.classList.remove('open');
+        document.body.style.overflow = '';
+    }
+    function openSurveyDrawer(url) {
+        var body = document.getElementById('surveyDrawerBody');
+        if (body) body.innerHTML = '<iframe src="' + url + '" style="width:100%;height:100%;border:none;min-height:calc(100vh - 70px);"></iframe>';
+        openSideDrawer('surveyDrawerNew');
+    }
+    function openQnaDrawer() { openSideDrawer('qnaDrawerNew'); }
 </script>
+
+<!-- ── 사이드 드로어 오버레이 ── -->
+<div id="sideDrawerOverlay" class="side-drawer-overlay" onclick="closeSideDrawer()"></div>
+
+<!-- ── 사전설문 드로어 ── -->
+<div id="surveyDrawerNew" class="side-drawer">
+    <div class="side-drawer-header">
+        <div>
+            <div style="font-size:0.72rem;color:var(--lg-red);font-weight:700;letter-spacing:1px;font-family:'DM Sans',sans-serif;margin-bottom:2px;">PRE-SURVEY</div>
+            <h3>📝 사전 설문</h3>
+        </div>
+        <button onclick="closeSideDrawer()" style="width:34px;height:34px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;color:#666;">✕</button>
+    </div>
+    <div class="side-drawer-body" id="surveyDrawerBody"></div>
+</div>
+
+<!-- ── 문의하기 드로어 ── -->
+<div id="qnaDrawerNew" class="side-drawer">
+    <div class="side-drawer-header">
+        <div>
+            <div style="font-size:0.72rem;color:var(--lg-red);font-weight:700;letter-spacing:1px;font-family:'DM Sans',sans-serif;margin-bottom:2px;">CONTACT</div>
+            <h3>✉️ 문의하기</h3>
+        </div>
+        <button onclick="closeSideDrawer()" style="width:34px;height:34px;border-radius:50%;border:1px solid #e0e0e0;background:#fff;font-size:1rem;cursor:pointer;color:#666;">✕</button>
+    </div>
+    <div class="side-drawer-body"><iframe src="https://26lr.netlify.app/qna" style="width:100%;height:100%;border:none;flex:1;min-height:calc(100vh - 70px);"></iframe></div>
+</div>
 </body>
 </html>
