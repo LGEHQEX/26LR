@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>리더십 리인벤트 2.0 수강신청</title>
+<title>수강신청 · 리더십 리인벤트 2.0</title>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
 <style>
   :root {
@@ -94,6 +94,18 @@
     transition: border-color .15s;
   }
   .field input:focus { outline: none; border-color: var(--lg-red); }
+  .field textarea {
+    width: 100%; padding: 12px 14px;
+    border: 1.5px solid var(--line); border-radius: 10px;
+    font-size: 14.5px; font-family: inherit; line-height: 1.5;
+    resize: vertical;
+  }
+  .field textarea:focus { outline: none; border-color: var(--lg-red); }
+  .optional-tag {
+    font-size: 11px; font-weight: 700; color: var(--gray);
+    background: var(--bg); border-radius: 6px;
+    padding: 2px 7px; margin-left: 2px;
+  }
   .lookup-row { display: flex; gap: 8px; }
   .lookup-row input { flex: 1; }
   .btn-lookup {
@@ -112,6 +124,7 @@
 
   /* ===== 차수 카드 ===== */
   .sessions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .sessions.single-col { grid-template-columns: 1fr; }
   @media (max-width: 420px) { .sessions { grid-template-columns: 1fr; } }
   .session {
     position: relative; border: 1.5px solid var(--line);
@@ -128,6 +141,12 @@
   .session.full .s-num, .session.full .s-date { color: var(--full); }
   .s-top { display: flex; justify-content: space-between; align-items: baseline; }
   .s-num { font-size: 15px; font-weight: 800; color: var(--lg-red); }
+  .s-badge {
+    display: inline-block; margin-left: 6px;
+    font-size: 10.5px; font-weight: 700; color: var(--lg-red-dark);
+    background: var(--lg-red-light); border-radius: 6px;
+    padding: 2px 6px; vertical-align: middle;
+  }
   .s-seats { font-size: 12px; font-weight: 600; color: var(--ok); }
   .s-seats.warn { color: #B45309; }
   .s-seats.closed { color: var(--full); }
@@ -191,6 +210,7 @@
     margin-top: 14px; padding-left: 4px;
   }
   .notice li { margin-bottom: 4px; list-style-position: inside; }
+  .teams-link { color: var(--lg-red); font-weight: 700; text-decoration: underline; }
 
   /* ===== 토스트 / 결과 ===== */
   .overlay {
@@ -263,7 +283,7 @@
       <div class="eyebrow">COURSE REGISTRATION</div>
       <button type="button" class="btn-mystatus" onclick="openMyStatusModal()">내 신청 확인</button>
     </div>
-    <h1>리더십 리인벤트 2.0 수강신청</h1>
+    <h1>수강신청 · 리더십 리인벤트 2.0</h1>
     <p>희망 차수를 선택하고 정보를 입력해주세요.</p>
   </div>
 
@@ -332,7 +352,7 @@
   <ul class="notice">
     <li>재신청 시 <b>가장 최근 신청 내용으로 자동 변경</b>됩니다.</li>
     <li>정원이 마감된 차수는 선택할 수 없습니다.</li>
-    <li>문의: 교육운영파트 이헌정 사원 (heonjeong.lee@lge.com, 010-2862-8177)</li>
+    <li>문의: <a href="https://teams.microsoft.com/l/chat/0/0?users=이메일@lge.com" target="_blank" class="teams-link">Teams로 문의하기</a></li>
   </ul>
 
 </div>
@@ -397,6 +417,11 @@ let COUNTS = {};
 let selectedSession = null;
 let selectedLodging = null;
 
+// 이 페이지에서 노출할 차수 (null이면 전체 노출)
+const ALLOWED_SESSIONS = ['2','3','4','5','6','7','8'];
+// 차수 옆에 표시할 뱃지 텍스트
+const SESSION_BADGE = { '1': '신임리더 대상' };
+
 /* ===== 초기 로드: 차수 현황 조회 ===== */
 async function loadSessions() {
   try {
@@ -416,7 +441,9 @@ async function loadSessions() {
 function renderSessions() {
   const box = document.getElementById('sessions');
   box.innerHTML = '';
-  Object.keys(SCHEDULE).sort((a,b) => Number(a) - Number(b)).forEach(k => {
+  let keys = Object.keys(SCHEDULE).sort((a,b) => Number(a) - Number(b));
+  if (ALLOWED_SESSIONS) keys = keys.filter(k => ALLOWED_SESSIONS.includes(k));
+  keys.forEach(k => {
     const remain = CAPACITY[k] - (COUNTS[k] || 0);
     const isFull = remain <= 0;
     const div = document.createElement('div');
@@ -431,9 +458,11 @@ function renderSessions() {
     if (isFull) { seatCls = 'closed'; seatTxt = '마감 (' + cap + '명)'; }
     else if (remain <= Math.ceil(cap * 0.1)) { seatCls = 'warn'; } // 잔여 10% 이하 경고
 
+    const badge = SESSION_BADGE[k] ? '<span class="s-badge">' + SESSION_BADGE[k] + '</span>' : '';
+
     div.innerHTML =
       '<div class="s-check">✓</div>' +
-      '<div class="s-top"><span class="s-num">' + k + '차</span>' +
+      '<div class="s-top"><span class="s-num">' + k + '차' + badge + '</span>' +
       '<span class="s-seats ' + seatCls + '">' + seatTxt + '</span></div>' +
       '<div class="s-date">' + SCHEDULE[k] + '</div>' +
       '<div class="s-gauge"><span class="' + seatCls + '" style="width:' + pct + '%"></span></div>';
@@ -447,6 +476,7 @@ function renderSessions() {
     }
     box.appendChild(div);
   });
+  box.classList.toggle('single-col', keys.length <= 1);
 }
 
 /* ===== 숙소 선택 ===== */
