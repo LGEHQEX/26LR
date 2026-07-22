@@ -424,8 +424,6 @@
         <a href="#directions" class="tab-item">찾아오는 길</a>
         <a href="#confirmation" class="tab-item tab-pc-only">교육참가 확인서</a>
         <a href="#faq" class="tab-item">FAQ</a>
-        <a href="#contact" class="tab-item">담당자 연락처</a>
-
         <a href="#" onclick="openSurveyDrawer('https://26lr.netlify.app/reg_new'); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;">📝 사전 설문</a>
         <a href="#center-life" onclick="openDrawer(); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;border-bottom:2px solid var(--lg-red);">🏨 러닝센터 생활안내</a>
         <a href="#" onclick="openQnaDrawer(); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;">✉️ 문의하기</a>
@@ -438,59 +436,80 @@
         <div class="section-header">
             <div class="section-tag">Education</div>
             <h2>과정 안내</h2>
-            
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin:0 0 16px;align-items:stretch;">
-            <div style="background:var(--lg-white);border:1px solid var(--lg-border);border-radius:12px;padding:16px 20px;">
-                <div style="font-size:0.76rem;color:var(--lg-red);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-family:'DM Sans',sans-serif;font-weight:600;">일정</div>
-                <div style="font-size:1rem;font-weight:700;color:var(--lg-dark);">8월 18일(화) ~ 8월 19일(수)</div>
+
+        <!-- 정보 스트립 -->
+        <div style="display:flex;border:1px solid var(--lg-border);border-radius:12px;overflow:hidden;margin-bottom:20px;">
+            <div style="flex:1;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
+                <span style="font-size:1.3rem;">📅</span>
+                <div>
+                    <div style="font-size:0.7rem;color:var(--lg-gray);font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">일정</div>
+                    <div style="font-size:0.92rem;font-weight:700;color:var(--lg-dark);">8월 18일(화) ~ 8월 19일(수)</div>
+                </div>
             </div>
-            <div style="background:var(--lg-white);border:1px solid var(--lg-border);border-radius:12px;padding:16px 20px;">
-                <div style="font-size:0.76rem;color:var(--lg-red);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-family:'DM Sans',sans-serif;font-weight:600;">교육 대상</div>
-                <div style="font-size:1rem;font-weight:700;color:var(--lg-dark);">신임 리더</div>
+            <div style="width:1px;background:var(--lg-border);"></div>
+            <div style="flex:1;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
+                <span style="font-size:1.3rem;">👥</span>
+                <div>
+                    <div style="font-size:0.7rem;color:var(--lg-gray);font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">교육대상</div>
+                    <div style="font-size:0.92rem;font-weight:700;color:var(--lg-dark);">신임 리더</div>
+                </div>
             </div>
-            <div style="background:var(--lg-white);border:1px solid var(--lg-border);border-radius:12px;padding:16px 20px;">
-                <div style="font-size:0.76rem;color:var(--lg-red);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;font-family:'DM Sans',sans-serif;font-weight:600;">장소</div>
-                <div style="font-size:1rem;font-weight:700;color:var(--lg-dark);">평택 러닝센터</div>
+            <div style="width:1px;background:var(--lg-border);"></div>
+            <div style="flex:1;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
+                <span style="font-size:1.3rem;">📍</span>
+                <div>
+                    <div style="font-size:0.7rem;color:var(--lg-gray);font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">장소</div>
+                    <div style="font-size:0.92rem;font-weight:700;color:var(--lg-dark);">평택 러닝센터 <span style="font-size:0.78rem;font-weight:400;color:var(--lg-gray);">1박 2일</span></div>
+                </div>
             </div>
         </div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;align-items:start;">
 
-                <!-- 카드 1: 사전준비 -->
-                <div class="must-read-card" style="background:#fffbf0;border-color:#ffe08a;">
-                    <div style="font-size:0.92rem;font-weight:800;color:var(--lg-red);letter-spacing:0.5px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #ffe08a;">사전준비</div>
-                    <div style="margin-bottom:16px;">
-                        <div style="display:flex;align-items:center;gap:7px;font-size:0.9rem;font-weight:700;color:var(--lg-dark);margin-bottom:7px;">💻 사내 노트북 준비</div>
-                        <p style="font-size:0.84rem;color:var(--lg-gray);line-height:1.8;">교육 중 실습 모듈이 진행됩니다. 사내 노트북을 지참해 주세요.</p>
-                    </div>
-                    <div style="border-top:1px solid var(--lg-border);padding-top:16px;">
-                        <div style="display:flex;align-items:center;gap:7px;font-size:0.9rem;font-weight:700;color:var(--lg-dark);margin-bottom:7px;">📱 고용24 비콘 출결 준비</div>
-                        <p style="font-size:0.84rem;color:var(--lg-gray);line-height:1.8;margin-bottom:12px;">고용24 가입 및 출결관리 어플 설치 필수. 당일 입·퇴실 시 비콘 출결 체크를 해주세요.</p>
-                        <button onclick="openBeaconModal()" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;background:var(--lg-red);color:#fff;font-size:0.78rem;font-weight:700;border:none;border-radius:6px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">📎 비콘 출결 가이드</button>
-                    </div>
+        <!-- 체크리스트 -->
+        <div style="border:1px solid var(--lg-border);border-radius:12px;overflow:hidden;">
+
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:var(--lg-white);border-bottom:1px solid var(--lg-border);">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid #e0d0d0;flex-shrink:0;margin-top:1px;"></div>
+                <div style="flex:1;">
+                    <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:4px;">💻 사내 노트북 지참</div>
+                    <div style="font-size:0.82rem;color:var(--lg-gray);line-height:1.7;">교육 중 실습 모듈이 진행됩니다. 사내 노트북을 지참해 주세요.</div>
                 </div>
-
-                <!-- 카드 2: 사전과제 1 -->
-                <div class="must-read-card">
-                    <div style="font-size:0.92rem;font-weight:800;color:var(--lg-red);letter-spacing:0.5px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f0e0e3;">사전과제 1</div>
-                    <div style="display:flex;align-items:center;gap:7px;font-size:0.9rem;font-weight:700;color:var(--lg-dark);margin-bottom:7px;">📝 진원(眞原) 찾기 실습</div>
-                    <p style="font-size:0.84rem;color:var(--lg-gray);line-height:1.8;margin-bottom:16px;">'진원 찾기' 실습을 위해, 업무 중 경험한 문제 상황 사례 1건을 자유 양식으로 작성해 주세요.</p>
-                    <a href="#" onclick="document.getElementById('modal-jinae').style.display='flex'; return false;" style="font-size:0.84rem;font-weight:700;color:var(--lg-red);text-decoration:none;">자세히 보기 →</a>
-                </div>
-
-                <!-- 카드 3: 사전과제 2 -->
-                <div class="must-read-card">
-                    <div style="font-size:0.92rem;font-weight:800;color:var(--lg-red);letter-spacing:0.5px;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid #f0e0e3;">사전과제 2</div>
-                    <div style="display:flex;align-items:center;gap:7px;font-size:0.9rem;font-weight:700;color:var(--lg-dark);margin-bottom:7px;">📝 리더 멘탈 건강 진단</div>
-                    <p style="font-size:0.84rem;color:var(--lg-gray);line-height:1.8;margin-bottom:16px;">멘탈 건강 검진(약 10분) 참여 후, 결과 PDF를 저장해 교육 당일 지참해 주세요.</p>
-                    <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
-                        <a href="#" onclick="document.getElementById('modal-mental').style.display='flex'; return false;" style="font-size:0.84rem;font-weight:700;color:var(--lg-red);text-decoration:none;">자세히 보기 →</a>
-                        <a href="https://bi.oasims.com/member/member.html" target="_blank" style="display:inline-flex;align-items:center;gap:5px;padding:6px 13px;background:var(--lg-red);color:#fff;font-size:0.78rem;font-weight:700;border-radius:6px;text-decoration:none;font-family:'Noto Sans KR',sans-serif;">🔗 바로 진단하기</a>
-                    </div>
-                </div>
-
             </div>
 
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:#fafafa;border-bottom:1px solid var(--lg-border);">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid #e0d0d0;flex-shrink:0;margin-top:1px;"></div>
+                <div style="flex:1;">
+                    <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:4px;">📱 고용24 비콘 출결 준비</div>
+                    <div style="font-size:0.82rem;color:var(--lg-gray);line-height:1.7;margin-bottom:8px;">고용24 가입 및 출결관리 어플 설치 필수. 당일 입·퇴실 시 비콘 출결 체크를 해주세요.</div>
+                    <button onclick="openBeaconModal()" style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;background:var(--lg-red);color:#fff;font-size:0.76rem;font-weight:700;border:none;border-radius:6px;cursor:pointer;font-family:'Noto Sans KR',sans-serif;">📎 비콘 출결 가이드</button>
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:var(--lg-white);border-bottom:1px solid var(--lg-border);">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid #e0d0d0;flex-shrink:0;margin-top:1px;"></div>
+                <div style="flex:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                    <div>
+                        <div style="font-size:0.72rem;font-weight:700;color:var(--lg-red);letter-spacing:0.5px;margin-bottom:3px;">사전과제 1</div>
+                        <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:4px;">📝 진원(眞原) 찾기 실습</div>
+                        <div style="font-size:0.82rem;color:var(--lg-gray);line-height:1.7;">'진원 찾기' 실습을 위해, 업무 중 경험한 문제 상황 사례 1건을 자유 양식으로 작성해 주세요.</div>
+                    </div>
+                    <a href="#" onclick="document.getElementById('modal-jinae').style.display='flex'; return false;" style="white-space:nowrap;font-size:0.8rem;font-weight:700;color:var(--lg-red);text-decoration:none;flex-shrink:0;padding-top:2px;">자세히 →</a>
+                </div>
+            </div>
+
+            <div style="display:flex;align-items:flex-start;gap:14px;padding:16px 20px;background:#fafafa;">
+                <div style="width:22px;height:22px;border-radius:50%;border:2px solid #e0d0d0;flex-shrink:0;margin-top:1px;"></div>
+                <div style="flex:1;display:flex;align-items:flex-start;justify-content:space-between;gap:12px;">
+                    <div>
+                        <div style="font-size:0.72rem;font-weight:700;color:var(--lg-red);letter-spacing:0.5px;margin-bottom:3px;">사전과제 2</div>
+                        <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:4px;">📝 멘탈 건강 진단</div>
+                        <div style="font-size:0.82rem;color:var(--lg-gray);line-height:1.7;">멘탈 건강 검진(약 10분) 참여 후, 결과 PDF를 저장해 교육 당일 지참해 주세요.</div>
+                    </div>
+                    <a href="#" onclick="document.getElementById('modal-mental').style.display='flex'; return false;" style="white-space:nowrap;font-size:0.8rem;font-weight:700;color:var(--lg-red);text-decoration:none;flex-shrink:0;padding-top:2px;">자세히 →</a>
+                </div>
+            </div>
+
+        </div>
     </div>
 </section>
 
@@ -505,7 +524,7 @@
             <a href="https://raw.githubusercontent.com/lgehqex/information/main/guide_visitor.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:var(--lg-red);color:#fff;font-size:0.84rem;font-weight:700;border-radius:8px;text-decoration:none;">📎 새 창으로 보기 →</a>
         </div>
         <div style="border-radius:10px;overflow:hidden;border:1px solid #e8e0e0;">
-            <iframe src="https://raw.githubusercontent.com/lgehqex/information/main/guide_visitor.pdf&embedded=true" style="width:100%;height:440px;border:none;"></iframe>
+            <iframe src="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/lgehqex/information/main/guide_visitor.pdf&embedded=true" style="width:100%;height:440px;border:none;"></iframe>
         </div>
     </div>
 </div>
@@ -562,7 +581,7 @@
                 <a href="https://raw.githubusercontent.com/lgehqex/information/main/guide_beacon.pdf" target="_blank" style="display:inline-flex;align-items:center;gap:8px;padding:10px 24px;background:#6a4c93;color:#fff;font-size:0.88rem;font-weight:700;border-radius:8px;text-decoration:none;">📎 출결 가이드 새 창으로 보기 →</a>
             </div>
             <div style="margin-top:16px;border-radius:10px;overflow:hidden;border:1px solid #e8e0e0;">
-                <iframe src="https://raw.githubusercontent.com/lgehqex/information/main/guide_beacon.pdf&embedded=true" style="width:100%;height:500px;border:none;"></iframe>
+                <iframe src="https://docs.google.com/viewer?url=https://raw.githubusercontent.com/lgehqex/information/main/guide_beacon.pdf&embedded=true" style="width:100%;height:500px;border:none;"></iframe>
             </div>
         </div>
     </div>
@@ -840,7 +859,7 @@
     <div class="section">
         <div class="section-header">
             <div class="section-tag">Contact</div>
-            <h2>담당자 연락처</h2>
+            
             <p>과정 운영으로 유선 연결이 어려운 경우가 많아, 문의하기 버튼을 이용해 주시면 가능한 빠른 회신 드리겠습니다!</p>
             <div style="margin-top:16px;">
                 <a href="#" onclick="openQnaDrawer(); return false;" style="display:inline-flex;align-items:center;gap:10px;padding:12px 28px;background:var(--lg-red);color:#fff;font-size:0.92rem;font-weight:700;border-radius:12px;text-decoration:none;box-shadow:0 4px 16px rgba(165,0,52,0.25);transition:all 0.2s;" onmouseover="this.style.background='#8a0028';this.style.transform='translateY(-2px)'" onmouseout="this.style.background='var(--lg-red)';this.style.transform='translateY(0)'">
@@ -848,26 +867,7 @@
                 </a>
             </div>
         </div>
-        <div style="max-width:900px;margin:0 auto;">
-            <div class="contact-grid" style="grid-template-columns:1fr 1fr;">
-                <div class="contact-card">
-                    <div class="contact-icon">📋</div>
-                    <h4><a href="http://newep.lge.com/support/profile/getProfile.do?targetUserId=@MjM0ODQz#" target="_blank" style="color:var(--lg-dark);text-decoration:none;">최은영 책임</a></h4>
-                    <div class="contact-role">Leadership Development팀 · 과정 관련 문의</div>
-                    <div class="contact-info">
-                        <a href="mailto:ey.choi@lge.com">ey.choi@lge.com</a>
-                    </div>
-                </div>
-                <div class="contact-card">
-                    <div class="contact-icon">🏨</div>
-                    <h4>이헌정 사원</h4>
-                    <div class="contact-role">교육서비스센터 · 숙소/출결 등 운영 관련 문의</div>
-                    <div class="contact-info">
-                        <a href="mailto:heonjeong.lee@lgeparter.com">heonjeong.lee@lgeparter.com</a>
-                    </div>
-                </div>
-            </div>
-        </div>
+        
     </div>
 </section>
 <footer>
