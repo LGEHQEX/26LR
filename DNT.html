@@ -1712,12 +1712,13 @@
       } catch(e) { periodStr = d.startDate || ''; }
 
       // 캡처용 div 정보 세팅
-      document.getElementById('capSano').textContent   = d.sano || '';
-    document.getElementById('capDept').textContent   = d.dept || '';
-      document.getElementById('capName').textContent   = d.name || '';
-      document.getElementById('capName2').textContent  = d.name || '';
-      document.getElementById('capPeriod').textContent = periodStr;
-      document.getElementById('capDate').textContent   = `${today.getFullYear()}년  ${today.getMonth()+1}월  ${today.getDate()}일`;
+      const _s = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+      _s('capSano',   d.sano || '');
+      _s('capDept',   d.dept || '');
+      _s('capName',   d.name || '');
+      _s('capName2',  d.name || '');
+      _s('capPeriod', periodStr);
+      _s('capDate',   `${today.getFullYear()}년  ${today.getMonth()+1}월  ${today.getDate()}일`);
 
       // 서명 이미지 삽입
       const sigData = signatureCanvas.toDataURL('image/png');
