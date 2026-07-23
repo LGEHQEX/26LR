@@ -1611,11 +1611,7 @@
     const d = currentData;
     if (!d) return;
 
-    // 정보 세팅
-    document.getElementById('sDept').textContent = d.dept || '';
-    document.getElementById('sName').textContent = d.name || '';
-
-    // 업무수행기간: 교육 시작일 ~ +1년
+    // 업무수행기간 계산
     const startRaw = d.startDate || '';
     let periodStr = '';
     try {
@@ -1625,21 +1621,25 @@
       const fmt = dt => `${dt.getFullYear()}.${String(dt.getMonth()+1).padStart(2,'0')}.${String(dt.getDate()).padStart(2,'0')}`;
       periodStr = fmt(start) + ' ~ ' + fmt(end) + ' (12개월)';
     } catch(e) { periodStr = startRaw; }
-    document.getElementById('sPeriod').textContent = periodStr;
 
-    // 작성일: 오늘
     const today = new Date();
-    document.getElementById('sDate').textContent =
-      `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+    const dateLabel = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
 
-    // 캡처용 div에도 정보 세팅
+    // 팝업 인적사항 세팅 (null 체크)
+    const _p = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    _p('sDept',   d.dept || '');
+    _p('sName',   d.name || '');
+    _p('sPeriod', periodStr);
+    _p('sDate',   dateLabel);
+
+    // 캡처용 div 세팅 (null 체크)
     const _set = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
     _set('capSano',   d.sano || '');
     _set('capDept',   d.dept || '');
     _set('capName',   d.name || '');
     _set('capName2',  d.name || '');
     _set('capPeriod', periodStr);
-    _set('capDate',   `${today.getFullYear()}년  ${today.getMonth()+1}월  ${today.getDate()}일`);
+    _set('capDate',   dateLabel);
 
     document.getElementById('securityOverlay').classList.add('open');
 
