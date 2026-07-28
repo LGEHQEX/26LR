@@ -181,14 +181,18 @@
   .toast.success { background: #00825A; }
   .toast.error   { background: #C0392B; }
 
-  /* ── 명찰 플립 ── */
+  /* ── 명찰 슬라이드 ── */
+  .flip-container { width: 100%; overflow: hidden; position: relative; }
   .flipper {
-    position: relative; width: 100%;
-    transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
+    display: flex;
+    width: 100%;
+    transition: transform 0.4s cubic-bezier(0.4,0,0.2,1);
+    will-change: transform;
   }
   .badge-face {
+    min-width: 100%;
     width: 100%;
- -webkit-
+    flex-shrink: 0;
     border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: var(--card-bg);
   }
   .badge-front { position: relative; }
@@ -958,8 +962,8 @@
   <div class="slide-nav" id="slideNav">
     <button class="slide-arrow" id="slideLeft" onclick="slideTo(0)">‹</button>
     <div class="slide-dots">
-      <div class="slide-dot active" id="dot0" onclick="slideTo(0)"></div>
-      <div class="slide-dot" id="dot1" onclick="slideTo(1)"></div>
+      <div class="slide-dot active" id="sdot0" onclick="slideTo(0)"></div>
+      <div class="slide-dot" id="sdot1" onclick="slideTo(1)"></div>
     </div>
     <button class="slide-arrow" id="slideRight" onclick="slideTo(1)">›</button>
   </div>
@@ -1411,7 +1415,7 @@
     const flipper = document.getElementById('flipper');
     flipper.style.transform = `translateX(-${idx * 100}%)`;
     // dots
-    document.querySelectorAll('.slide-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+    ['sdot0','sdot1'].forEach((id,i) => { const el=document.getElementById(id); if(el) el.classList.toggle('active', i===idx); });
     // arrows
     document.getElementById('slideLeft').style.opacity  = idx === 0 ? '0.3' : '1';
     document.getElementById('slideRight').style.opacity = idx === 1 ? '0.3' : '1';
