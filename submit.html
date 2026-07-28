@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>리더십 REINVENT 2.0 - 실습 & 제출</title>
+<style>
+  :root {
+    --lg-red: #A50034;
+    --lg-red-dark: #7d0027;
+    --bg: #f4f5f7;
+    --sidebar-bg: #1c1c1e;
+    --sidebar-text: #e8e8ea;
+    --sidebar-sub: #9a9a9e;
+    --border: #e2e3e7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: "Pretendard", "Malgun Gothic", -apple-system, sans-serif;
+    background: var(--bg);
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  /* Sidebar */
+  #sidebar {
+    width: 260px;
+    min-width: 260px;
+    background: var(--sidebar-bg);
+    color: var(--sidebar-text);
+    display: flex;
+    flex-direction: column;
+    transition: width 0.25s ease, min-width 0.25s ease;
+  }
+  #sidebar.collapsed { width: 68px; min-width: 68px; }
+  .sidebar-header {
+    padding: 20px 18px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .sidebar-header h1 {
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0;
+    color: #fff;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  #sidebar.collapsed .sidebar-header h1 { opacity: 0; width: 0; }
+  #toggleBtn {
+    background: none;
+    border: none;
+    color: var(--sidebar-text);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  #toggleBtn:hover { background: rgba(255,255,255,0.1); }
+
+  .nav-list { padding: 12px 10px; flex: 1; }
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 13px 12px;
+    border-radius: 10px;
+    cursor: pointer;
+    margin-bottom: 6px;
+    transition: background 0.15s ease;
+    position: relative;
+  }
+  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item.active {
+    background: var(--lg-red);
+  }
+  .nav-item.active:hover { background: var(--lg-red); }
+  .nav-icon {
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+  }
+  .nav-label {
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  .nav-sub {
+    font-size: 11px;
+    color: var(--sidebar-sub);
+    white-space: nowrap;
+    overflow: hidden;
+    margin-top: 2px;
+  }
+  .nav-item.active .nav-sub { color: rgba(255,255,255,0.75); }
+  #sidebar.collapsed .nav-label,
+  #sidebar.collapsed .nav-sub,
+  #sidebar.collapsed .nav-text { display: none; }
+
+  .sidebar-footer {
+    padding: 14px 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    font-size: 11px;
+    color: var(--sidebar-sub);
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  #sidebar.collapsed .sidebar-footer { opacity: 0; }
+
+  /* Main area */
+  #main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  #topbar {
+    height: 56px;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    flex-shrink: 0;
+  }
+  #topbar .title {
+    font-size: 14px;
+    font-weight: 700;
+    color: #222;
+  }
+  #topbar .title span {
+    font-weight: 400;
+    color: #888;
+    margin-left: 8px;
+    font-size: 12px;
+  }
+  #openNewTab {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: #fff;
+    border: 1px solid var(--border);
+    color: #444;
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  #openNewTab:hover { background: #f8f8f8; border-color: #ccc; }
+
+  #iframeWrap {
+    flex: 1;
+    position: relative;
+    background: #fff;
+  }
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: none;
+  }
+  iframe.visible { display: block; }
+
+  .fallback-notice {
+    position: absolute;
+    top: 16px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff8f8;
+    border: 1px solid #f0c4cf;
+    color: var(--lg-red-dark);
+    font-size: 12.5px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    z-index: 5;
+  }
+  .fallback-notice a { color: var(--lg-red); font-weight: 700; text-decoration: underline; }
+
+  @media (max-width: 720px) {
+    #sidebar { position: absolute; z-index: 20; height: 100%; }
+    #sidebar:not(.collapsed) { box-shadow: 4px 0 20px rgba(0,0,0,0.2); }
+  }
+</style>
+</head>
+<body>
+
+<div id="sidebar">
+  <div class="sidebar-header">
+    <h1>REINVENT 2.0</h1>
+    <button id="toggleBtn" onclick="toggleSidebar()">☰</button>
+  </div>
+
+  <div class="nav-list">
+    <div class="nav-item active" id="nav-practice" onclick="switchSite('practice')">
+      <div class="nav-icon">📘</div>
+      <div class="nav-text">
+        <div class="nav-label">과제 실습</div>
+        <div class="nav-sub">LG_REINVENT 실습 사이트</div>
+      </div>
+    </div>
+    <div class="nav-item" id="nav-submit" onclick="switchSite('submit')">
+      <div class="nav-icon">📝</div>
+      <div class="nav-text">
+        <div class="nav-label">과제 제출</div>
+        <div class="nav-sub">제출 양식 페이지</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sidebar-footer">리더십 REINVENT 2.0<br>실습 &amp; 제출 통합 페이지</div>
+</div>
+
+<div id="main">
+  <div id="topbar">
+    <div class="title" id="topbarTitle">과제 실습 <span id="topbarUrl">igm-hrd.github.io/LG_REINVENT</span></div>
+    <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창에서 열기</a>
+  </div>
+
+  <div id="iframeWrap">
+    <div class="fallback-notice" id="fallbackNotice">
+      ⚠️ 이 사이트는 보안 정책상 화면에 표시되지 않을 수 있어요. <a href="#" id="fallbackLink" target="_blank" rel="noopener">여기서 새 창으로 열기</a>
+    </div>
+    <iframe id="frame-practice" class="visible" src="https://igm-hrd.github.io/LG_REINVENT"></iframe>
+    <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html"></iframe>
+  </div>
+</div>
+
+<script>
+const SITES = {
+  practice: {
+    url: "https://igm-hrd.github.io/LG_REINVENT",
+    label: "과제 실습",
+    display: "igm-hrd.github.io/LG_REINVENT",
+    warnIntranet: false
+  },
+  submit: {
+    url: "http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html",
+    label: "과제 제출",
+    display: "conlms.lge.com (사내망 전용)",
+    warnIntranet: true
+  }
+};
+
+function switchSite(key) {
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById('nav-' + key).classList.add('active');
+
+  document.querySelectorAll('iframe').forEach(f => f.classList.remove('visible'));
+  document.getElementById('frame-' + key).classList.add('visible');
+
+  const site = SITES[key];
+  document.getElementById('topbarTitle').innerHTML = site.label + ' <span id="topbarUrl">' + site.display + '</span>';
+  document.getElementById('openNewTab').href = site.url;
+
+  const notice = document.getElementById('fallbackNotice');
+  const link = document.getElementById('fallbackLink');
+  if (site.warnIntranet) {
+    link.href = site.url;
+    notice.style.display = 'flex';
+  } else {
+    notice.style.display = 'none';
+  }
+}
+
+function toggleSidebar() {
+  document.getElementById('sidebar').classList.toggle('collapsed');
+}
+</script>
+
+</body>
+</html>
