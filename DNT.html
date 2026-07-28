@@ -401,21 +401,26 @@
     .flip-container {
       width: 100%;
       max-width: 900px;
-      perspective: none;
+      overflow: visible !important;
     }
     .flipper {
-      display: flex;
+      display: flex !important;
+      flex-wrap: nowrap !important;
       gap: 24px;
       justify-content: center;
       transform: none !important;
+      transition: none !important;
     }
     .badge-face {
       min-width: 420px !important;
       width: 420px !important;
-      flex-shrink: 0;
+      flex-shrink: 0 !important;
+    }
+    .badge-back {
+      opacity: 1 !important;
     }
     .slide-nav { display: none !important; }
-
+    .badge-front { cursor: default; }
   }
 
   .dining-close {
