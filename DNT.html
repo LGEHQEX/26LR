@@ -182,19 +182,17 @@
   .toast.error   { background: #C0392B; }
 
   /* ── 명찰 플립 ── */
-  .flip-container { perspective: 1200px; width: 100%; }
   .flipper {
     position: relative; width: 100%;
-    transform-style: preserve-3d;
     transition: transform 0.55s cubic-bezier(0.4,0.2,0.2,1);
   }
-  .flipper.flipped { transform: rotateY(180deg); }
   .badge-face {
-    width: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+    width: 100%;
+ -webkit-
     border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: var(--card-bg);
   }
-  .badge-front { position: relative; z-index: 2; }
-  .badge-back { position: absolute; top: 0; left: 0; transform: rotateY(180deg); width: 100%; }
+  .badge-front { position: relative; }
+  .badge-back { position: relative; }
 
   .badge-header {
     background: var(--lg-red); padding: 20px 22px 32px;
@@ -347,7 +345,7 @@
     background: white; font-size: 14px; color: var(--text-secondary); cursor: pointer;
     font-weight: 500; min-height: 48px;
   }
-  .flip-back-btn:active { background: var(--bg); }
+ { background: var(--bg); }
 
   .flip-hint {
     text-align: center; font-size: 12px; color: var(--text-secondary);
@@ -402,28 +400,18 @@
       perspective: none;
     }
     .flipper {
-      transform: none !important;
       display: flex;
       gap: 24px;
       justify-content: center;
-      position: relative;
-      height: auto !important;
+      transform: none !important;
     }
     .badge-face {
-      position: relative !important;
-      transform: none !important;
-      width: 420px !important;
       min-width: 420px !important;
-      top: auto !important;
-      left: auto !important;
-      backface-visibility: visible !important;
+      width: 420px !important;
+      flex-shrink: 0;
     }
-    .badge-back {
-      opacity: 1 !important;
-    }
-    .flip-hint { display: none !important; }
-    .flip-back-btn { display: none !important; }
-    .badge-front { cursor: default; }
+    .slide-nav { display: none !important; }
+
   }
 
   .dining-close {
@@ -861,7 +849,7 @@
     <div class="flipper" id="flipper">
 
       <!-- 앞면 -->
-      <div class="badge-face badge-front" onclick="flipCard()">
+      <div class="badge-face badge-front" >
         <div class="badge-header">
           <div class="lg-logo">LG</div>
           <div class="event-info">
@@ -899,7 +887,7 @@
               <div class="qb-icon">📝</div>
               <div class="qb-label">설문</div>
             </a>
-            <button type="button" class="quick-btn qb-dining" id="qbDining" onclick="openDining(event)">
+            <button type="button" class="quick-btn qb-dining" id="qbDining" >
               <div class="qb-icon">🎫</div>
               <div class="qb-label">식권</div>
             </button>
@@ -921,7 +909,7 @@
           <div class="lg-logo-dark">LG</div>
           <div>
             <div class="back-title">바로가기</div>
-            <div class="back-sub">앞면으로 돌아가려면 아래 버튼을 누르세요</div>
+            <div class="back-sub">옆으로 밀어 앞면으로 돌아가세요</div>
           </div>
         </div>
         <div class="back-body">
@@ -942,7 +930,7 @@
               </div>
               <span class="btn-arrow">›</span>
             </button>
-            <a class="action-btn facility" href="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html" target="_blank">
+            <a class="action-btn facility" href="https://lgehqex.github.io/26LR/submit.html" target="_blank">
               <div class="btn-icon">📝</div>
               <div class="btn-text">
                 <div class="btn-label">과제제출하기</div>
@@ -950,7 +938,7 @@
               </div>
               <span class="btn-arrow">›</span>
             </a>
-            <a class="action-btn facility" id="facilityBtn" href="#" target="_blank" onclick="handleBtnClick(event,'facility')">
+            <a class="action-btn facility" id="facilityBtn" href="#" target="_blank" >
               <div class="btn-icon">🏢</div>
               <div class="btn-text">
                 <div class="btn-label">러닝센터 시설안내</div>
@@ -961,16 +949,22 @@
           </div>
         </div>
         <div class="back-footer">
-          <button class="flip-back-btn" onclick="flipCard()">← 앞면으로 돌아가기</button>
+
         </div>
       </div>
 
     </div>
   </div>
-  <div class="flip-hint" id="flipHint">
-    <svg viewBox="0 0 14 14" fill="none"><path d="M2 7C2 4.24 4.24 2 7 2C8.5 2 9.85 2.66 10.77 3.7M12 7C12 9.76 9.76 12 7 12C5.5 12 4.15 11.34 3.23 10.3M10.5 1.5V4H8M3.5 12.5V10H6" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    <span id="flipHintText">카드를 탭하면 뒷면을 볼 수 있어요</span>
+  <div class="slide-nav" id="slideNav">
+    <button class="slide-arrow" id="slideLeft" onclick="slideTo(0)">‹</button>
+    <div class="slide-dots">
+      <div class="slide-dot active" id="dot0" onclick="slideTo(0)"></div>
+      <div class="slide-dot" id="dot1" onclick="slideTo(1)"></div>
+    </div>
+    <button class="slide-arrow" id="slideRight" onclick="slideTo(1)">›</button>
   </div>
+
+
 </div>
 
 <!-- ── 출결 안내 팝업 ── -->
@@ -1104,7 +1098,7 @@
 <script>
   const API_URL = 'https://script.google.com/macros/s/AKfycbwxrJTmxceutJYkiv-x5BMw06Vi7hApxeWk-cUiyAJ2C6UcvIyYYy0v7cW9VLezj5rq5Q/exec';
   const _tk = atob('bGdlaHFleEROVDIwMjY='); // 난독화 토큰
-  let employeeData = [], currentData = null, isFlipped = false;
+  let employeeData = [], currentData = null;
   let wakeLock = null;
 
   // ── 출결 안내 팝업 ──────────────────────────────────────
@@ -1327,16 +1321,7 @@
     document.getElementById('backName').textContent = d.name || '';
     document.getElementById('backDept').textContent = [d.dept, [d.ban, d.team].filter(Boolean).join(' / ')].filter(Boolean).join(' · ');
 
-    const surveyBtn   = document.getElementById('surveyBtn');
-    const facilityBtn = document.getElementById('facilityBtn');
-    if (surveyBtn) {
-      if (d.surveyUrl) { surveyBtn.href = d.surveyUrl; surveyBtn.classList.remove('disabled'); }
-      else { surveyBtn.href = '#'; surveyBtn.classList.add('disabled'); }
-    }
-    if (facilityBtn) {
-      if (d.facilityUrl) { facilityBtn.href = d.facilityUrl; facilityBtn.classList.remove('disabled'); }
-      else { facilityBtn.href = '#'; facilityBtn.classList.add('disabled'); }
-    }
+
 
     setQuickBtn('qbPreot',    d.preOtUrl);
     setQuickBtn('qbSurvey',   d.surveyUrl);
@@ -1377,9 +1362,9 @@
       btnCheckin.style.display = 'none';
     }
 
-    isFlipped = false;
-    document.getElementById('flipper').classList.remove('flipped');
-    document.getElementById('flipHintText').textContent = '카드를 탭하면 뒷면을 볼 수 있어요';
+    currentSlide = 0;
+    slideTo(0);
+
 
     applyTheme(d.category || '');
 
@@ -1399,7 +1384,7 @@
 
     setTimeout(() => {
       autoScaleInfoValues();
-      document.getElementById('flipper').style.height = document.querySelector('.badge-front').scrollHeight + 'px';
+      slideTo(0);
     }, 50);
   }
 
@@ -1417,24 +1402,45 @@
     r.style.setProperty('--lg-red-border', theme.border);
   }
 
-  function flipCard() {
-    if (window.innerWidth >= 768) return; // PC에서는 flip 비활성화
-    isFlipped = !isFlipped;
+  let currentSlide = 0;
+
+  function slideTo(idx) {
+    if (window.innerWidth >= 768) return;
+    currentSlide = idx;
+    isFlipped = idx === 1;
     const flipper = document.getElementById('flipper');
-    flipper.classList.toggle('flipped', isFlipped);
-    const front = document.querySelector('.badge-front');
-    const back = document.querySelector('.badge-back');
-    flipper.style.height = (isFlipped ? back.scrollHeight : front.scrollHeight) + 'px';
-    document.getElementById('flipHintText').textContent = isFlipped
-      ? '앞면으로 돌아가려면 아래 버튼을 누르세요'
-      : '카드를 탭하면 뒷면을 볼 수 있어요';
+    flipper.style.transform = `translateX(-${idx * 100}%)`;
+    // dots
+    document.querySelectorAll('.slide-dot').forEach((d,i) => d.classList.toggle('active', i===idx));
+    // arrows
+    document.getElementById('slideLeft').style.opacity  = idx === 0 ? '0.3' : '1';
+    document.getElementById('slideRight').style.opacity = idx === 1 ? '0.3' : '1';
+    // hint
+
   }
 
-  function handleBtnClick(e, type) {
-    e.stopPropagation();
-    const btn = document.getElementById(type === 'survey' ? 'surveyBtn' : 'facilityBtn');
-    if (btn.classList.contains('disabled') || !btn.href || btn.href.endsWith('#')) e.preventDefault();
-  }
+
+  // 터치 스와이프
+  (function() {
+    let startX = 0, startY = 0;
+    const fc = document.querySelector('.flip-container');
+    if (!fc) return;
+    fc.addEventListener('touchstart', e => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+    }, { passive: true });
+    fc.addEventListener('touchend', e => {
+      if (window.innerWidth >= 768) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = e.changedTouches[0].clientY - startY;
+      if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 40) {
+        if (dx < 0 && currentSlide === 0) slideTo(1);
+        else if (dx > 0 && currentSlide === 1) slideTo(0);
+      }
+    }, { passive: true });
+  })();
+
+
 
   function setQuickBtn(id, url) {
     const btn = document.getElementById(id);
@@ -1500,8 +1506,7 @@
   }
 
   function openFullscreen() {
-    if (isFlipped) return;
-    document.getElementById('fsCourseName').textContent = document.getElementById('badgeCourseName').textContent;
+      document.getElementById('fsCourseName').textContent = document.getElementById('badgeCourseName').textContent;
     document.getElementById('fsSchedule').textContent   = document.getElementById('badgeSchedule').textContent;
     document.getElementById('fsName').textContent       = document.getElementById('badgeName').textContent;
     document.getElementById('fsGrade').textContent      = document.getElementById('badgeGrade').textContent;
