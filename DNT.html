@@ -662,7 +662,29 @@
   .step-dot-active { opacity: 1 !important; }
   .step-dot-done { opacity: 1 !important; }
 
-  /* ── 보안서약서 pulse ── */
+  /* ── 슬라이드 네비게이션 ── */
+  .slide-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 16px; margin-top: 14px;
+  }
+  .slide-arrow {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: white; border: 1.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; cursor: pointer; color: var(--text-secondary);
+    transition: background 0.15s, opacity 0.2s;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .slide-arrow:active { background: var(--bg); }
+  .slide-dots { display: flex; gap: 6px; align-items: center; }
+  .slide-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: var(--border); cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .slide-dot.active { background: var(--lg-red); transform: scale(1.3); }
+
+
   .qb-security-pulse {
     animation: securityPulse 2s ease-in-out infinite;
   }
@@ -994,10 +1016,10 @@
     <div class="pc-title">대강당 출결</div>
     <div class="pc-sub" id="pcSub">담당자에게 안내받은<br>4자리 패스코드를 입력해주세요</div>
     <div class="pc-dots">
-      <div class="pc-dot" id="dot0"></div>
-      <div class="pc-dot" id="dot1"></div>
-      <div class="pc-dot" id="dot2"></div>
-      <div class="pc-dot" id="dot3"></div>
+      <div class="pc-dot" id="pcdot0"></div>
+      <div class="pc-dot" id="pcdot1"></div>
+      <div class="pc-dot" id="pcdot2"></div>
+      <div class="pc-dot" id="pcdot3"></div>
     </div>
     <div class="pc-keypad">
       <button class="pc-key" onclick="pcInput('1')">1</button>
@@ -1167,7 +1189,8 @@
 
   function updateDots() {
     for (let i = 0; i < 4; i++) {
-      const dot = document.getElementById('dot' + i);
+      const dot = document.getElementById('pcdot' + i);
+      if (!dot) continue;
       dot.classList.toggle('filled', i < pcBuffer.length);
       dot.classList.remove('error');
     }
@@ -1177,7 +1200,8 @@
     if (pcBuffer !== String(pcCorrect).trim()) {
       // 틀림
       for (let i = 0; i < 4; i++) {
-        const dot = document.getElementById('dot' + i);
+        const dot = document.getElementById('pcdot' + i);
+        if (!dot) continue;
         dot.classList.remove('filled');
         dot.classList.add('error');
       }
