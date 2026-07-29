@@ -4,14 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>리더십 REINVENT 2.0 - 실습 & 제출</title>
+<link href="https://fonts.cdnfonts.com/css/nanum-square" rel="stylesheet">
 <style>
   :root {
     --lg-red: #A50034;
     --lg-red-dark: #7d0027;
     --bg: #f4f5f7;
-    --sidebar-bg: #1c1c1e;
-    --sidebar-text: #e8e8ea;
-    --sidebar-sub: #9a9a9e;
+    --sidebar-bg: #ffffff;
+    --sidebar-text: #1c1c1e;
+    --sidebar-sub: #8a8a8e;
+    --sidebar-border: rgba(0,0,0,0.08);
     --border: #e2e3e7;
   }
   * { box-sizing: border-box; }
@@ -32,12 +34,13 @@
     color: var(--sidebar-text);
     display: flex;
     flex-direction: column;
+    border-right: 1px solid var(--sidebar-border);
     transition: width 0.25s ease, min-width 0.25s ease;
   }
   #sidebar.collapsed { width: 68px; min-width: 68px; }
   .sidebar-header {
     padding: 20px 18px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+    border-bottom: 1px solid var(--sidebar-border);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -46,7 +49,7 @@
     font-size: 15px;
     font-weight: 700;
     margin: 0;
-    color: #fff;
+    color: var(--lg-red);
     white-space: nowrap;
     overflow: hidden;
   }
@@ -60,7 +63,7 @@
     padding: 4px 8px;
     border-radius: 6px;
   }
-  #toggleBtn:hover { background: rgba(255,255,255,0.1); }
+  #toggleBtn:hover { background: rgba(0,0,0,0.06); }
 
   .nav-list { padding: 12px 10px; flex: 1; }
   .nav-item {
@@ -74,11 +77,12 @@
     transition: background 0.15s ease;
     position: relative;
   }
-  .nav-item:hover { background: rgba(255,255,255,0.06); }
+  .nav-item:hover { background: #f5f5f6; }
   .nav-item.active {
     background: var(--lg-red);
   }
   .nav-item.active:hover { background: var(--lg-red); }
+  .nav-item.active .nav-label { color: #fff; }
   .nav-icon {
     width: 22px;
     height: 22px;
@@ -93,6 +97,7 @@
     font-weight: 600;
     white-space: nowrap;
     overflow: hidden;
+    color: var(--sidebar-text);
   }
   .nav-sub {
     font-size: 11px;
@@ -101,28 +106,29 @@
     overflow: hidden;
     margin-top: 2px;
   }
-  .nav-item.active .nav-sub { color: rgba(255,255,255,0.75); }
+  .nav-item.active .nav-sub { color: rgba(255,255,255,0.8); }
   #sidebar.collapsed .nav-label,
   #sidebar.collapsed .nav-sub,
   #sidebar.collapsed .nav-text { display: none; }
 
   .nav-divider {
     height: 1px;
-    background: rgba(255,255,255,0.08);
+    background: var(--sidebar-border);
     margin: 8px 12px 12px;
   }
   .nav-item.split-toggle {
-    border: 1px solid rgba(255,255,255,0.12);
+    border: 1px solid var(--sidebar-border);
   }
   .nav-item.split-toggle.active {
-    background: rgba(165,0,52,0.25);
+    background: rgba(165,0,52,0.10);
     border-color: var(--lg-red);
   }
-  .nav-item.split-toggle.active .nav-sub { color: rgba(255,255,255,0.75); }
+  .nav-item.split-toggle.active .nav-label,
+  .nav-item.split-toggle.active .nav-sub { color: var(--lg-red); }
 
   .sidebar-footer {
     padding: 14px 16px;
-    border-top: 1px solid rgba(255,255,255,0.08);
+    border-top: 1px solid var(--sidebar-border);
     font-size: 11px;
     color: var(--sidebar-sub);
     white-space: nowrap;
@@ -158,6 +164,7 @@
     display: flex;
     flex-direction: column;
     min-width: 0;
+    min-height: 0;
   }
   #topbar {
     height: 56px;
@@ -198,6 +205,7 @@
 
   #iframeWrap {
     flex: 1;
+    min-height: 0;
     position: relative;
     background: #fff;
     display: flex;
@@ -207,6 +215,8 @@
     flex-direction: column;
     height: 100%;
     min-width: 0;
+    min-height: 0;
+    overflow: hidden;
     border-right: 1px solid var(--border);
   }
   .frame-pane:last-child { border-right: none; }
@@ -330,6 +340,7 @@
     padding: 48px 32px 60px;
     overflow-y: auto;
     flex: 1;
+    font-family: 'Nanum Square', 'NanumSquare', 'Malgun Gothic', sans-serif;
   }
   .notice-page-head { margin-bottom: 28px; }
   .notice-page-eyebrow {
@@ -353,11 +364,49 @@
     flex-direction: column;
     gap: 18px;
   }
-  .notice-page-list li {
+  .notice-page-list .notice-item {
     display: flex;
     align-items: flex-start;
     gap: 14px;
     font-size: 17px;
+    color: #262629;
+    line-height: 1.7;
+  }
+  .notice-section {
+    margin-bottom: 34px;
+  }
+  .notice-section:last-of-type { margin-bottom: 0; }
+  .notice-section-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15.5px;
+    font-weight: 800;
+    color: #1c1c1e;
+    padding-bottom: 12px;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #f2f2f2;
+  }
+  .notice-section-title .num {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--lg-red);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .notice-section-body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+  .notice-text {
+    font-size: 16px;
     color: #262629;
     line-height: 1.7;
   }
@@ -392,6 +441,132 @@
     padding: 1px 4px;
     border-radius: 4px;
   }
+  .login-example-wrap {
+  }
+  .login-example {
+    border: 2px solid #e2b13c;
+    background: #fdeef1;
+    border-radius: 10px;
+    padding: 14px 18px 16px;
+  }
+  .login-example .le-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: var(--lg-red);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .login-example .le-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 16px;
+    padding: 3px 0;
+  }
+  .login-example .le-label {
+    color: var(--lg-red);
+    font-weight: 800;
+    width: 30px;
+    flex-shrink: 0;
+  }
+  .login-example .le-value {
+    color: #1c1c1e;
+    font-weight: 700;
+  }
+  .login-example-caption {
+    margin-top: 8px;
+    font-size: 12.5px;
+    color: #8a8a8e;
+  }
+
+  .wifi-info-wrap {
+  }
+  .wifi-info {
+    border: 2px solid #b8d4f8;
+    background: #eef4ff;
+    border-radius: 10px;
+    padding: 14px 18px 16px;
+  }
+  .wifi-info .le-title {
+    font-size: 13px;
+    font-weight: 800;
+    color: #0c447c;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .wifi-info .le-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    font-size: 16px;
+    padding: 3px 0;
+  }
+  .wifi-info .le-label {
+    color: #0c447c;
+    font-weight: 800;
+    width: 30px;
+    flex-shrink: 0;
+  }
+  .wifi-info .le-value {
+    color: #1c1c1e;
+    font-weight: 700;
+  }
+
+  /* 사번 조회 박스 (유의사항 탭) */
+  .lookup-input-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .lookup-input-row input {
+    flex: 1;
+    height: 44px;
+    border: 1.5px solid #d8d8dc;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 15px;
+    outline: none;
+  }
+  .lookup-input-row input:focus { border-color: var(--lg-red); }
+  .lookup-input-row button {
+    height: 44px;
+    padding: 0 18px;
+    background: var(--lg-red);
+    color: #fff;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .lookup-input-row button:hover { background: var(--lg-red-dark); }
+  .lookup-input-row button:disabled { opacity: 0.6; cursor: default; }
+
+  .lookup-course-wrap { display: none; margin-bottom: 10px; }
+  .lookup-course-wrap.visible { display: block; }
+  .lookup-course-wrap select {
+    width: 100%;
+    height: 44px;
+    border: 1.5px solid #d8d8dc;
+    border-radius: 10px;
+    padding: 0 14px;
+    font-size: 14px;
+    background: #fff;
+    outline: none;
+  }
+
+  .lookup-error {
+    display: none;
+    font-size: 13px;
+    color: var(--lg-red);
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .lookup-error.visible { display: block; }
   .notice-page-contact {
     display: inline-flex;
     align-items: center;
@@ -441,14 +616,14 @@
   </div>
 
   <div class="nav-list">
-    <div class="nav-item" id="nav-notice" onclick="switchSite('notice')">
+    <div class="nav-item active" id="nav-notice" onclick="switchSite('notice')">
       <div class="nav-icon">⚠️</div>
       <div class="nav-text">
         <div class="nav-label">유의사항</div>
         <div class="nav-sub">실습 전 꼭 확인하세요</div>
       </div>
     </div>
-    <div class="nav-item active" id="nav-practice" onclick="switchSite('practice')">
+    <div class="nav-item" id="nav-practice" onclick="switchSite('practice')">
       <div class="nav-icon">📘</div>
       <div class="nav-text">
         <div class="nav-label">과제 실습</div>
@@ -484,9 +659,9 @@
 
 <div id="main">
   <div id="topbar">
-    <div class="title" id="topbarTitle">과제 실습 <span id="topbarUrl">igm-hrd.github.io/LG_REINVENT</span></div>
+    <div class="title" id="topbarTitle">유의사항 <span id="topbarUrl">실습 전 꼭 확인하세요</span></div>
     <div style="display:flex; align-items:center;">
-      <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창에서 열기</a>
+      <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener" style="display:none;">↗ 새 창에서 열기</a>
     </div>
   </div>
 
@@ -495,7 +670,7 @@
       ⚠️ 이 사이트는 보안 정책상 화면에 표시되지 않을 수 있어요. <a href="#" id="fallbackLink" target="_blank" rel="noopener">여기서 새 창으로 열기</a>
     </div>
 
-    <div class="frame-pane visible" id="pane-practice">
+    <div class="frame-pane" id="pane-practice">
       <div class="pane-label">
         <span>📘 과제 실습</span>
         <a href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창</a>
@@ -511,20 +686,60 @@
       <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html"></iframe>
     </div>
 
-    <div class="frame-pane" id="pane-notice">
+    <div class="frame-pane visible" id="pane-notice">
       <div class="notice-page">
         <div class="notice-page-head">
           <div class="notice-page-eyebrow">실습 시작 전 확인</div>
           <h2>⚠️ 유의사항</h2>
         </div>
-        <ol class="notice-page-list">
-          <li><span class="caution-num">1</span><span><span class="hl">클라우드</span> 환경에서 <span class="hl">크롬</span>으로 접속 후, 기존에 로그인되어 있는 구글 계정이 있다면 반드시 로그아웃해 주시기 바랍니다.</span></li>
-          <li><span class="caution-num">2</span><span class="hl">이후 모바일 명찰에 안내된 ID/PW를 사용하여 구글에 로그인해 주시기 바랍니다.</span></li>
-          <li><span class="caution-num">3</span><span>과제 실습 중 「Gems 코치 시작하기」 클릭 시 <span class="hl">보안 페이지</span>로 이동하는 경우, 아래 <span class="hl">[문의하기]</span> 버튼을 눌러 교육 운영자에게 알려주시기 바랍니다.</span></li>
-          <li><span class="caution-num">4</span><span>실습 진행 중 기타 문의사항이나 오류가 발생할 경우에도 아래 <span class="hl">[문의하기]</span> 버튼을 통해 문의해 주시기 바랍니다.</span></li>
-        </ol>
+        <div class="notice-section">
+          <div class="notice-section-title"><span class="num">1</span> 접속 준비</div>
+          <div class="notice-section-body">
+            <p class="notice-text"><span class="hl">클라우드</span> 환경에서 <span class="hl">크롬</span>으로 접속 후, 기존에 로그인되어 있는 구글 계정이 있다면 반드시 로그아웃해 주시기 바랍니다.</p>
+            <div class="wifi-info-wrap">
+              <div class="wifi-info">
+                <div class="le-title">📶 WIFI 접속 정보 (uLGE 접속 불가 시)</div>
+                <div class="le-row"><span class="le-label">ID</span><span class="le-value">LGEWLESS</span></div>
+                <div class="le-row"><span class="le-label">PW</span><span class="le-value">@lge12345!!</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice-section">
+          <div class="notice-section-title"><span class="num">2</span> 구글 로그인</div>
+          <div class="notice-section-body">
+            <p class="notice-text"><span class="hl">모바일 명찰에 안내된 ID/PW</span>를 사용하여 구글에 로그인해 주시기 바랍니다.</p>
+            <div class="login-example-wrap">
+              <div class="lookup-input-row">
+                <input type="text" id="noticeSanoInput" placeholder="사번 입력" maxlength="20" autocomplete="off">
+                <button id="noticeLookupBtn" onclick="noticeLookup()">조회</button>
+              </div>
+              <div class="lookup-course-wrap" id="noticeCourseWrap">
+                <select id="noticeCourseSelect" onchange="noticeRenderCourse()">
+                  <option value="">-- 과정을 선택하세요 --</option>
+                </select>
+              </div>
+              <div class="lookup-error" id="noticeError"></div>
+              <div class="login-example" id="noticeResultBox" style="display:none">
+                <div class="le-title">🔒 학습 사이트 로그인 정보</div>
+                <div class="le-row"><span class="le-label">ID</span><span class="le-value" id="noticeId"></span></div>
+                <div class="le-row"><span class="le-label">PW</span><span class="le-value" id="noticePw"></span></div>
+              </div>
+              <div class="login-example-caption">사번을 입력하고 조회하면 본인의 ID/PW가 표시됩니다.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="notice-section">
+          <div class="notice-section-title"><span class="num">3</span> 문의 안내</div>
+          <div class="notice-section-body">
+            <p class="notice-text">과제 실습 중 「Gems 코치 시작하기」 클릭 시 <span class="hl">보안 페이지</span>로 이동하거나, 그 밖에 기타 문의사항이나 오류가 발생하는 경우 아래 <span class="hl">[문의하기]</span> 버튼을 눌러 교육 운영자에게 알려주시기 바랍니다.</p>
+            <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" rel="noopener">💬 문의하기</a>
+          </div>
+        </div>
+
         <p class="notice-page-note">※ 원활한 실습 진행을 위해 안내사항을 반드시 확인해 주시기 바랍니다.</p>
-        <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" rel="noopener">💬 문의하기</a>
       </div>
     </div>
   </div>
@@ -617,6 +832,91 @@ function toggleSplit() {
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
 }
+
+// ── 사번 기반 ID/PW 조회 (모바일 명찰 API 재사용) ──────────────
+const NOTICE_API_URL = 'https://script.google.com/macros/s/AKfycbwxrJTmxceutJYkiv-x5BMw06Vi7hApxeWk-cUiyAJ2C6UcvIyYYy0v7cW9VLezj5rq5Q/exec';
+const NOTICE_TOKEN = atob('bGdlaHFleEROVDIwMjY=');
+let noticeEmployeeData = [];
+
+async function noticeLookup() {
+  const sano = document.getElementById('noticeSanoInput').value.trim();
+  const errEl = document.getElementById('noticeError');
+  const resultBox = document.getElementById('noticeResultBox');
+  const courseWrap = document.getElementById('noticeCourseWrap');
+  const btn = document.getElementById('noticeLookupBtn');
+
+  errEl.classList.remove('visible');
+  resultBox.style.display = 'none';
+  courseWrap.classList.remove('visible');
+
+  if (!sano) {
+    errEl.textContent = '사번을 입력해주세요.';
+    errEl.classList.add('visible');
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '조회 중...';
+
+  try {
+    const res = await fetch(`${NOTICE_API_URL}?action=lookup&sano=${encodeURIComponent(sano)}&token=${NOTICE_TOKEN}`);
+    const json = await res.json();
+
+    if (!json.success || !json.data || json.data.length === 0) {
+      errEl.textContent = json.message || '조회 결과가 없습니다. 사번을 다시 확인해주세요.';
+      errEl.classList.add('visible');
+      return;
+    }
+
+    noticeEmployeeData = json.data;
+
+    if (noticeEmployeeData.length === 1) {
+      noticeShowResult(noticeEmployeeData[0]);
+    } else {
+      const select = document.getElementById('noticeCourseSelect');
+      select.innerHTML = '<option value="">-- 과정을 선택하세요 --</option>';
+      noticeEmployeeData.forEach((d, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = [d.courseName, d.round ? d.round + '차' : ''].filter(Boolean).join('  ');
+        select.appendChild(opt);
+      });
+      courseWrap.classList.add('visible');
+    }
+  } catch (e) {
+    errEl.textContent = '서버 연결에 실패했습니다. 잠시 후 다시 시도해주세요.';
+    errEl.classList.add('visible');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '조회';
+  }
+}
+
+function noticeRenderCourse() {
+  const idx = document.getElementById('noticeCourseSelect').value;
+  if (idx === '') return;
+  noticeShowResult(noticeEmployeeData[parseInt(idx)]);
+}
+
+function noticeShowResult(d) {
+  const resultBox = document.getElementById('noticeResultBox');
+  const errEl = document.getElementById('noticeError');
+
+  if (!d.loginId && !d.loginPw) {
+    errEl.textContent = '등록된 로그인 정보가 없습니다. 교육 운영자에게 문의해주세요.';
+    errEl.classList.add('visible');
+    resultBox.style.display = 'none';
+    return;
+  }
+
+  document.getElementById('noticeId').textContent = d.loginId || '-';
+  document.getElementById('noticePw').textContent = d.loginPw || '-';
+  resultBox.style.display = 'block';
+}
+
+document.getElementById('noticeSanoInput').addEventListener('keydown', e => {
+  if (e.key === 'Enter') noticeLookup();
+});
 </script>
 
 </body>
