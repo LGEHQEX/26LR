@@ -106,6 +106,20 @@
   #sidebar.collapsed .nav-sub,
   #sidebar.collapsed .nav-text { display: none; }
 
+  .nav-divider {
+    height: 1px;
+    background: rgba(255,255,255,0.08);
+    margin: 8px 12px 12px;
+  }
+  .nav-item.split-toggle {
+    border: 1px solid rgba(255,255,255,0.12);
+  }
+  .nav-item.split-toggle.active {
+    background: rgba(165,0,52,0.25);
+    border-color: var(--lg-red);
+  }
+  .nav-item.split-toggle.active .nav-sub { color: rgba(255,255,255,0.75); }
+
   .sidebar-footer {
     padding: 14px 16px;
     border-top: 1px solid rgba(255,255,255,0.08);
@@ -115,6 +129,28 @@
     overflow: hidden;
   }
   #sidebar.collapsed .sidebar-footer { opacity: 0; }
+
+  #contactBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 14px 14px;
+    padding: 12px 10px;
+    background: #4f6bed;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  #contactBtn:hover { background: #3d54c9; }
+  #contactBtn .icon { font-size: 15px; flex-shrink: 0; }
+  #sidebar.collapsed #contactBtn { padding: 12px 0; }
+  #sidebar.collapsed #contactBtn .label { display: none; }
 
   /* Main area */
   #main {
@@ -164,14 +200,212 @@
     flex: 1;
     position: relative;
     background: #fff;
+    display: flex;
   }
+  .frame-pane {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    min-width: 0;
+    border-right: 1px solid var(--border);
+  }
+  .frame-pane:last-child { border-right: none; }
+  .frame-pane.visible { display: flex; flex: 1; }
+
+  .pane-label {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 14px;
+    background: #fafafa;
+    border-bottom: 1px solid var(--border);
+    font-size: 11.5px;
+    font-weight: 700;
+    color: #555;
+    flex-shrink: 0;
+  }
+  #iframeWrap.split .pane-label { display: flex; }
+  .pane-label a { color: var(--lg-red); text-decoration: none; font-weight: 700; }
+
   iframe {
     width: 100%;
     height: 100%;
     border: none;
-    display: none;
+    flex: 1;
+    display: block;
   }
-  iframe.visible { display: block; }
+
+  /* Sub-tabs inside 과제실습 pane */
+  .subtabs {
+    display: flex;
+    gap: 4px;
+    padding: 8px 12px;
+    background: #fafafa;
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    flex-shrink: 0;
+  }
+  .subtab-btn {
+    background: #fff;
+    border: 1px solid var(--border);
+    color: #555;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 7px 12px;
+    border-radius: 20px;
+    cursor: pointer;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .subtab-btn:hover { background: #f4f4f4; }
+  .subtab-btn.active {
+    background: var(--lg-red);
+    border-color: var(--lg-red);
+    color: #fff;
+  }
+
+  .practice-content {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+  }
+  .gem-view {
+    display: none;
+    height: 100%;
+    overflow-y: auto;
+    padding: 40px 32px;
+  }
+  .gem-view.visible { display: block; }
+  .gem-card {
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .gem-card .gem-icon {
+    font-size: 40px;
+    margin-bottom: 14px;
+  }
+  .gem-card h2 {
+    font-size: 19px;
+    color: #1c1c1e;
+    margin: 0 0 14px;
+    line-height: 1.4;
+  }
+  .gem-card p {
+    font-size: 13.5px;
+    color: #666;
+    line-height: 1.7;
+    margin: 0 0 26px;
+    white-space: pre-line;
+  }
+  .gem-card .gem-launch {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--lg-red);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 13px 26px;
+    border-radius: 10px;
+  }
+  .gem-card .gem-launch:hover { background: var(--lg-red-dark); }
+  .gem-card .gem-hint {
+    margin-top: 16px;
+    font-size: 11.5px;
+    color: #aaa;
+  }
+
+  @media (max-width: 900px) {
+    #iframeWrap.split { flex-direction: column; }
+    #iframeWrap.split .frame-pane { border-right: none; border-bottom: 1px solid var(--border); }
+  }
+
+  /* 유의사항 탭 (사이드바에서 선택 시 메인 영역에 표시) */
+  .notice-page {
+    max-width: 720px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 48px 32px 60px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .notice-page-head { margin-bottom: 28px; }
+  .notice-page-eyebrow {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--lg-red);
+    letter-spacing: 0.5px;
+    margin-bottom: 6px;
+  }
+  .notice-page-head h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 800;
+    color: #1c1c1e;
+  }
+  .notice-page-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .notice-page-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    font-size: 17px;
+    color: #262629;
+    line-height: 1.7;
+  }
+  .caution-num {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background: var(--lg-red);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 1px;
+  }
+  .notice-page-note {
+    margin: 28px 0 0;
+    padding: 14px 18px;
+    background: #fff5f6;
+    border-left: 3px solid var(--lg-red);
+    border-radius: 6px;
+    font-size: 14.5px;
+    color: var(--lg-red-dark);
+    font-weight: 700;
+  }
+  .hl {
+    color: var(--lg-red);
+    font-weight: 800;
+    background: #fdeef1;
+    padding: 1px 4px;
+    border-radius: 4px;
+  }
+  .notice-page-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 28px;
+    padding: 13px 22px;
+    background: #4f6bed;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .notice-page-contact:hover { background: #3d54c9; }
 
   .fallback-notice {
     position: absolute;
@@ -207,6 +441,13 @@
   </div>
 
   <div class="nav-list">
+    <div class="nav-item" id="nav-notice" onclick="switchSite('notice')">
+      <div class="nav-icon">⚠️</div>
+      <div class="nav-text">
+        <div class="nav-label">유의사항</div>
+        <div class="nav-sub">실습 전 꼭 확인하세요</div>
+      </div>
+    </div>
     <div class="nav-item active" id="nav-practice" onclick="switchSite('practice')">
       <div class="nav-icon">📘</div>
       <div class="nav-text">
@@ -221,7 +462,22 @@
         <div class="nav-sub">제출 양식 페이지</div>
       </div>
     </div>
+
+    <div class="nav-divider"></div>
+
+    <div class="nav-item split-toggle" id="nav-split" onclick="toggleSplit()">
+      <div class="nav-icon">⬛⬜</div>
+      <div class="nav-text">
+        <div class="nav-label">분할 보기</div>
+        <div class="nav-sub">화면 반반으로 보기</div>
+      </div>
+    </div>
   </div>
+
+  <a id="contactBtn" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" rel="noopener">
+    <span class="icon">💬</span>
+    <span class="label">문의하기</span>
+  </a>
 
   <div class="sidebar-footer">리더십 REINVENT 2.0<br>실습 &amp; 제출 통합 페이지</div>
 </div>
@@ -229,15 +485,48 @@
 <div id="main">
   <div id="topbar">
     <div class="title" id="topbarTitle">과제 실습 <span id="topbarUrl">igm-hrd.github.io/LG_REINVENT</span></div>
-    <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창에서 열기</a>
+    <div style="display:flex; align-items:center;">
+      <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창에서 열기</a>
+    </div>
   </div>
 
   <div id="iframeWrap">
     <div class="fallback-notice" id="fallbackNotice">
       ⚠️ 이 사이트는 보안 정책상 화면에 표시되지 않을 수 있어요. <a href="#" id="fallbackLink" target="_blank" rel="noopener">여기서 새 창으로 열기</a>
     </div>
-    <iframe id="frame-practice" class="visible" src="https://igm-hrd.github.io/LG_REINVENT"></iframe>
-    <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html"></iframe>
+
+    <div class="frame-pane visible" id="pane-practice">
+      <div class="pane-label">
+        <span>📘 과제 실습</span>
+        <a href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창</a>
+      </div>
+      <iframe id="frame-practice" src="https://igm-hrd.github.io/LG_REINVENT"></iframe>
+    </div>
+
+    <div class="frame-pane" id="pane-submit">
+      <div class="pane-label">
+        <span>📝 과제 제출</span>
+        <a href="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html" target="_blank" rel="noopener">↗ 새 창</a>
+      </div>
+      <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html"></iframe>
+    </div>
+
+    <div class="frame-pane" id="pane-notice">
+      <div class="notice-page">
+        <div class="notice-page-head">
+          <div class="notice-page-eyebrow">실습 시작 전 확인</div>
+          <h2>⚠️ 유의사항</h2>
+        </div>
+        <ol class="notice-page-list">
+          <li><span class="caution-num">1</span><span><span class="hl">클라우드</span> 환경에서 <span class="hl">크롬</span>으로 접속 후, 기존에 로그인되어 있는 구글 계정이 있다면 반드시 로그아웃해 주시기 바랍니다.</span></li>
+          <li><span class="caution-num">2</span><span class="hl">이후 모바일 명찰에 안내된 ID/PW를 사용하여 구글에 로그인해 주시기 바랍니다.</span></li>
+          <li><span class="caution-num">3</span><span>과제 실습 중 「Gems 코치 시작하기」 클릭 시 <span class="hl">보안 페이지</span>로 이동하는 경우, 아래 <span class="hl">[문의하기]</span> 버튼을 눌러 교육 운영자에게 알려주시기 바랍니다.</span></li>
+          <li><span class="caution-num">4</span><span>실습 진행 중 기타 문의사항이나 오류가 발생할 경우에도 아래 <span class="hl">[문의하기]</span> 버튼을 통해 문의해 주시기 바랍니다.</span></li>
+        </ol>
+        <p class="notice-page-note">※ 원활한 실습 진행을 위해 안내사항을 반드시 확인해 주시기 바랍니다.</p>
+        <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" rel="noopener">💬 문의하기</a>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -254,19 +543,42 @@ const SITES = {
     label: "과제 제출",
     display: "conlms.lge.com (사내망 전용)",
     warnIntranet: true
+  },
+  notice: {
+    url: null,
+    label: "유의사항",
+    display: "실습 전 꼭 확인하세요",
+    warnIntranet: false
   }
 };
 
+let splitMode = false;
+
 function switchSite(key) {
+  // 단일 메뉴 클릭 시 분할 모드는 해제
+  if (splitMode) {
+    splitMode = false;
+    document.getElementById('iframeWrap').classList.remove('split');
+    document.getElementById('nav-split').classList.remove('active');
+    document.getElementById('topbar').style.display = 'flex';
+  }
+
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   document.getElementById('nav-' + key).classList.add('active');
 
-  document.querySelectorAll('iframe').forEach(f => f.classList.remove('visible'));
-  document.getElementById('frame-' + key).classList.add('visible');
+  document.querySelectorAll('.frame-pane').forEach(p => p.classList.remove('visible'));
+  document.getElementById('pane-' + key).classList.add('visible');
 
   const site = SITES[key];
   document.getElementById('topbarTitle').innerHTML = site.label + ' <span id="topbarUrl">' + site.display + '</span>';
-  document.getElementById('openNewTab').href = site.url;
+
+  const openBtn = document.getElementById('openNewTab');
+  if (site.url) {
+    openBtn.href = site.url;
+    openBtn.style.display = 'inline-flex';
+  } else {
+    openBtn.style.display = 'none';
+  }
 
   const notice = document.getElementById('fallbackNotice');
   const link = document.getElementById('fallbackLink');
@@ -275,6 +587,30 @@ function switchSite(key) {
     notice.style.display = 'flex';
   } else {
     notice.style.display = 'none';
+  }
+}
+
+function toggleSplit() {
+  splitMode = !splitMode;
+  const wrap = document.getElementById('iframeWrap');
+  const splitBtn = document.getElementById('nav-split');
+
+  if (splitMode) {
+    wrap.classList.add('split');
+    splitBtn.classList.add('active');
+    document.querySelectorAll('.nav-item').forEach(el => {
+      if (el.id !== 'nav-split') el.classList.remove('active');
+    });
+    document.getElementById('pane-practice').classList.add('visible');
+    document.getElementById('pane-submit').classList.add('visible');
+    document.getElementById('pane-notice').classList.remove('visible');
+    document.getElementById('fallbackNotice').style.display = 'none';
+    document.getElementById('topbar').style.display = 'none';
+  } else {
+    wrap.classList.remove('split');
+    splitBtn.classList.remove('active');
+    document.getElementById('topbar').style.display = 'flex';
+    switchSite('practice');
   }
 }
 
