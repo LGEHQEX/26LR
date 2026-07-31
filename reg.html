@@ -68,6 +68,10 @@
   }
   .card h2.h2-row { justify-content: space-between; }
   .card h2.h2-row span:first-child { display: flex; align-items: center; gap: 8px; }
+  .sub-note {
+    font-size: 11.5px; font-weight: 500; color: var(--gray);
+    margin-left: 2px;
+  }
   .btn-info {
     display: flex; align-items: center; gap: 4px;
     padding: 6px 11px; border: 1.5px solid var(--line);
@@ -338,7 +342,7 @@
 
   <!-- STEP 2: 차수 선택 -->
   <div class="card">
-    <h2><span class="step">2</span>차수 선택</h2>
+    <h2><span class="step">2</span>차수 선택 <span class="sub-note">(9, 10차수 창원 배차 없음)</span></h2>
     <div class="sessions" id="sessions">
       <div class="loading-text" style="grid-column:1/-1;">차수 정보를 불러오는 중...</div>
     </div>
@@ -347,7 +351,7 @@
   <!-- STEP 3: 숙소 신청 -->
   <div class="card">
     <h2 class="h2-row">
-      <span><span class="step">3</span>숙소 신청</span>
+      <span><span class="step">3</span>숙소 신청 <span class="sub-note">(창원 배차 인원 사전 입소만 가능)</span></span>
       <button type="button" class="btn-info" onclick="openStayInfoModal()">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><circle cx="12" cy="12" r="10"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.5" r="0.5" fill="currentColor"/></svg>
         입소 안내
@@ -464,7 +468,7 @@ let selectedLodging = null;
 // 이 페이지에서 노출할 차수 (null이면 전체 노출)
 const ALLOWED_SESSIONS = ['1','2','3','4','5','6','7','8','9','10'];
 // 차수 옆에 표시할 뱃지 텍스트
-const SESSION_BADGE = {};
+const SESSION_BADGE = { '9': '추가차수', '10': '추가차수' };
 
 /* ===== 초기 로드: 차수 현황 조회 ===== */
 async function loadSessions() {
