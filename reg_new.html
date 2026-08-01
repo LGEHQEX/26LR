@@ -538,6 +538,15 @@ document.getElementById('phone').addEventListener('input', function() {
   this.value = v;
 });
 
+/* ===== 사번은 숫자만 입력 가능 (문자/수식 등 입력 방지) ===== */
+function digitsOnly_(el) {
+  el.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+  });
+}
+digitsOnly_(document.getElementById('empId'));
+digitsOnly_(document.getElementById('empIdCheck'));
+
 /* ===== 내 신청 확인 모달 ===== */
 function openMyStatusModal() {
   document.getElementById('overlayMyStatus').classList.add('show');
