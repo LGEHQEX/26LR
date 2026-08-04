@@ -337,7 +337,7 @@
       setTimeout(initCanvas, 100);
 
     } catch(e) {
-      msg.textContent = '조회 중 오류가 발생했습니다.';
+      msg.textContent = '오류: ' + e.message;
       msg.style.color = 'var(--red)';
     }
   }
