@@ -598,32 +598,37 @@
   }
   .notice-page-security:hover { background: #fff0f3; }
 
-  /* 보안서약서 슬라이드 패널 */
+  /* 보안서약서 팝업 */
   .drawer-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0,0,0,0.4);
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(4px);
     z-index: 500;
     display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
     opacity: 0;
-    transition: opacity 0.25s ease;
+    transition: opacity 0.2s ease;
   }
-  .drawer-overlay.open { display: block; opacity: 1; }
+  .drawer-overlay.open { display: flex; opacity: 1; }
   .drawer-panel {
-    position: fixed;
-    top: 0; right: 0;
-    width: 520px;
-    max-width: 92vw;
-    height: 100%;
+    width: 100%;
+    max-width: 640px;
+    height: 85vh;
+    max-height: 780px;
     background: #fff;
-    z-index: 501;
+    border-radius: 20px;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    box-shadow: -8px 0 32px rgba(0,0,0,0.18);
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    transform: scale(0.94);
+    opacity: 0;
+    transition: transform 0.22s cubic-bezier(0.34,1.2,0.64,1), opacity 0.22s ease;
   }
-  .drawer-overlay.open .drawer-panel { transform: translateX(0); }
+  .drawer-overlay.open .drawer-panel { transform: scale(1); opacity: 1; }
   .drawer-header {
     height: 56px;
     flex-shrink: 0;
@@ -678,6 +683,10 @@
     background: rgba(255,255,255,0.15);
   }
   .drawer-open-new:hover { background: rgba(255,255,255,0.25); }
+
+  @media (max-width: 720px) {
+    .drawer-panel { height: 90vh; border-radius: 16px; }
+  }
 
   /* 모바일 명찰 예시 카드 (보안서약서 안내용) */
   .badge-demo-wrap { display: flex; justify-content: center; margin-top: 4px; }
