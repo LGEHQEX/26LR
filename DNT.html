@@ -918,7 +918,7 @@
               <div class="qb-icon">📝</div>
               <div class="qb-label">설문</div>
             </a>
-            <button type="button" class="quick-btn qb-dining" id="qbDining" >
+            <button type="button" class="quick-btn qb-dining" id="qbDining" onclick="event.stopPropagation(); openDining(event)">
               <div class="qb-icon">🎫</div>
               <div class="qb-label">식권</div>
             </button>
@@ -953,7 +953,7 @@
           </div>
           <div class="back-divider"></div>
           <div class="btn-list">
-            <button class="action-btn dining" onclick="openQuizPopup()">
+            <button class="action-btn dining" onclick="openDining(event)">
               <div class="btn-icon">🧩</div>
               <div class="btn-text">
                 <div class="btn-label">퀴즈</div>
@@ -969,7 +969,7 @@
               </div>
               <span class="btn-arrow">›</span>
             </a>
-            <a class="action-btn facility" id="facilityBtn" href="https://lgehqex.github.io/learningcenter" target="_blank" >
+            <a class="action-btn facility" id="facilityBtn" href="#" target="_blank" >
               <div class="btn-icon">🏢</div>
               <div class="btn-text">
                 <div class="btn-label">러닝센터 시설안내</div>
@@ -1489,7 +1489,8 @@
   }
 
   async function openDining(e) {
-    e.stopPropagation();
+    if (e) e.stopPropagation();
+    if (!currentData) { alert('먼저 사번을 조회해주세요.'); return; }
     const d = currentData || {};
     const r = formatRound(d.round);
     const s = formatDateRange(d.startDate, d.endDate);
@@ -1847,6 +1848,27 @@
     document.getElementById('lodgingCode').textContent     = lodging.doorCode ? lodging.doorCode + ' + *' : '-';
     // 버튼 활성화
     if (btn) { btn.disabled = false; btn.style.opacity = '1'; btn.style.cursor = 'pointer'; }
+  }
+
+
+    const d = currentData;
+    const base = 'security-pledge.html';
+    const qs = new URLSearchParams({
+      sano:  d.sano  || '',
+      name:  d.name  || '',
+      dept:  d.dept  || '',
+      grade: d.grade || '',
+    }).toString();
+    const win = window.open(`${base}?${qs}`, '_blank');
+    // 완료 메시지 수신
+    window.addEventListener('message', e => {
+      if (e.data && e.data.type === 'securityPledgeDone') {
+        const lbl = document.getElementById('qbSecurityLabel');
+        const btn = document.getElementById('qbSecurity');
+        if (lbl) lbl.textContent = '✅ 서약완료';
+        if (btn) btn.classList.remove('qb-security-pulse');
+      }
+    }, { once: true });
   }
 
   function openQuizPopup() {
