@@ -313,11 +313,12 @@
       userData = { sano: d.sano, name: d.name, dept: d.dept, grade: d.grade, startDate: d.startDate };
 
       // 인적사항 세팅
-      document.getElementById('infoSano').textContent  = d.sano  || '—';
-      document.getElementById('infoName').textContent  = d.name  || '—';
-      document.getElementById('infoDept').textContent  = d.dept  || '—';
-      document.getElementById('infoGrade').textContent = d.grade || '—';
-      document.getElementById('infoDate').textContent  = dateLabel;
+      const _s = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+      _s('infoSano',  d.sano  || '—');
+      _s('infoName',  d.name  || '—');
+      _s('infoDept',  d.dept  || '—');
+      _s('infoGrade', d.grade || '—');
+      _s('infoDate',  dateLabel);
 
       // 업무수행기간: 교육 시작일 ~ +1년
       let periodStr = '—';
