@@ -582,6 +582,97 @@
   }
   .notice-page-contact:hover { background: #3d54c9; }
 
+  .notice-page-security {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 13px 22px;
+    background: #fff;
+    color: var(--lg-red);
+    border: 2px solid var(--lg-red);
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .notice-page-security:hover { background: #fff0f3; }
+
+  /* 모바일 명찰 예시 카드 (보안서약서 안내용) */
+  .badge-demo-wrap { display: flex; justify-content: center; margin-top: 4px; }
+  .badge-demo {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 6px 24px rgba(0,0,0,0.12);
+    background: #fff;
+  }
+  .badge-demo-header {
+    background: var(--lg-red);
+    padding: 16px 18px 26px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .badge-demo-logo {
+    width: 34px; height: 34px; background: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800; color: var(--lg-red); flex-shrink: 0;
+  }
+  .badge-demo-title { color: #fff; font-size: 15px; font-weight: 800; line-height: 1.3; }
+  .badge-demo-sub-row { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+  .badge-demo-sub { color: rgba(255,255,255,0.9); font-size: 11px; font-weight: 500; }
+  .badge-demo-pill {
+    background: rgba(255,255,255,0.25); color: #fff; font-size: 9px; font-weight: 700;
+    padding: 2px 8px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.45);
+  }
+  .badge-demo-body {
+    background: #fff; margin: -12px 10px 0; border-radius: 14px 14px 0 0;
+    padding: 20px 16px 16px; position: relative;
+  }
+  .badge-demo-name { text-align: center; font-size: 20px; font-weight: 700; color: #111; margin-bottom: 12px; }
+  .badge-demo-divider { height: 1px; background: #eee; margin-bottom: 12px; }
+  .badge-demo-info { display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px; }
+  .badge-demo-info-row { display: flex; align-items: center; gap: 8px; font-size: 12px; }
+  .badge-demo-info-label { color: #999; width: 46px; flex-shrink: 0; }
+  .badge-demo-info-value { color: #111; font-weight: 500; }
+  .badge-demo-login {
+    background: #fff0f3; border: 1px solid #f5c0cc; border-radius: 10px;
+    padding: 10px 12px; margin-bottom: 12px;
+  }
+  .badge-demo-login-title { font-size: 10px; font-weight: 800; color: var(--lg-red); margin-bottom: 6px; }
+  .badge-demo-login-row { display: flex; gap: 8px; font-size: 12px; padding: 2px 0; }
+  .badge-demo-login-label { color: var(--lg-red); font-weight: 700; width: 22px; }
+  .badge-demo-login-value { font-family: monospace; font-weight: 700; color: #111; }
+  .badge-demo-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+  .badge-demo-btn {
+    display: flex; align-items: center; justify-content: center; gap: 5px;
+    padding: 9px 6px; border-radius: 10px; font-size: 11px; font-weight: 700;
+    border: 1.5px solid;
+  }
+  .bd-disabled { background: #f4f5f7; border-color: #e2e3e7; color: #aaa; }
+  .bd-survey { background: #faf4e1; border-color: #e8d38c; color: #633806; }
+  .bd-dining { background: #f5f0ff; border-color: #c9b8ff; color: #4a2fb8; }
+  .bd-security {
+    background: #fff0f3; border-color: var(--lg-red); color: var(--lg-red);
+    box-shadow: 0 0 0 3px rgba(165,0,52,0.15);
+    animation: bdPulse 1.8s ease-in-out infinite;
+    position: relative;
+  }
+  @keyframes bdPulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(165,0,52,0.15); }
+    50% { box-shadow: 0 0 0 6px rgba(165,0,52,0.28); }
+  }
+  .badge-demo-it { grid-column: span 2; background: #eef4ff; border-color: #b8d4f8; color: #0c447c; }
+  .badge-demo-caption {
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--lg-red);
+    margin-top: 10px;
+  }
+
   .fallback-notice {
     position: absolute;
     top: 16px;
@@ -649,7 +740,7 @@
     </div>
   </div>
 
-  <a id="contactBtn" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" rel="noopener">
+  <a id="contactBtn" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="lg_teams_chat" rel="noopener">
     <span class="icon">💬</span>
     <span class="label">문의하기</span>
   </a>
@@ -661,19 +752,19 @@
   <div id="topbar">
     <div class="title" id="topbarTitle">유의사항 <span id="topbarUrl">실습 전 꼭 확인하세요</span></div>
     <div style="display:flex; align-items:center;">
-      <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener" style="display:none;">↗ 새 창에서 열기</a>
+      <a id="openNewTab" href="https://igm-hrd.github.io/LG_REINVENT" target="lg_reinvent_ext" rel="noopener" style="display:none;">↗ 새 창에서 열기</a>
     </div>
   </div>
 
   <div id="iframeWrap">
     <div class="fallback-notice" id="fallbackNotice">
-      ⚠️ 이 사이트는 보안 정책상 화면에 표시되지 않을 수 있어요. <a href="#" id="fallbackLink" target="_blank" rel="noopener">여기서 새 창으로 열기</a>
+      ⚠️ 이 사이트는 보안 정책상 화면에 표시되지 않을 수 있어요. <a href="#" id="fallbackLink" target="lg_submit_ext" rel="noopener">여기서 새 창으로 열기</a>
     </div>
 
     <div class="frame-pane" id="pane-practice">
       <div class="pane-label">
         <span>📘 과제 실습</span>
-        <a href="https://igm-hrd.github.io/LG_REINVENT" target="_blank" rel="noopener">↗ 새 창</a>
+        <a href="https://igm-hrd.github.io/LG_REINVENT" target="lg_reinvent_ext" rel="noopener">↗ 새 창</a>
       </div>
       <iframe id="frame-practice" src="https://igm-hrd.github.io/LG_REINVENT"></iframe>
     </div>
@@ -681,7 +772,7 @@
     <div class="frame-pane" id="pane-submit">
       <div class="pane-label">
         <span>📝 과제 제출</span>
-        <a href="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html" target="_blank" rel="noopener">↗ 새 창</a>
+        <a href="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html" target="lg_submit_ext" rel="noopener">↗ 새 창</a>
       </div>
       <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html"></iframe>
     </div>
@@ -693,7 +784,15 @@
           <h2>⚠️ 유의사항</h2>
         </div>
         <div class="notice-section">
-          <div class="notice-section-title"><span class="num">1</span> 접속 준비</div>
+          <div class="notice-section-title"><span class="num">1</span> 보안서약서 작성</div>
+          <div class="notice-section-body">
+            <p class="notice-text">보안서약서를 작성해 주시기를 바랍니다.</p>
+            <a class="notice-page-security" href="https://lgehqex.github.io/26LR/security" target="lg_security_ext" rel="noopener">🔏 보안서약서 작성하기</a>
+          </div>
+        </div>
+
+        <div class="notice-section">
+          <div class="notice-section-title"><span class="num">2</span> 접속 준비</div>
           <div class="notice-section-body">
             <p class="notice-text"><span class="hl">클라우드</span> 환경에서 <span class="hl">크롬</span>으로 접속 후, 기존에 로그인되어 있는 구글 계정이 있다면 반드시 로그아웃해 주시기 바랍니다.</p>
             <div class="wifi-info-wrap">
@@ -707,7 +806,7 @@
         </div>
 
         <div class="notice-section">
-          <div class="notice-section-title"><span class="num">2</span> 구글 로그인</div>
+          <div class="notice-section-title"><span class="num">3</span> 구글 로그인</div>
           <div class="notice-section-body">
             <p class="notice-text"><span class="hl">모바일 명찰에 안내된 ID/PW</span>를 사용하여 구글에 로그인해 주시기 바랍니다.</p>
             <div class="login-example-wrap">
@@ -732,10 +831,10 @@
         </div>
 
         <div class="notice-section">
-          <div class="notice-section-title"><span class="num">3</span> 문의 안내</div>
+          <div class="notice-section-title"><span class="num">4</span> 문의 안내</div>
           <div class="notice-section-body">
             <p class="notice-text">과제 실습 중 「Gems 코치 시작하기」 클릭 시 <span class="hl">보안 페이지</span>로 이동하거나, 그 밖에 기타 문의사항이나 오류가 발생하는 경우 아래 <span class="hl">[문의하기]</span> 버튼을 눌러 교육 운영자에게 알려주시기 바랍니다.</p>
-            <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="_blank" rel="noopener">💬 문의하기</a>
+            <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="lg_teams_chat" rel="noopener">💬 문의하기</a>
           </div>
         </div>
 
@@ -751,19 +850,22 @@ const SITES = {
     url: "https://igm-hrd.github.io/LG_REINVENT",
     label: "과제 실습",
     display: "igm-hrd.github.io/LG_REINVENT",
-    warnIntranet: false
+    warnIntranet: false,
+    target: "lg_reinvent_ext"
   },
   submit: {
     url: "http://conlms.lge.com/doc/int/002/B002/2026/07/21/91e30055-c595-4e3b-8e83-f3736efc7da1/leadership_format_F.html",
     label: "과제 제출",
     display: "conlms.lge.com (사내망 전용)",
-    warnIntranet: true
+    warnIntranet: true,
+    target: "lg_submit_ext"
   },
   notice: {
     url: null,
     label: "유의사항",
     display: "실습 전 꼭 확인하세요",
-    warnIntranet: false
+    warnIntranet: false,
+    target: "_blank"
   }
 };
 
@@ -790,6 +892,7 @@ function switchSite(key) {
   const openBtn = document.getElementById('openNewTab');
   if (site.url) {
     openBtn.href = site.url;
+    openBtn.target = site.target || '_blank';
     openBtn.style.display = 'inline-flex';
   } else {
     openBtn.style.display = 'none';
