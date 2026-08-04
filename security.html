@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>보안 서약서 | LG Electronics</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #A50034;
+    --red-light: #fff0f3;
+    --g50: #f9f9f9;
+    --g100: #f0f0f0;
+    --g200: #e0e0e0;
+    --g400: #aaa;
+    --g500: #888;
+    --g700: #444;
+    --g900: #111;
+    --radius: 14px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.08);
+  }
+  body {
+    font-family: 'Noto Sans KR', sans-serif;
+    background: #f5f5f7;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 48px;
+  }
+
+  /* 헤더 */
+  .page-header {
+    width: 100%; max-width: 480px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 20px;
+  }
+  .page-header .logo {
+    width: 36px; height: 36px; border-radius: 10px;
+    background: var(--red); display: flex; align-items: center; justify-content: center;
+  }
+  .page-header .logo svg { width: 22px; height: 22px; fill: white; }
+  .page-header h1 { font-size: 16px; font-weight: 700; color: var(--g900); }
+  .page-header p { font-size: 12px; color: var(--g500); margin-top: 2px; }
+
+  /* 카드 */
+  .card {
+    width: 100%; max-width: 480px;
+    background: white; border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 20px;
+    margin-bottom: 12px;
+  }
+  .card-title {
+    font-size: 13px; font-weight: 700; color: var(--g500);
+    text-transform: uppercase; letter-spacing: 0.05em;
+    margin-bottom: 12px;
+  }
+
+  /* 인적사항 */
+  .info-row {
+    display: flex; gap: 8px; align-items: flex-start;
+    padding: 8px 0; border-bottom: 1px solid var(--g100);
+  }
+  .info-row:last-child { border-bottom: none; }
+  .info-lbl { font-size: 12px; color: var(--g500); min-width: 72px; padding-top: 1px; }
+  .info-val { font-size: 13px; font-weight: 600; color: var(--g900); flex: 1; }
+
+  /* 서약서 내용 */
+  .pledge-content {
+    font-size: 12px; color: var(--g700); line-height: 1.8;
+    max-height: 260px; overflow-y: auto;
+    background: var(--g50); border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .pledge-content p { margin-bottom: 8px; }
+  .pledge-content .warning { color: #c00; font-weight: 700; margin-bottom: 6px; }
+  .pledge-content ol { padding-left: 16px; }
+  .pledge-content li { margin-bottom: 8px; }
+
+  /* 서명 */
+  .sign-label {
+    font-size: 13px; font-weight: 700; color: var(--g900);
+    margin-bottom: 8px;
+  }
+  .canvas-wrap {
+    border: 1.5px solid var(--g200); border-radius: 10px;
+    background: white; position: relative;
+    margin-bottom: 8px; overflow: hidden;
+  }
+  #signCanvas { display: block; width: 100%; height: 130px; cursor: crosshair; touch-action: none; }
+  .canvas-hint {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 12px; color: var(--g400); pointer-events: none;
+    transition: opacity 0.2s;
+  }
+  .clear-btn {
+    font-size: 12px; color: var(--g500); background: none; border: none;
+    cursor: pointer; text-decoration: underline; padding: 2px 0;
+    font-family: inherit; margin-bottom: 4px;
+  }
+
+  /* 버튼 */
+  .submit-btn {
+    width: 100%; padding: 15px;
+    background: var(--red); color: white;
+    border: none; border-radius: 12px;
+    font-size: 15px; font-weight: 700;
+    font-family: inherit; cursor: pointer;
+    transition: opacity 0.15s;
+    margin-bottom: 8px;
+  }
+  .submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .submit-btn:active:not(:disabled) { opacity: 0.85; }
+
+  /* 완료 상태 */
+  .done-banner {
+    display: none;
+    background: #e8f5e9; border-radius: 12px;
+    padding: 16px 20px; text-align: center;
+    margin-bottom: 12px;
+  }
+  .done-banner.show { display: block; }
+  .done-banner .done-icon { font-size: 28px; margin-bottom: 6px; }
+  .done-banner .done-title { font-size: 15px; font-weight: 700; color: #1a7a4a; }
+  .done-banner .done-sub { font-size: 12px; color: #2e7d52; margin-top: 4px; }
+
+  /* 캡처용 (숨김) */
+  #pledgeCapture {
+    position: fixed; left: -9999px; top: 0;
+    width: 794px; padding: 40px 50px;
+    background: white;
+    font-family: 'Noto Sans KR', sans-serif;
+    font-size: 13px; line-height: 1.8; color: #000;
+  }
+</style>
+</head>
+<body>
+
+<!-- 헤더 -->
+<div class="page-header">
+  <div class="logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
+  </div>
+  <div>
+    <h1>보안 서약서</h1>
+    <p>기업용 생성형 AI 서비스 이용 보안 서약</p>
+  </div>
+</div>
+
+<!-- 인적사항 카드 -->
+<div class="card">
+  <div class="card-title">인적사항</div>
+  <div class="info-row">
+    <span class="info-lbl">사번</span>
+    <span class="info-val" id="infoSano">—</span>
+  </div>
+  <div class="info-row">
+    <span class="info-lbl">성명</span>
+    <span class="info-val" id="infoName">—</span>
+  </div>
+  <div class="info-row">
+    <span class="info-lbl">소속</span>
+    <span class="info-val" id="infoDept">—</span>
+  </div>
+  <div class="info-row">
+    <span class="info-lbl">직급</span>
+    <span class="info-val" id="infoGrade">—</span>
+  </div>
+  <div class="info-row">
+    <span class="info-lbl">서약서 제목</span>
+    <span class="info-val">기업용 생성형 AI 보안 서약서</span>
+  </div>
+  <div class="info-row">
+    <span class="info-lbl">작성일</span>
+    <span class="info-val" id="infoDate">—</span>
+  </div>
+</div>
+
+<!-- 완료 배너 -->
+<div class="done-banner" id="doneBanner">
+  <div class="done-icon">✅</div>
+  <div class="done-title">서약서 제출 완료</div>
+  <div class="done-sub" id="doneTime"></div>
+</div>
+
+<!-- 서약서 내용 카드 -->
+<div class="card">
+  <div class="card-title">서약 내용</div>
+  <div class="pledge-content">
+    <p>본인은 기업용 생성형 AI 서비스(Google Gemini)를 활용하여 업무를 수행함에 있어 아래사항을 준수할 것을 서약합니다.</p>
+    <p class="warning">사외 생성형AI 서비스에 입력 및 생성되는 데이터는 제3자에게 노출되어 정보유출사고로 이어질 가능성이 있습니다.</p>
+    <p class="warning">모든 임직원은 아래 사항들을 반드시 숙지하시어 사용 바랍니다.</p>
+    <ol>
+      <li>본인은 생성형 AI 서비스의 입력 데이터(프롬프트) 간에 국가핵심/첨단전략기술 정보, 중요 기업비밀/내부기밀 등 중요 정보(LGE Confidential/비밀에 해당하는 고객사 중요 정보, LG전자의 경영 정보 혹은 영업비밀 등), 개인정보보호법 및 관련법령에서 규정하는 필수 암호화가 필요한 개인정보(고유식별정보, 민감정보, 금융정보, 위치정보 등) 및 사전에 허가 받지 않은 고객/임직원 개인정보를 입력하지 않겠습니다. 이는 프롬프트 입력, 파일 업로드, API 연동 등 모든 형태의 정보 전달을 포함합니다.</li>
+      <li>본인은 회사의 보안정책, 정보보호를 위하여 필요한 회사의 정보보호 규정 및 관련 법규, 회사의 생성형AI서비스 활용 규칙들을 준수하고 이를 성실히 이행할 것을 서약합니다.</li>
+      <li>본인은 생성형 AI를 활용하여 생성된 결과물이 타인의 저작권 또는 지적 재산권을 침해하지 않도록 주의를 기울일 것을 서약합니다. 저작권이 있는 자료를 무단으로 사용하거나 변형하여 생성형 AI에 입력하지 않으며, 생성된 결과물을 사용할 때에도 저작권 관련 법규를 준수합니다.</li>
+      <li>본인은 회사가 비밀유지서약에 따라 정보보안 모니터링 하는 것에 동의하며, 보안감사에 필요한 정보를 즉시 제공하겠습니다.</li>
+      <li>본 서약을 위반하는 행위에 대한 책임은 본인에게 있으며, 회사의 정보보호 규정 및 징계절차에 의해 징계 등의 인사조치를 받을 수 있음에 동의합니다.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- 서명 카드 -->
+<div class="card" id="signCard">
+  <div class="card-title">서명</div>
+  <div class="sign-label">✍️ 아래 서명란에 서명해 주세요</div>
+  <div class="canvas-wrap">
+    <canvas id="signCanvas"></canvas>
+    <div class="canvas-hint" id="canvasHint">이 곳에 서명하세요</div>
+  </div>
+  <button class="clear-btn" onclick="clearSign()">서명 지우기</button>
+  <button class="submit-btn" id="submitBtn" onclick="submitPledge()">보안 서약서 제출</button>
+</div>
+
+<!-- PDF 캡처용 숨김 div -->
+<div id="pledgeCapture">
+  <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;">
+    <div style="font-size:18px;font-weight:900;">온라인 서약서 청구 · 보안준수서약서</div>
+    <div style="font-size:11px;color:#888;">LGE Internal Use Only</div>
+  </div>
+  <table style="width:100%;border-collapse:collapse;margin-bottom:28px;border:1px solid #ccc;">
+    <tr>
+      <td style="border:1px solid #ccc;padding:8px 14px;background:#f5f5f5;font-weight:700;width:100px;text-align:center;">사번</td>
+      <td style="border:1px solid #ccc;padding:8px 14px;width:200px;"><span id="capSano"></span></td>
+      <td style="border:1px solid #ccc;padding:8px 14px;background:#f5f5f5;font-weight:700;width:100px;text-align:center;">회사(조직)</td>
+      <td style="border:1px solid #ccc;padding:8px 14px;"><span id="capDept"></span></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #ccc;padding:8px 14px;background:#f5f5f5;font-weight:700;text-align:center;">직원</td>
+      <td style="border:1px solid #ccc;padding:8px 14px;" colspan="3"><span id="capName"></span></td>
+    </tr>
+    <tr>
+      <td style="border:1px solid #ccc;padding:8px 14px;background:#f5f5f5;font-weight:700;text-align:center;">서약서 제목</td>
+      <td style="border:1px solid #ccc;padding:8px 14px;" colspan="3">기업용 생성형 AI 보안 서약서</td>
+    </tr>
+  </table>
+  <div style="border:1px solid #ddd;border-radius:8px;padding:28px 32px;margin-bottom:20px;">
+    <div style="text-align:center;font-size:20px;font-weight:900;margin-bottom:20px;">보안 준수 서약서</div>
+    <div style="margin-bottom:14px;">본인은 기업용 생성형 AI 서비스(Google Gemini)를 활용하여 업무를 수행함에 있어 아래사항을 준수할 것을 서약합니다.</div>
+    <div style="color:#c00;font-weight:700;margin-bottom:4px;">사외 생성형AI 서비스에 입력 및 생성되는 데이터는 제3자에게 노출되어 정보유출사고로 이어질 가능성이 있습니다.</div>
+    <div style="color:#c00;font-weight:700;margin-bottom:18px;">모든 임직원은 아래 사항들을 반드시 숙지하시어 사용 바랍니다.</div>
+    <div style="margin-bottom:12px;">1. 본인은 생성형 AI 서비스의 입력 데이터(프롬프트) 간에 국가핵심/첨단전략기술 정보, 중요 기업비밀/내부기밀 등 중요 정보(LGE Confidential/비밀에 해당하는 고객사 중요 정보, LG전자의 경영 정보 혹은 영업비밀 등), 개인정보보호법 및 관련법령에서 규정하는 필수 암호화가 필요한 개인정보(고유식별정보, 민감정보, 금융정보, 위치정보 등) 및 사전에 허가 받지 않은 고객/임직원 개인정보를 입력하지 않겠습니다.</div>
+    <div style="margin-bottom:12px;">2. 본인은 회사의 보안정책, 정보보호를 위하여 필요한 회사의 정보보호 규정 및 관련 법규, 회사의 생성형AI서비스 활용 규칙들을 준수하고 이를 성실히 이행할 것을 서약합니다.</div>
+    <div style="margin-bottom:12px;">3. 본인은 생성형 AI를 활용하여 생성된 결과물이 타인의 저작권 또는 지적 재산권을 침해하지 않도록 주의를 기울일 것을 서약합니다.</div>
+    <div style="margin-bottom:12px;">4. 본인은 회사가 비밀유지서약에 따라 정보보안 모니터링 하는 것에 동의하며, 보안감사에 필요한 정보를 즉시 제공하겠습니다.</div>
+    <div style="margin-bottom:28px;">5. 본 서약을 위반하는 행위에 대한 책임은 본인에게 있으며, 회사의 정보보호 규정 및 징계절차에 의해 징계 등의 인사조치를 받을 수 있음에 동의합니다.</div>
+    <div style="text-align:right;font-size:15px;font-weight:900;margin-bottom:20px;">LG전자 주식회사 귀중</div>
+    <div style="display:flex;align-items:flex-end;gap:40px;margin-top:12px;">
+      <div style="font-weight:700;font-size:14px;">[서명]</div>
+      <div style="flex:1;border-bottom:1px solid #999;display:flex;align-items:flex-end;padding-bottom:4px;min-height:60px;">
+        <img id="capSig" style="height:50px;vertical-align:bottom;" />
+      </div>
+    </div>
+    <div style="display:flex;justify-content:flex-end;margin-top:4px;">
+      <span id="capDate2" style="font-size:12px;color:#888;"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://script.google.com/macros/s/AKfycbwxrJTmxceutJYkiv-x5BMw06Vi7hApxeWk-cUiyAJ2C6UcvIyYYy0v7cW9VLezj5rq5Q/exec';
+  const _tk = atob('bGdlaHFleEROVDIwMjY=');
+
+  // URL 파라미터 파싱
+  const params = new URLSearchParams(location.search);
+  const userData = {
+    sano:  params.get('sano')  || '',
+    name:  params.get('name')  || '',
+    dept:  params.get('dept')  || '',
+    grade: params.get('grade') || '',
+  };
+
+  // 인적사항 세팅
+  const today = new Date();
+  const dateLabel = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+  document.getElementById('infoSano').textContent  = userData.sano  || '—';
+  document.getElementById('infoName').textContent  = userData.name  || '—';
+  document.getElementById('infoDept').textContent  = userData.dept  || '—';
+  document.getElementById('infoGrade').textContent = userData.grade || '—';
+  document.getElementById('infoDate').textContent  = dateLabel;
+
+  // 서명 캔버스
+  let signCtx, isSigning = false, hasSig = false;
+  const canvas = document.getElementById('signCanvas');
+
+  function initCanvas() {
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = 130;
+    signCtx = canvas.getContext('2d');
+    signCtx.strokeStyle = '#111';
+    signCtx.lineWidth = 2.5;
+    signCtx.lineCap = 'round';
+    signCtx.lineJoin = 'round';
+  }
+  window.addEventListener('load', initCanvas);
+  window.addEventListener('resize', initCanvas);
+
+  function getPos(e) {
+    const rect = canvas.getBoundingClientRect();
+    const sx = canvas.width / rect.width;
+    const sy = canvas.height / rect.height;
+    const pt = e.touches ? e.touches[0] : e;
+    return { x: (pt.clientX - rect.left) * sx, y: (pt.clientY - rect.top) * sy };
+  }
+  canvas.addEventListener('mousedown',  e => { isSigning=true; const p=getPos(e); signCtx.beginPath(); signCtx.moveTo(p.x,p.y); });
+  canvas.addEventListener('mousemove',  e => { if(!isSigning) return; const p=getPos(e); signCtx.lineTo(p.x,p.y); signCtx.stroke(); hasSig=true; document.getElementById('canvasHint').style.opacity='0'; });
+  canvas.addEventListener('mouseup',    () => isSigning=false);
+  canvas.addEventListener('touchstart', e => { e.preventDefault(); isSigning=true; const p=getPos(e); signCtx.beginPath(); signCtx.moveTo(p.x,p.y); }, {passive:false});
+  canvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!isSigning) return; const p=getPos(e); signCtx.lineTo(p.x,p.y); signCtx.stroke(); hasSig=true; document.getElementById('canvasHint').style.opacity='0'; }, {passive:false});
+  canvas.addEventListener('touchend',   e => { e.preventDefault(); isSigning=false; }, {passive:false});
+
+  function clearSign() {
+    signCtx.clearRect(0, 0, canvas.width, canvas.height);
+    hasSig = false;
+    document.getElementById('canvasHint').style.opacity = '1';
+  }
+
+  async function submitPledge() {
+    if (!hasSig) { alert('서명을 먼저 진행해주세요.'); return; }
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'PDF 생성 중...';
+
+    try {
+      // 캡처용 div 정보 세팅
+      const _s = (id, val) => { const el=document.getElementById(id); if(el) el.textContent=val; };
+      _s('capSano', userData.sano);
+      _s('capDept', userData.dept);
+      _s('capName', userData.name);
+      _s('capDate2', dateLabel);
+      document.getElementById('capSig').src = canvas.toDataURL('image/png');
+
+      // 폰트 로드 대기
+      try {
+        await document.fonts.load('400 13px "Noto Sans KR"');
+        await document.fonts.load('700 13px "Noto Sans KR"');
+      } catch(e) {}
+
+      // html2canvas 캡처
+      const captureEl = document.getElementById('pledgeCapture');
+      captureEl.style.left = '0';
+      captureEl.style.position = 'absolute';
+      captureEl.style.zIndex = '-1';
+
+      const cvs = await html2canvas(captureEl, { scale: 2, useCORS: true, backgroundColor: '#ffffff', logging: false });
+
+      captureEl.style.left = '-9999px';
+      captureEl.style.position = 'fixed';
+
+      const imgData = cvs.toDataURL('image/jpeg', 0.95);
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF({ orientation: 'p', unit: 'mm', format: 'a4' });
+      const pageW = 210;
+      const imgH = (cvs.height * pageW) / cvs.width;
+      doc.addImage(imgData, 'JPEG', 0, 0, pageW, Math.min(imgH, 297));
+      const pdfBase64 = doc.output('datauristring').split(',')[1];
+
+      const dateStr = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2,'0')}${String(today.getDate()).padStart(2,'0')}`;
+      const fileName = `${dateStr}_${userData.sano}_${userData.name}_${userData.dept}`;
+
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ pdfData: pdfBase64, fileName, sano: userData.sano, name: userData.name, dept: userData.dept, token: _tk })
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        // 완료 처리
+        document.getElementById('signCard').style.display = 'none';
+        const banner = document.getElementById('doneBanner');
+        banner.classList.add('show');
+        document.getElementById('doneTime').textContent = `제출 시각: ${dateLabel}`;
+
+        // 명찰 페이지에 완료 알림 (opener가 있을 경우)
+        if (window.opener && !window.opener.closed) {
+          try { window.opener.postMessage({ type: 'securityPledgeDone' }, '*'); } catch(e) {}
+        }
+      } else {
+        alert('제출 실패: ' + (result.message || '다시 시도해주세요.'));
+        btn.disabled = false;
+        btn.textContent = '보안 서약서 제출';
+      }
+    } catch(err) {
+      console.error(err);
+      alert('오류가 발생했습니다: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '보안 서약서 제출';
+    }
+  }
+</script>
+</body>
+</html>
