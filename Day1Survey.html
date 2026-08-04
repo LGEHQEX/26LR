@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>리더십 리인벤트 2.0 · Day1 설문</title>
+<style>
+:root{
+  --lg-red:#A50034; --lg-red-dark:#7C0027; --ink:#1A1A1A; --sub:#6B6B6B;
+  --line:#EAEAEA; --bg:#FFFFFF; --bg-soft:#FAFAFA;
+}
+*{box-sizing:border-box;}
+body{margin:0; font-family:'Pretendard','Malgun Gothic',-apple-system,sans-serif; background:var(--bg-soft); color:var(--ink);}
+.header{background:var(--lg-red); color:#fff; padding:28px 20px; text-align:center;}
+.header .eyebrow{font-size:12px; letter-spacing:.12em; opacity:.85; text-transform:uppercase;}
+.header h1{margin:6px 0 0; font-size:22px; font-weight:700;}
+.wrap{max-width:640px; margin:0 auto; padding:20px 16px 80px;}
+.card{background:var(--bg); border:1px solid var(--line); border-radius:12px; padding:20px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.04);}
+.card h2{font-size:16px; margin:0 0 4px; color:var(--lg-red);}
+.card .sub{font-size:12px; color:var(--sub); margin:0 0 16px;}
+label{display:block; font-size:13px; font-weight:600; margin:14px 0 6px;}
+select, textarea{width:100%; padding:10px 12px; border:1px solid var(--line); border-radius:8px; font-size:14px; font-family:inherit; resize:vertical;}
+textarea{min-height:64px;}
+.scale{display:flex; gap:8px;}
+.scale label{flex:1; display:flex; flex-direction:column; align-items:center; gap:6px; font-weight:500; font-size:12px; color:var(--sub); margin:0; cursor:pointer;}
+.scale input{display:none;}
+.scale .dot{width:38px; height:38px; border-radius:50%; border:1.5px solid var(--line); display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--ink); transition:.15s;}
+.scale input:checked + .dot{background:var(--lg-red); border-color:var(--lg-red); color:#fff;}
+.submit-bar{position:fixed; left:0; right:0; bottom:0; background:#fff; border-top:1px solid var(--line); padding:12px 16px; display:flex; justify-content:center;}
+button.submit{width:100%; max-width:608px; background:var(--lg-red); color:#fff; border:none; padding:14px; border-radius:10px; font-size:15px; font-weight:700; cursor:pointer;}
+button.submit:disabled{background:#ccc; cursor:default;}
+.notice{font-size:12px; color:var(--sub); text-align:center; margin-top:10px;}
+.result{display:none; max-width:640px; margin:80px auto; text-align:center; padding:0 20px;}
+.result .check{width:64px; height:64px; border-radius:50%; background:var(--lg-red); color:#fff; display:flex; align-items:center; justify-content:center; font-size:32px; margin:0 auto 16px;}
+.result h2{margin:0 0 8px;}
+.result p{color:var(--sub);}
+.error-box{display:none; max-width:640px; margin:60px auto; text-align:center; padding:0 20px; color:var(--sub); font-size:13px;}
+.loading-box{text-align:center; padding:60px 20px; color:var(--sub); font-size:13px;}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Learning Satisfaction Survey</div>
+  <h1>리더십 리인벤트 2.0 · Day 1 설문</h1>
+</div>
+
+<div class="loading-box" id="loadingBox">차수 정보를 불러오는 중입니다...</div>
+
+<div class="wrap" id="formWrap" style="display:none;">
+  <div class="card">
+    <h2>차수 · 분반 선택</h2>
+    <p class="sub">참여하신 교육 차수와 분반을 선택해 주세요.</p>
+    <label style="margin-top:0;">차수</label>
+    <select id="cohort">
+      <option value="">차수를 선택하세요</option>
+    </select>
+    <label>분반</label>
+    <select id="banji">
+      <option value="">분반을 선택하세요</option>
+    </select>
+  </div>
+
+  <div id="moduleContainer"></div>
+
+  <div class="notice">제출 후에는 내용을 수정할 수 없습니다. 신중하게 응답해 주세요.</div>
+</div>
+
+<div class="result" id="resultWrap">
+  <div class="check">✓</div>
+  <h2>제출이 완료되었습니다</h2>
+  <p>소중한 의견 감사합니다. Day 2 종료 후 이어서 설문에 참여해 주세요.</p>
+</div>
+
+<div class="error-box" id="errorBox">
+  차수 정보를 불러오지 못했습니다. 새로고침 후 다시 시도해 주세요.
+</div>
+
+<div class="submit-bar" id="submitBar" style="display:none;">
+  <button class="submit" id="submitBtn" disabled>설문 제출하기</button>
+</div>
+
+<script>
+// ── GAS 웹앱 배포 URL (Code.gs 새 배포 시 이 값만 교체) ──────────────
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbx841khpQSOjBcTgrd9CD5wx9REVnFJUpxxbGgEi9noG0-6UznzI1WYBghL56oWK60epA/exec';
+// ─────────────────────────────────────────────────────────────
+
+const MODULES = [
+  {code:'M1', name:'M1. 경영사상 이해: 위기의 본질'},
+  {code:'M2', name:'M2. 리더의 언어: 위기를 다시 보다'},
+  {code:'M3', name:'M3. 리인벤트 2.0 내재화'}
+];
+
+// 분반 목록은 Code.gs BANJI_LIST와 반드시 동일하게 유지하세요.
+const BANJI_LIST = [
+  '1반 (채움관 201호)',
+  '2반 (채움관 205호)',
+  '3반 (채움관 301호)',
+  '4반 (채움관 302호)',
+  '5반 (채움관 303호)'
+];
+
+// GAS doPost 호출 공용 함수 (text/plain 으로 보내 CORS preflight 회피)
+async function callGAS(action, payload){
+  const res = await fetch(GAS_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ action, payload })
+  });
+  return res.json();
+}
+
+function buildBanjiOptions(){
+  const sel = document.getElementById('banji');
+  BANJI_LIST.forEach(b => {
+    const opt = document.createElement('option');
+    opt.value = b;
+    opt.textContent = b;
+    sel.appendChild(opt);
+  });
+}
+
+function buildCohortOptions(cohortList){
+  const sel = document.getElementById('cohort');
+  cohortList.forEach(c => {
+    if (c.day1Closed) return;
+    const opt = document.createElement('option');
+    opt.value = c.cohort;
+    opt.textContent = (c.name || (c.cohort + '차')) + (c.schedule ? ` (${c.schedule})` : '');
+    sel.appendChild(opt);
+  });
+}
+
+function buildModuleCard(m){
+  const div = document.createElement('div');
+  div.className = 'card';
+  div.innerHTML = `
+    <h2>${m.name}</h2>
+    <p class="sub">본 모듈에 대한 만족도와 의견을 남겨주세요.</p>
+    <label>1. 본 모듈에 만족하였다</label>
+    <div class="scale" data-mod="${m.code}">
+      ${[1,2,3,4,5].map(v => `
+        <label>
+          <input type="radio" name="${m.code}_score" value="${v}">
+          <span class="dot">${v}</span>
+        </label>`).join('')}
+    </div>
+    <label>2. 긍정 의견 (좋았던 점)</label>
+    <textarea data-mod="${m.code}" data-field="positive" placeholder="자유롭게 작성해 주세요"></textarea>
+    <label>3. 개선 의견</label>
+    <textarea data-mod="${m.code}" data-field="improve" placeholder="자유롭게 작성해 주세요"></textarea>
+  `;
+  return div;
+}
+
+function checkValid(){
+  const cohort = document.getElementById('cohort').value;
+  const banji = document.getElementById('banji').value;
+  let allScored = true;
+  MODULES.forEach(m => {
+    if (!document.querySelector(`input[name="${m.code}_score"]:checked`)) allScored = false;
+  });
+  document.getElementById('submitBtn').disabled = !(cohort && banji && allScored);
+}
+
+function collectPayload(){
+  const cohort = document.getElementById('cohort').value;
+  const banji = document.getElementById('banji').value;
+  const modules = {};
+  MODULES.forEach(m => {
+    const scoreEl = document.querySelector(`input[name="${m.code}_score"]:checked`);
+    modules[m.code] = {
+      score: scoreEl ? Number(scoreEl.value) : '',
+      positive: document.querySelector(`textarea[data-mod="${m.code}"][data-field="positive"]`).value,
+      improve: document.querySelector(`textarea[data-mod="${m.code}"][data-field="improve"]`).value
+    };
+  });
+  return { cohort: cohort, banji: banji, modules: modules };
+}
+
+async function submitForm(){
+  const btn = document.getElementById('submitBtn');
+  btn.disabled = true;
+  btn.textContent = '제출 중...';
+  try {
+    const res = await callGAS('submitDay1', collectPayload());
+    if (res && res.ok){
+      document.getElementById('formWrap').style.display = 'none';
+      document.getElementById('submitBar').style.display = 'none';
+      document.getElementById('resultWrap').style.display = 'block';
+    } else {
+      alert('제출 중 문제가 발생했습니다: ' + (res && res.error));
+      btn.disabled = false;
+      btn.textContent = '설문 제출하기';
+    }
+  } catch (err) {
+    alert('네트워크 오류로 제출에 실패했습니다. 다시 시도해 주세요.');
+    btn.disabled = false;
+    btn.textContent = '설문 제출하기';
+  }
+}
+
+async function init(){
+  try {
+    const cohortList = await callGAS('getCohortList', {});
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('formWrap').style.display = 'block';
+    document.getElementById('submitBar').style.display = 'flex';
+
+    buildCohortOptions(Array.isArray(cohortList) ? cohortList : []);
+    buildBanjiOptions();
+    const container = document.getElementById('moduleContainer');
+    MODULES.forEach(m => container.appendChild(buildModuleCard(m)));
+
+    document.getElementById('cohort').addEventListener('change', checkValid);
+    document.getElementById('banji').addEventListener('change', checkValid);
+    document.querySelectorAll('.scale input').forEach(r => r.addEventListener('change', checkValid));
+    document.getElementById('submitBtn').addEventListener('click', submitForm);
+  } catch (err) {
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('errorBox').style.display = 'block';
+  }
+}
+
+init();
+</script>
+</body>
+</html>
