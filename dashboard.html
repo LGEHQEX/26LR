@@ -302,7 +302,7 @@ select.filter{padding:7px 10px; border:1px solid var(--line); border-radius:8px;
         <div class="admin-tab-btn active" data-tab="cohort">차수 관리</div>
         <div class="admin-tab-btn" data-tab="instructor">모듈·강사 관리</div>
         <div class="admin-tab-btn" data-tab="link">설문 링크</div>
-        <div class="admin-tab-btn" data-tab="raw">원본 데이터 / 다운로드</div>
+        <div class="admin-tab-btn" data-tab="raw">응답 다운로드</div>
       </div>
 
       <div class="admin-panel active" id="admin-panel-cohort">
@@ -346,19 +346,18 @@ select.filter{padding:7px 10px; border:1px solid var(--line); border-radius:8px;
       </div>
 
       <div class="admin-panel" id="admin-panel-raw">
-        <h2>원본 데이터 조회 / 다운로드</h2>
-        <p class="desc">Day1 / Day2 응답 원본을 조회하고 Excel / CSV로 다운로드합니다.</p>
+        <h2>응답 데이터 다운로드</h2>
+        <p class="desc">Day1 / Day2 응답을 차수별(또는 전체)로 Excel / CSV 다운로드합니다. 상세 응답 내용은 화면에 표시하지 않습니다.</p>
         <div class="admin-toolbar">
           <select id="dayFilter">
             <option value="day1">Day1 응답</option>
             <option value="day2">Day2 응답</option>
           </select>
-          <button onclick="loadRaw()">조회</button>
+          <select id="dlCohortFilter">
+            <option value="전체">전체 차수</option>
+          </select>
           <button class="primary" onclick="downloadCSV()">CSV 다운로드</button>
           <button class="primary" onclick="downloadExcel()">Excel 다운로드</button>
-        </div>
-        <div class="admin-table-wrap">
-          <table class="admin-table" id="rawTable"><thead></thead><tbody></tbody></table>
         </div>
       </div>
     </div>
@@ -425,7 +424,6 @@ function switchScreen(name){
   });
   if (name === 'admin'){
     loadCohorts();
-    loadRaw();
   }
 }
 
@@ -678,10 +676,23 @@ async function loadCohorts(){
   try {
     cohortListCache = await callGAS('getCohortList', {});
     renderCohortTable(cohortListCache);
+    populateDownloadCohortFilter(cohortListCache);
   } catch (err) {
     document.querySelector('#cohortTable tbody').innerHTML =
       `<tr><td colspan="8" class="admin-loading-note">차수 목록을 불러오지 못했습니다: ${err.message}</td></tr>`;
   }
+}
+
+function populateDownloadCohortFilter(list){
+  const sel = document.getElementById('dlCohortFilter');
+  if (!sel || sel.dataset.filled) return; // 중복 채우기 방지
+  list.forEach(c => {
+    const opt = document.createElement('option');
+    opt.value = c.cohort;
+    opt.textContent = c.name || (c.cohort + '차');
+    sel.appendChild(opt);
+  });
+  sel.dataset.filled = '1';
 }
 
 function renderCohortTable(list){
@@ -789,42 +800,25 @@ function copyText(text){
   navigator.clipboard.writeText(text).then(() => alert('링크가 복사되었습니다.'));
 }
 
-let rawHeader = [];
-let rawRows = [];
-
-async function loadRaw(){
-  const day = document.getElementById('dayFilter').value;
-  try {
-    const res = await callGAS('adminGetRaw', { day });
-    rawHeader = res.header;
-    rawRows = res.rows;
-    renderRawTable();
-  } catch (err) { alert('조회 실패: ' + err.message); }
-}
-
-function renderRawTable(){
-  const thead = document.querySelector('#rawTable thead');
-  const tbody = document.querySelector('#rawTable tbody');
-  thead.innerHTML = '<tr>' + rawHeader.map(h => `<th>${h}</th>`).join('') + '</tr>';
-  tbody.innerHTML = rawRows.map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
-}
-
 async function downloadCSV(){
   const day = document.getElementById('dayFilter').value;
+  const cohort = document.getElementById('dlCohortFilter').value;
   try {
-    const res = await callGAS('adminExportCSV', day);
+    const res = await callGAS('adminExportCSV', { day, cohort });
     const blob = new Blob(["\uFEFF" + res.csv], { type: 'text/csv;charset=utf-8;' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = (day === 'day2' ? 'Day2_응답.csv' : 'Day1_응답.csv');
+    const cohortLabel = cohort === '전체' ? '전체' : cohort + '차';
+    a.href = url; a.download = (day === 'day2' ? 'Day2' : 'Day1') + `_응답_${cohortLabel}.csv`;
     a.click();
   } catch (err) { alert('다운로드 실패: ' + err.message); }
 }
 
 async function downloadExcel(){
   const day = document.getElementById('dayFilter').value;
+  const cohort = document.getElementById('dlCohortFilter').value;
   try {
-    const res = await callGAS('adminExportExcelUrl', day);
+    const res = await callGAS('adminExportExcelUrl', { day, cohort });
     window.open(res.url, '_blank');
   } catch (err) { alert('다운로드 실패: ' + err.message); }
 }
