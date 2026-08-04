@@ -1859,18 +1859,6 @@
       dept:  d.dept  || '',
       grade: d.grade || '',
     }).toString();
-    const win = window.open(`${base}?${qs}`, '_blank');
-    // 완료 메시지 수신
-    window.addEventListener('message', e => {
-      if (e.data && e.data.type === 'securityPledgeDone') {
-        const lbl = document.getElementById('qbSecurityLabel');
-        const btn = document.getElementById('qbSecurity');
-        if (lbl) lbl.textContent = '✅ 서약완료';
-        if (btn) btn.classList.remove('qb-security-pulse');
-      }
-    }, { once: true });
-  }
-
   function openQuizPopup() {
     document.getElementById('quizOverlay').classList.add('open');
   }
