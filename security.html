@@ -279,7 +279,9 @@
   let userData = {};
   let signCtx, isSigning = false, hasSig = false;
 
-  document.getElementById('infoDate').textContent = dateLabel;
+  document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('infoDate').textContent = dateLabel;
+  });
 
   // URL 파라미터로 사번이 전달된 경우 자동 조회
   const urlParams = new URLSearchParams(location.search);
