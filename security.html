@@ -273,12 +273,13 @@
   const API_URL = 'https://script.google.com/macros/s/AKfycbwxrJTmxceutJYkiv-x5BMw06Vi7hApxeWk-cUiyAJ2C6UcvIyYYy0v7cW9VLezj5rq5Q/exec';
   const _tk = atob('bGdlaHFleEROVDIwMjY=');
 
-  let userData = {};
-  document.getElementById('infoDate').textContent = dateLabel;
-  let signCtx, isSigning = false, hasSig = false;
-
   const today = new Date();
   const dateLabel = `${today.getFullYear()}년 ${today.getMonth()+1}월 ${today.getDate()}일`;
+
+  let userData = {};
+  let signCtx, isSigning = false, hasSig = false;
+
+  document.getElementById('infoDate').textContent = dateLabel;
 
   // URL 파라미터로 사번이 전달된 경우 자동 조회
   const urlParams = new URLSearchParams(location.search);
