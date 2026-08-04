@@ -598,6 +598,87 @@
   }
   .notice-page-security:hover { background: #fff0f3; }
 
+  /* 보안서약서 슬라이드 패널 */
+  .drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.4);
+    z-index: 500;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+  }
+  .drawer-overlay.open { display: block; opacity: 1; }
+  .drawer-panel {
+    position: fixed;
+    top: 0; right: 0;
+    width: 520px;
+    max-width: 92vw;
+    height: 100%;
+    background: #fff;
+    z-index: 501;
+    display: flex;
+    flex-direction: column;
+    box-shadow: -8px 0 32px rgba(0,0,0,0.18);
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  }
+  .drawer-overlay.open .drawer-panel { transform: translateX(0); }
+  .drawer-header {
+    height: 56px;
+    flex-shrink: 0;
+    background: var(--lg-red);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+  }
+  .drawer-header-title {
+    font-size: 14px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .drawer-close-btn {
+    background: rgba(255,255,255,0.2);
+    border: none;
+    color: #fff;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .drawer-close-btn:hover { background: rgba(255,255,255,0.32); }
+  .drawer-body {
+    flex: 1;
+    min-height: 0;
+    position: relative;
+  }
+  .drawer-body iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+  }
+  .drawer-open-new {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11.5px;
+    font-weight: 600;
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    padding: 5px 10px;
+    border-radius: 6px;
+    background: rgba(255,255,255,0.15);
+  }
+  .drawer-open-new:hover { background: rgba(255,255,255,0.25); }
+
   /* 모바일 명찰 예시 카드 (보안서약서 안내용) */
   .badge-demo-wrap { display: flex; justify-content: center; margin-top: 4px; }
   .badge-demo {
@@ -787,7 +868,7 @@
           <div class="notice-section-title"><span class="num">1</span> 보안서약서 작성</div>
           <div class="notice-section-body">
             <p class="notice-text">보안서약서를 작성해 주시기를 바랍니다.</p>
-            <a class="notice-page-security" href="https://lgehqex.github.io/26LR/security" target="lg_security_ext" rel="noopener">🔏 보안서약서 작성하기</a>
+            <a class="notice-page-security" href="https://lgehqex.github.io/26LR/security" onclick="return openSecurityDrawer(event)">🔏 보안서약서 작성하기</a>
           </div>
         </div>
 
@@ -840,6 +921,21 @@
 
         <p class="notice-page-note">※ 원활한 실습 진행을 위해 안내사항을 반드시 확인해 주시기 바랍니다.</p>
       </div>
+    </div>
+  </div>
+</div>
+
+<div class="drawer-overlay" id="securityDrawerOverlay" onclick="if(event.target===this) closeSecurityDrawer()">
+  <div class="drawer-panel">
+    <div class="drawer-header">
+      <div class="drawer-header-title">🔏 보안서약서 작성</div>
+      <div style="display:flex; align-items:center; gap:8px;">
+        <a class="drawer-open-new" href="https://lgehqex.github.io/26LR/security" target="lg_security_ext" rel="noopener">↗ 새 창</a>
+        <button class="drawer-close-btn" onclick="closeSecurityDrawer()">✕</button>
+      </div>
+    </div>
+    <div class="drawer-body">
+      <iframe id="securityDrawerFrame" src="about:blank"></iframe>
     </div>
   </div>
 </div>
@@ -934,6 +1030,23 @@ function toggleSplit() {
 
 function toggleSidebar() {
   document.getElementById('sidebar').classList.toggle('collapsed');
+}
+
+function openSecurityDrawer(e) {
+  e.preventDefault();
+  const overlay = document.getElementById('securityDrawerOverlay');
+  const frame = document.getElementById('securityDrawerFrame');
+  if (frame.src === 'about:blank') {
+    frame.src = 'https://lgehqex.github.io/26LR/security';
+  }
+  overlay.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  return false;
+}
+
+function closeSecurityDrawer() {
+  document.getElementById('securityDrawerOverlay').classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 // ── 사번 기반 ID/PW 조회 (모바일 명찰 API 재사용) ──────────────
