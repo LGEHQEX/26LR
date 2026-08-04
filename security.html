@@ -339,7 +339,7 @@
       setTimeout(initCanvas, 100);
 
     } catch(e) {
-      msg.textContent = '오류: ' + e.message;
+      msg.textContent = '오류: ' + e.message + ' / ' + e.stack?.split('\n')[1];
       msg.style.color = 'var(--red)';
     }
   }
