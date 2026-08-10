@@ -683,6 +683,16 @@
             <span class="notice-icon">📌</span>
             <p><strong>※ 1일차 과정은 러닝센터 나눔관 대강당에서 9시 30분부터 시작합니다. 과정 시작 10분 전까지 입실해 주세요.</strong></p>
         </div>
+        <!-- 모바일 명찰 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:#f8f4f5;border:1px solid #e8d0d4;border-radius:12px;padding:14px 20px;margin-top:16px;">
+            <div>
+                <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:3px;">🪪 모바일 명찰</div>
+                <div style="font-size:0.8rem;color:var(--lg-gray);">모바일 명찰은 교육 전일 활성화됩니다.</div>
+            </div>
+            <a href="https://lgehqex.github.io/26LR/DNT" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:#1a1a2e;color:#fff;font-size:0.84rem;font-weight:700;border-radius:10px;text-decoration:none;white-space:nowrap;flex-shrink:0;">
+                🪪 모바일 명찰 확인하기
+            </a>
+        </div>
     </div>
 </section>
 
@@ -966,174 +976,13 @@ if (window.innerWidth <= 768) {
         if (day2) day2.classList.add('tt-hidden');
     });
 }
-function openSurveyHistoryModal() {
-    const m = document.getElementById('surveyHistoryModal');
-    m.style.visibility = 'visible';
-    m.style.opacity = '1';
-    document.getElementById('surveyHistoryInput').value = '';
-    document.getElementById('surveyHistoryResult').style.display = 'none';
-    setTimeout(() => document.getElementById('surveyHistoryInput').focus(), 100);
-}
-function closeSurveyHistoryModal() {
-    const m = document.getElementById('surveyHistoryModal');
-    m.style.visibility = 'hidden';
-    m.style.opacity = '0';
-}
-async function checkSurveyHistory() {
-    const id = document.getElementById('surveyHistoryInput').value.trim();
-    const result = document.getElementById('surveyHistoryResult');
-    if (!id) {
-        result.style.display = 'block';
-        result.innerHTML = '<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;">사번을 입력해주세요.</div>';
-        return;
-    }
-    result.style.display = 'block';
-    result.innerHTML = '<div style="text-align:center;padding:16px;color:var(--lg-gray);font-size:0.88rem;">조회 중...</div>';
-    try {
-        const url = `https://script.google.com/macros/s/AKfycbxz5bJYgOtxWo0EkN3EmpAHyfcaXFumDICEkyAx2l-Lb_V_uENE3f5iVVGujNKudr2-/exec?action=survey&sano=${encodeURIComponent(id)}`;
-        const res = await fetch(url, { redirect: 'follow' });
-        const data = await res.json();
-        if (data.success) {
-            result.innerHTML = `
-                <div style="background:#fff8f9;border:1.5px solid #1a1a2e;border-radius:12px;padding:20px 22px;text-align:center;">
-                    <div style="font-size:0.82rem;color:var(--lg-gray);margin-bottom:8px;">조회 결과</div>
-                    <div style="font-size:1.1rem;font-weight:800;color:var(--lg-dark);margin-bottom:14px;">${data.name} 님</div>
-                    <div style="display:grid;grid-template-columns:1fr;gap:10px;">
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
-                            <div style="font-size:0.82rem;color:var(--lg-gray);white-space:nowrap;">📅 신청 차수</div>
-                            <div style="font-size:1rem;font-weight:700;color:#1a1a2e;text-align:right;">${data.round || '-'}</div>
-                        </div>
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:10px;padding:14px 16px;display:flex;align-items:center;justify-content:space-between;gap:16px;">
-                            <div style="font-size:0.82rem;color:var(--lg-gray);white-space:nowrap;">🏨 숙소 신청</div>
-                            <div style="font-size:1rem;font-weight:700;color:#1a1a2e;text-align:right;">${data.accommodation || '-'}</div>
-                        </div>
-                        <div style="text-align:right;margin-top:6px;">
-                            <span style="font-size:0.75rem;color:#bbb;">답변 일시 · ${data.date || '-'}</span>
-                        </div>
-                    </div>
-                </div>`;
-        } else {
-            result.innerHTML = `<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;text-align:center;">${data.message || '일치하는 사번을 찾을 수 없습니다.'}<br>사번을 다시 확인해주세요.</div>`;
-        }
-    } catch(e) {
-        result.innerHTML = '<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;text-align:center;">조회 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.</div>';
-    }
-}
-function openGroupModal() {
-    const m = document.getElementById('groupModal');
-    m.style.visibility = 'visible';
-    m.style.opacity = '1';
-    document.getElementById('groupIdInput').value = '';
-    document.getElementById('groupResult').style.display = 'none';
-    setTimeout(() => document.getElementById('groupIdInput').focus(), 100);
-}
-function closeGroupModal() {
-    const m = document.getElementById('groupModal');
-    m.style.visibility = 'hidden';
-    m.style.opacity = '0';
-}
-async function checkGroup() {
-    const id = document.getElementById('groupIdInput').value.trim();
-    const result = document.getElementById('groupResult');
-    if (!id) {
-        result.style.display = 'block';
-        result.innerHTML = '<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;">사번을 입력해주세요.</div>';
-        return;
-    }
-    result.style.display = 'block';
-    result.innerHTML = '<div style="text-align:center;padding:16px;color:var(--lg-gray);font-size:0.88rem;">조회 중...</div>';
-    try {
-        const url = `https://script.google.com/macros/s/AKfycbzismM6BEC-YdDN8jltZK1NT1G7ztO3edi7pzn6Tm4zbhs1DqDyY7X7_yncWOK97tgd/exec?action=lookup&sano=${encodeURIComponent(id)}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data.success && data.data && data.data.length > 0) {
-            const d = data.data[0];
-            result.innerHTML = `
-                <div style="background:#fff8f9;border:1.5px solid var(--lg-red);border-radius:12px;padding:20px 22px;text-align:center;">
-                    <div style="font-size:0.82rem;color:var(--lg-gray);margin-bottom:8px;">조회 결과</div>
-                    <div style="font-size:1.2rem;font-weight:800;color:var(--lg-dark);margin-bottom:12px;">${d.name} 님</div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;">
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:8px;padding:10px 8px;">
-                            <div style="font-size:0.7rem;color:var(--lg-gray);margin-bottom:3px;">차수</div>
-                            <div style="font-size:0.95rem;font-weight:700;color:var(--lg-red);">${d.round}</div>
-                        </div>
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:8px;padding:10px 8px;">
-                            <div style="font-size:0.7rem;color:var(--lg-gray);margin-bottom:3px;">반</div>
-                            <div style="font-size:0.95rem;font-weight:700;color:var(--lg-red);">${d.ban}</div>
-                        </div>
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:8px;padding:10px 8px;">
-                            <div style="font-size:0.7rem;color:var(--lg-gray);margin-bottom:3px;">팀</div>
-                            <div style="font-size:0.95rem;font-weight:700;color:var(--lg-red);">${d.team}</div>
-                        </div>
-                    </div>
-                </div>`;
-        } else {
-            result.innerHTML = `<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;text-align:center;">${data.message || '일치하는 사번을 찾을 수 없습니다.'}<br>사번을 다시 확인해주세요.</div>`;
-        }
-    } catch(e) {
-        result.innerHTML = '<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;text-align:center;">조회 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.</div>';
-    }
-}
-function openBusCheckModal() {
-    const m = document.getElementById('busCheckModal');
-    m.style.visibility = 'visible';
-    m.style.opacity = '1';
-    document.getElementById('busCheckInput').value = '';
-    document.getElementById('busCheckResult').style.display = 'none';
-    setTimeout(() => document.getElementById('busCheckInput').focus(), 100);
-}
-function closeBusCheckModal() {
-    const m = document.getElementById('busCheckModal');
-    m.style.visibility = 'hidden';
-    m.style.opacity = '0';
-}
-async function checkBusReservation() {
-    const id = document.getElementById('busCheckInput').value.trim();
-    const result = document.getElementById('busCheckResult');
-    if (!id) {
-        result.style.display = 'block';
-        result.innerHTML = '<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;">사번을 입력해주세요.</div>';
-        return;
-    }
-    result.style.display = 'block';
-    result.innerHTML = '<div style="text-align:center;padding:16px;color:var(--lg-gray);font-size:0.88rem;">조회 중...</div>';
-    try {
-        const url = `https://script.google.com/macros/s/AKfycbyGnXdnCvMOfpKTVUkbpK5y1ViI9Lu49MHgm7nAWkXpWM2HK7ubMbPenxA9M42KehniAQ/exec?action=bus&sano=${encodeURIComponent(id)}`;
-        const res = await fetch(url);
-        const data = await res.json();
-        if (data.success) {
-            result.innerHTML = `
-                <div style="background:#fff8f9;border:1.5px solid var(--lg-red);border-radius:12px;padding:20px 22px;">
-                    <div style="font-size:0.82rem;color:var(--lg-gray);margin-bottom:8px;text-align:center;">조회 결과</div>
-                    <div style="font-size:1.1rem;font-weight:800;color:var(--lg-dark);margin-bottom:14px;text-align:center;">${data.name} 님 · ${data.round}</div>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:10px;padding:14px 12px;">
-                            <div style="font-size:0.72rem;color:var(--lg-gray);margin-bottom:4px;">🚌 입소 방법</div>
-                            <div style="font-size:0.95rem;font-weight:700;color:var(--lg-red);">${data.inMethod || '-'}</div>
-                        </div>
-                        <div style="background:#fff;border:1px solid var(--lg-border);border-radius:10px;padding:14px 12px;">
-                            <div style="font-size:0.72rem;color:var(--lg-gray);margin-bottom:4px;">🏠 퇴소 방법</div>
-                            <div style="font-size:0.95rem;font-weight:700;color:#1a1a2e;">${data.outMethod || '-'}</div>
-                        </div>
-                    </div>
-                </div>`;
-        } else {
-            result.innerHTML = `<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;text-align:center;">${data.message || '대상자가 아닙니다.'}</div>`;
-        }
-    } catch(e) {
-        result.innerHTML = '<div style="background:#fff5f5;border:1px solid #ffc0c0;border-radius:10px;padding:14px 18px;font-size:0.88rem;color:#c0392b;text-align:center;">조회 중 오류가 발생했습니다.<br>잠시 후 다시 시도해주세요.</div>';
-    }
-}
-function openBusModal() {
-    const m = document.getElementById('busModal');
-    m.style.visibility = 'visible';
-    m.style.opacity = '1';
-}
-function closeBusModal() {
-    const m = document.getElementById('busModal');
-    m.style.visibility = 'hidden';
-    m.style.opacity = '0';
-}
+
+async 
+
+async 
+
+async 
+
 function openLaptopModal() {
     const m = document.getElementById('laptopModal');
     m.style.visibility = 'visible';
