@@ -284,6 +284,8 @@
   .qb-preot .qb-label { color: var(--lg-red); }
   .qb-facility { background: #EEF4FF; border-color: #B8D4F8; }
   .qb-facility .qb-label { color: #0C447C; }
+  .qb-goyong { background: #E8F5E9; border-color: #A5D6A7; }
+  .qb-goyong .qb-label { color: #1B5E20; }
   .qb-survey { background: #FAF4E1; border-color: #E8D38C; }
   .qb-survey .qb-label { color: #633806; }
   .qb-it {
@@ -922,7 +924,7 @@
               <div class="qb-icon">🎫</div>
               <div class="qb-label">식권</div>
             </button>
-            <button type="button" class="quick-btn qb-facility" id="qbGoyong24" onclick="event.stopPropagation(); document.getElementById('goyong24Overlay').classList.add('open');">
+            <button type="button" class="quick-btn qb-goyong" id="qbGoyong24" onclick="event.stopPropagation(); document.getElementById('goyong24Overlay').classList.add('open');">
               <div class="qb-icon">🏛️</div>
               <div class="qb-label">고용24 출결</div>
             </button>
@@ -1996,54 +1998,68 @@
 <!-- 고용24 출결 팝업 -->
 <div class="quiz-overlay" id="goyong24Overlay" onclick="if(event.target===this)document.getElementById('goyong24Overlay').classList.remove('open')">
   <div class="quiz-popup" onclick="event.stopPropagation()" style="max-height:90vh;overflow-y:auto;">
-    <div class="quiz-popup-title">🏛️ 고용24 출결 안내</div>
-    <div class="quiz-popup-sub">비콘 출결을 위해 아래 앱을 설치해주세요</div>
+    <div class="quiz-popup-title">🏛️ 고용24 비콘/QR 출결 안내</div>
+    <div class="quiz-popup-sub" style="line-height:1.8;">
+      1) 아래 순서대로 진행해 주세요<br>
+      2) 출결이 불가한 경우 운영자에게 말씀해 주세요
+    </div>
 
-    <!-- PDF 미리보기 -->
-    <div style="margin-bottom:14px;">
-      <div style="font-size:12px;font-weight:700;color:#111;margin-bottom:8px;">📄 출결 가이드</div>
-      <iframe
-        src="https://lgehqex.github.io/information/guide_beacon.pdf"
-        style="width:100%;height:200px;border:1px solid #eee;border-radius:10px;"
-        type="application/pdf">
-        <div style="padding:16px;background:#f9f9f9;border-radius:10px;text-align:center;">
-          <div style="font-size:13px;color:#888;margin-bottom:10px;">PDF 미리보기를 지원하지 않는 환경입니다.</div>
-          <a href="https://lgehqex.github.io/information/guide_beacon.pdf" target="_blank"
-            style="color:var(--lg-red);font-size:13px;font-weight:700;">PDF 열기 →</a>
+    <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
+
+      <!-- STEP 1 -->
+      <div style="background:#f9f9f9;border-radius:12px;padding:14px 16px;font-size:12px;color:#555;line-height:1.8;">
+        <div style="font-weight:700;color:#111;margin-bottom:4px;">STEP 1 &nbsp;고용24 실명인증</div>
+        <div style="margin-bottom:10px;">고용24 로그인 → 실명인증 → 성명·주민등록번호 입력 → 실명확인</div>
+        <a href="https://www.work24.go.kr/cm/main.do" target="_blank"
+          style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:white;border:1.5px solid #ddd;border-radius:8px;font-size:12px;font-weight:700;color:#333;text-decoration:none;">
+          🌐 고용24 홈페이지
+        </a>
+      </div>
+
+      <!-- STEP 2 -->
+      <div style="background:#f9f9f9;border-radius:12px;padding:14px 16px;font-size:12px;color:#555;">
+        <div style="font-weight:700;color:#111;margin-bottom:10px;">STEP 2 &nbsp;HRD 출결관리 앱 설치</div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <a class="quiz-option" href="https://apps.apple.com/kr/app/%EA%B3%A0%EC%9A%A924-%EC%A7%81%EC%97%85%ED%9B%88%EB%A0%A8-%EC%B6%9C%EA%B2%B0%EA%B4%80%EB%A6%AC/id588283412" target="_blank" style="margin:0;">
+            <span class="qo-icon">🍎</span>
+            <span><span class="qo-label">App Store</span><span class="qo-desc">iPhone 사용자</span></span>
+            <div class="qo-arrow">›</div>
+          </a>
+          <a class="quiz-option" href="https://play.google.com/store/apps/details?id=kr.go.hrd.app&hl=ko" target="_blank" style="margin:0;">
+            <span class="qo-icon">🤖</span>
+            <span><span class="qo-label">Google Play</span><span class="qo-desc">Android 사용자</span></span>
+            <div class="qo-arrow">›</div>
+          </a>
         </div>
-      </iframe>
-      <a href="https://lgehqex.github.io/information/guide_beacon.pdf" target="_blank"
-        style="display:block;text-align:right;font-size:12px;color:#888;margin-top:6px;text-decoration:none;">
-        새 탭으로 열기 →
-      </a>
+      </div>
+
+      <!-- STEP 3 -->
+      <div style="background:#f9f9f9;border-radius:12px;padding:14px 16px;font-size:12px;color:#555;line-height:1.8;">
+        <div style="font-weight:700;color:#111;margin-bottom:8px;">STEP 3 &nbsp;교육장 입실 후 출석체크</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="background:#E8F5E9;border-radius:8px;padding:8px 12px;">
+            <span style="font-weight:700;color:#1B5E20;">📷 QR 출결</span><br>
+            앱 → 출석체크 → QR 촬영
+          </div>
+          <div style="background:#E3F2FD;border-radius:8px;padding:8px 12px;">
+            <span style="font-weight:700;color:#0C447C;">📡 비콘 출결</span><br>
+            블루투스·위치 권한 ON → 앱에서 출석체크 → 비콘 인식
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4 -->
+      <div style="background:#f9f9f9;border-radius:12px;padding:14px 16px;font-size:12px;color:#555;line-height:1.8;">
+        <div style="font-weight:700;color:#111;margin-bottom:4px;">STEP 4 &nbsp;출석 완료 확인</div>
+        <div>출결 결과가 <strong>출석</strong>으로 정상 처리되었는지 확인합니다.</div>
+      </div>
+
     </div>
 
-    <div style="background:#f9f9f9;border-radius:12px;padding:14px 16px;margin-bottom:14px;font-size:12px;color:#555;line-height:1.8;">
-      <div style="font-weight:700;color:#111;margin-bottom:6px;">📋 출결 방법</div>
-      <div>1. 아래 앱 설치 후 로그인</div>
-      <div>2. 메뉴 → 나의 출결기기 관리 → 기기 등록</div>
-      <div>3. 메인화면에서 <strong>비콘</strong> 버튼 클릭</div>
-      <div>4. 강의장 내 비콘 신호 감지 시 자동 출결</div>
-    </div>
-
-    <div class="quiz-option-list">
-      <a class="quiz-option" href="https://apps.apple.com/kr/app/%EA%B3%A0%EC%9A%A924-%EC%A7%81%EC%97%85%ED%9B%88%EB%A0%A8-%EC%B6%9C%EA%B2%B0%EA%B4%80%EB%A6%AC/id588283412" target="_blank">
-        <span class="qo-icon">🍎</span>
-        <span>
-          <span class="qo-label">App Store</span>
-          <span class="qo-desc">iPhone 사용자</span>
-        </span>
-        <div class="qo-arrow">›</div>
-      </a>
-      <a class="quiz-option" href="https://play.google.com/store/apps/details?id=kr.go.hrd.app&hl=ko" target="_blank">
-        <span class="qo-icon">🤖</span>
-        <span>
-          <span class="qo-label">Google Play</span>
-          <span class="qo-desc">Android 사용자</span>
-        </span>
-        <div class="qo-arrow">›</div>
-      </a>
-    </div>
+    <a href="https://raw.githubusercontent.com/lgehqex/information/main/guide_beacon.pdf" target="_blank"
+      style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:13px;background:#fff;border:1.5px solid #eee;border-radius:10px;font-size:14px;font-weight:700;color:#333;text-decoration:none;margin-bottom:10px;">
+      📄 상세 가이드 보기
+    </a>
 
     <button class="quiz-cancel" onclick="document.getElementById('goyong24Overlay').classList.remove('open')">닫기</button>
   </div>
