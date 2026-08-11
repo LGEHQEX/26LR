@@ -289,7 +289,7 @@
   <!-- 1) 시작 화면 -->
   <div id="screen-start">
     <h1>C-Brand Vs. 자사 제품 현물 비교 전시</h1>
-    <p class="desc">6개 부스를 모두 방문하고 원가지수 퀴즈와 설문을 완료하면, 정답자에 한해 커피쿠폰이 발행됩니다. 이름과 사번을 입력한 후 시작해주세요.</p>
+    <p class="desc">6개 부스를 모두 방문하고 O/X·퀴즈와 설문을 완료하면, 정답자에 한해 커피쿠폰이 발행됩니다. 이름과 사번을 입력한 후 시작해주세요.</p>
 
     <label for="input-name">이름</label>
     <input type="text" id="input-name" placeholder="예: 홍길동">
@@ -312,13 +312,13 @@
     <div class="divider"></div>
 
     <div id="quiz-locked" class="lock-notice">
-      🔒 6개 부스를 모두 방문(스탬프)하면 원가지수 퀴즈가 열립니다.
+      🔒 6개 부스를 모두 방문(스탬프)하면 비교 퀴즈가 열립니다.
     </div>
 
     <div id="quiz-unlocked" class="hidden">
       <div class="section-head">
-        <span class="section-title">💡 원가지수 퀴즈</span>
-        <span class="section-count" id="quiz-count">0 / 4</span>
+        <span class="section-title">💡 원가/기술 비교 퀴즈</span>
+        <span class="section-count" id="quiz-count">0 / 10</span>
       </div>
       <div id="question-list"></div>
     </div>
@@ -376,51 +376,87 @@
    ① 부스(스탬프 존) 편집 영역
    ========================================================= */
 const zones = [
-  {id:'vs1', name:'VS · Head Unit', emoji:'🚗'},
-  {id:'vs2', name:'VS · 차량용 Display', emoji:'🖥️'},
-  {id:'hs1', name:'HS · Fan Motor 등', emoji:'🌀'},
-  {id:'hs2', name:'HS · Insulator 등', emoji:'💡'},
-  {id:'saenggi', name:'생기원 · 금형/DMM', emoji:'🔧'},
-  {id:'ms', name:'MS · Speaker/Adaptor', emoji:'🔊'}
+  {id:'vs', name:'VS · Head Unit/Display', emoji:'🚗'},
+  {id:'hs', name:'HS · Bearing/Fan Motor', emoji:'🌀'},
+  {id:'ms', name:'MS · TV 스피커/무게추', emoji:'🔊'},
+  {id:'es', name:'ES · PCB/에어컨 모터', emoji:'🔌'},
+  {id:'saenggi', name:'생기원 · 금형', emoji:'🔧'},
+  {id:'ecm', name:'HS ECM · 냉장고/세탁기', emoji:'♻️'}
 ];
 
 /* =========================================================
-   ② 원가지수 퀴즈 편집 영역 (4문항)
+   ② 원가/기술 비교 퀴즈 편집 영역 (10문항 · O/X + 4지선다 혼합)
    ========================================================= */
 const QUESTIONS = [
   {
-    id:'q1',
-    text:'Head Unit / Telematics 통합 SIP의 원가지수(중국원가 100 기준)는?',
-    choices:['121','145','173','200'],
+    zone:'HS', type:'ox',
+    text:'세탁기 Bearing Housing은 원가, 사이즈를 제외한 나머지는 자사 우위이다.',
+    choices:['O','X'], answerIndex:1,
+    explain:'원가, 사이즈 외 무게, 재질까지 자사 열위'
+  },
+  {
+    zone:'HS', type:'mc',
+    text:'C-Brand가 냉장고 Fan Motor의 원가를 30% 낮춘 핵심 방식은?',
+    choices:[
+      '각 부품별 다양한 저가 소싱업체 활용',
+      '여러 부품을 일체형으로 만든 구조 단순화',
+      '회전축을 지지하는 베어링을 Dual 적용',
+      'Motor 부품 크기를 축소'
+    ],
+    answerIndex:1
+  },
+  {
+    zone:'MS', type:'mc',
+    text:'다음 중 C-Brand TV 스피커의 주요 원가 절감 기법은?',
+    choices:['원재료 변경', 'Spec 최적화', '부품 수 축소', '신공법 적용'],
     answerIndex:3
   },
   {
-    id:'q2',
-    text:'전시된 부품 중 원가지수가 가장 높은 품목은?',
-    choices:[
-      'DMM 계측기 (IVI) · 340',
-      'Bearing Housing (세탁기) · 173',
-      'Valve Assembly (컴프레셔) · 173',
-      'Heat Pump System (스타일러) · 166'
-    ],
-    answerIndex:0
+    zone:'MS', type:'ox',
+    text:'C-Brand의 TV 무게추는 주물 공법 도입을 통해 재료비를 절감했다.',
+    choices:['O','X'], answerIndex:1,
+    explain:'압축 성형 공법 도입임'
   },
   {
-    id:'q3',
-    text:'전시된 부품 중 원가지수가 가장 낮은(자사 원가경쟁력이 가장 높은) 품목은?',
-    choices:[
-      'Adaptor (HKC↔자사) · 103',
-      '모터 (외장PCB↔내장PCB) · 112',
-      '열교환기 (Al↔Cu) · 118',
-      'ECM PCB (中턴키↔자작PCB) · 116'
-    ],
-    answerIndex:0
+    zone:'ES', type:'ox',
+    text:'C-Brand PCB는 자작 PCB보다 크지만, 원가는 저렴하다.',
+    choices:['O','X'], answerIndex:1,
+    explain:'사이즈 비율: 중국업체 100% / 자작 106%'
   },
   {
-    id:'q4',
-    text:'Bearing Housing (세탁기)의 원가지수는?',
-    choices:['163','164','166','173'],
-    answerIndex:3
+    zone:'ES', type:'ox',
+    text:'자사 에어컨 모터의 무게/원가는 C-Brand 대비 열위이나, 효율은 우위이다.',
+    choices:['O','X'], answerIndex:1,
+    explain:'효율은 76%로 동일 수준'
+  },
+  {
+    zone:'VS', type:'mc',
+    text:'다음 중 Head Unit / Telematics에 대한 설명으로 옳은 것은?',
+    choices:[
+      'C-Brand 및 자사 원가 Gap은 $100 ~ $105 수준이다.',
+      '동작온도는 C-Brand가 근소 우위이다.',
+      '부품등급은 자사 우위이나, 아직 통합형 적용이 되지 않았다.',
+      'C-Brand는 원재료 변경으로 원가 절감을 실현했다.'
+    ],
+    answerIndex:2
+  },
+  {
+    zone:'VS', type:'ox',
+    text:'C-Brand 차량용 Display의 원가 경쟁력은 생태계 내 SCM 활용에서 비롯된다.',
+    choices:['O','X'], answerIndex:0,
+    explain:'공법은 동일, 중국 생태계 SCM 업체 활용으로 원가 차이 발생'
+  },
+  {
+    zone:'생기원', type:'ox',
+    text:'중국 생태계 활용 시 금형 투자비는 줄지만, 아직 품질/납기 이슈가 우려된다.',
+    choices:['O','X'], answerIndex:1,
+    explain:'(품질) 초품 합격율 90%/95%, (납기) 금형 제작일 44일/40일로 근소한 수준'
+  },
+  {
+    zone:'HS ECM', type:'ox',
+    text:'ECM의 핵심은 단지 원가만 낮추는 게 아니라, 파트너사와 동시(Swing) 개발로 개발 기간 단축 및 사업 주도권을 강화하는 데에 있다.',
+    choices:['O','X'], answerIndex:0,
+    explain:'ECM을 통해 그들의 역량을 전략적으로 활용(속도, 협상 주도권, 원가, 품질)'
   }
 ];
 
@@ -494,14 +530,15 @@ function renderQuestions(){
     const block = document.createElement('div');
     block.className = 'question-block';
 
+    const isOx = q.type === 'ox';
     const choicesHtml = q.choices.map((choiceText, cIdx) => `
-      <button type="button" class="choice" data-q="${qIdx}" data-c="${cIdx}">${choiceText}</button>
+      <button type="button" class="choice" data-q="${qIdx}" data-c="${cIdx}"${isOx ? ' style="display:inline-block;width:calc(50% - 5px);text-align:center;font-weight:800;font-size:16px;"' : ''}>${choiceText}</button>
     `).join('');
 
     block.innerHTML = `
-      <span class="q-number">문항 ${qIdx + 1} / ${QUESTIONS.length}</span>
+      <span class="q-number">문항 ${qIdx + 1} / ${QUESTIONS.length} · ${q.zone}</span>
       <div class="q-title">${q.text}</div>
-      <div id="q-choices-${qIdx}">${choicesHtml}</div>
+      <div id="q-choices-${qIdx}" style="${isOx ? 'display:flex;gap:10px;' : ''}">${choicesHtml}</div>
     `;
     listWrap.appendChild(block);
   });
@@ -590,10 +627,11 @@ function finishTour(surveyScale, surveyText){
     item.className = 'review-item';
     item.innerHTML = `
       <span class="review-tag ${isCorrect ? 'tag-correct' : 'tag-wrong'}">${isCorrect ? '정답' : '오답'}</span>
-      <div class="review-q">${q.text}</div>
+      <div class="review-q">[${q.zone}] ${q.text}</div>
       <div class="review-block">
         내 답변: <b>${q.choices[answers[idx]]}</b><br>
-        ${isCorrect ? '' : `정답: <b>${q.choices[q.answerIndex]}</b>`}
+        ${isCorrect ? '' : `정답: <b>${q.choices[q.answerIndex]}</b><br>`}
+        ${q.explain ? `<span style="color:var(--gray-600);">💬 ${q.explain}</span>` : ''}
       </div>
     `;
     reviewList.appendChild(item);
