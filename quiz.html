@@ -360,7 +360,7 @@
   <div class="modal-box">
     <div class="coupon-banner">
       🎉 축하합니다! 🎉<br>
-      정답을 모두 맞히셨습니다! 😊<br>
+      정답 기준을 통과하셨습니다! 😊<br>
       정답자 대상으로 커피 쿠폰을 발송해 드릴 예정입니다. ☕<br>
       쿠폰 발송을 위해 휴대폰 번호를 입력해 주시기 바랍니다.<br>
       ※ 커피 쿠폰은 과정 종료일 이후 순차 발송될 예정입니다.
@@ -464,6 +464,9 @@ const QUESTIONS = [
    ③ 구글 시트 저장 연동 — Apps Script 배포 후 웹앱 URL만 넣으면 됩니다.
    ========================================================= */
 const GAS_WEBAPP_URL = "https://script.google.com/macros/s/AKfycbwZu2auPmXnnywWhelksIG_7NB57u10M9qG_9ZgirGiuYlNk1zU8Gi3mM_jRO7EMdz8wQ/exec";
+
+// 커피쿠폰 지급 기준: 10문항 중 이 개수 이상 정답이면 쿠폰 대상
+const COUPON_MIN_CORRECT = 7;
 
 /* ========================================================= */
 
@@ -647,7 +650,7 @@ function finishTour(surveyScale, surveyText){
   finalScore = score;
   finalCorrectCount = correctCount;
 
-  if(score === 100){
+  if(correctCount >= COUPON_MIN_CORRECT){
     document.getElementById('coupon-modal-overlay').classList.remove('hidden');
     launchConfetti();
   } else {
@@ -694,7 +697,7 @@ function saveToSheet(score, correctCount, surveyScale, surveyText, phone){
     totalCount: QUESTIONS.length,
     surveyScale: surveyScale,
     surveyText: surveyText,
-    couponEligible: score === 100,
+    couponEligible: correctCount >= COUPON_MIN_CORRECT,
     phone: phone || '',
     answers: QUESTIONS.map((q, idx) => ({
       question: q.text,
@@ -712,7 +715,7 @@ function saveToSheet(score, correctCount, surveyScale, surveyText, phone){
   .then(res => res.json())
   .then(data => {
     statusEl.textContent = data.ok ? '결과가 저장되었습니다.' : '저장 중 오류가 발생했습니다.';
-    if(score === 100){
+    if(correctCount >= COUPON_MIN_CORRECT){
       document.getElementById('coupon-modal-overlay').classList.add('hidden');
       if(data.ok){
         statusEl.textContent = '결과가 저장되었습니다. 쿠폰 신청도 완료되어, 담당자가 확인 후 발송해드립니다.';
