@@ -247,6 +247,10 @@
         .side-drawer-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.4); z-index:1199; }
         .side-drawer-overlay.open { display:block; }
         @media(max-width:768px){ .side-drawer { width:92%; right:-96%; } .side-drawer.open { right:0; } }
+        
+        @media (max-width: 600px) {
+            .info-strip-divider { display: none !important; }
+        }
         /* ── RESPONSIVE ── */
         .tt-mobile-tabs { display:none; }
 
@@ -438,24 +442,24 @@
         </div>
 
         <!-- 정보 스트립 -->
-        <div style="display:flex;border:1px solid var(--lg-border);border-radius:12px;overflow:hidden;margin-bottom:20px;">
-            <div style="flex:1;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
+        <div style="display:flex;flex-wrap:wrap;border:1px solid var(--lg-border);border-radius:12px;overflow:hidden;margin-bottom:20px;">
+            <div style="flex:1;min-width:200px;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
                 <span style="font-size:1.3rem;">📅</span>
                 <div>
                     <div style="font-size:0.7rem;color:var(--lg-gray);font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">일정</div>
                     <div style="font-size:0.92rem;font-weight:700;color:var(--lg-dark);"><span style="font-size:0.76rem;font-weight:700;color:var(--lg-red);margin-right:6px;">[10차수(추가)]</span>9월 17일(목) ~ 9월 18일(금)</div>
                 </div>
             </div>
-            <div style="width:1px;background:var(--lg-border);"></div>
-            <div style="flex:1;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
+            <div style="width:1px;background:var(--lg-border);" class="info-strip-divider"></div>
+            <div style="flex:1;min-width:200px;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
                 <span style="font-size:1.3rem;">👥</span>
                 <div>
                     <div style="font-size:0.7rem;color:var(--lg-gray);font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">교육대상</div>
                     <div style="font-size:0.92rem;font-weight:700;color:var(--lg-dark);">전사 실/팀장</div>
                 </div>
             </div>
-            <div style="width:1px;background:var(--lg-border);"></div>
-            <div style="flex:1;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
+            <div style="width:1px;background:var(--lg-border);" class="info-strip-divider"></div>
+            <div style="flex:1;min-width:200px;padding:14px 18px;background:var(--lg-white);display:flex;align-items:center;gap:12px;">
                 <span style="font-size:1.3rem;">📍</span>
                 <div>
                     <div style="font-size:0.7rem;color:var(--lg-gray);font-weight:600;letter-spacing:0.5px;margin-bottom:3px;">장소</div>
@@ -1005,7 +1009,7 @@ document.querySelectorAll('.day-card,.tt-table-wrap,.direction-card,.faq-item,.c
                     </tr>
                     <tr style="border-bottom:1px solid var(--lg-border);">
                         <td style="padding:10px 14px;background:#f8f4f5;font-weight:700;color:var(--lg-dark);">📅 검진 기간</td>
-                        <td style="padding:10px 14px;color:var(--lg-gray);">교육 참여 3일 전까지</td>
+                        <td style="padding:10px 14px;color:var(--lg-gray);">8/18(화) 15시까지</td>
                     </tr>
                     <tr style="border-bottom:1px solid var(--lg-border);">
                         <td style="padding:10px 14px;background:#f8f4f5;font-weight:700;color:var(--lg-dark);">⏱️ 소요 시간</td>
