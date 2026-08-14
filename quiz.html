@@ -359,12 +359,12 @@
    ① 부스(스탬프 존) 편집 영역
    ========================================================= */
 const zones = [
-  {id:'vs', name:'VS · Head Unit/Display', emoji:'🚗'},
-  {id:'hs', name:'HS · Bearing/Fan Motor', emoji:'🌀'},
-  {id:'ms', name:'MS · TV 스피커/무게추', emoji:'🔊'},
-  {id:'es', name:'ES · PCB/에어컨 모터', emoji:'🔌'},
-  {id:'saenggi', name:'생기원 · 금형', emoji:'🔧'},
-  {id:'ecm', name:'HS ECM · 냉장고/세탁기', emoji:'♻️'}
+  {id:'hs', name:'HS ZONE', emoji:'🌀'},
+  {id:'ecm', name:'ECM ZONE', emoji:'♻️'},
+  {id:'saenggi', name:'생기원 ZONE', emoji:'🔧'},
+  {id:'ms', name:'MS ZONE', emoji:'🔊'},
+  {id:'vs', name:'VS ZONE', emoji:'🚗'},
+  {id:'es', name:'ES ZONE', emoji:'🔌'}
 ];
 
 /* =========================================================
@@ -522,7 +522,7 @@ function renderZoneAccordion(){
       const q = QUESTIONS[qIdx];
       const isOx = q.type === 'ox';
       const choicesHtml = q.choices.map((choiceText, cIdx) => `
-        <button type="button" class="choice" data-q="${qIdx}" data-c="${cIdx}"${isOx ? ' style="display:inline-block;width:calc(50% - 5px);text-align:center;font-weight:800;font-size:16px;"' : ''}>${choiceText}</button>
+        <button type="button" class="choice${answers[qIdx] === cIdx ? ' selected' : ''}" data-q="${qIdx}" data-c="${cIdx}"${isOx ? ' style="display:inline-block;width:calc(50% - 5px);text-align:center;font-weight:800;font-size:16px;"' : ''}>${choiceText}</button>
       `).join('');
 
       const block = document.createElement('div');
@@ -545,26 +545,14 @@ function renderZoneAccordion(){
       const qIdx = Number(btn.dataset.q);
       const cIdx = Number(btn.dataset.c);
       answers[qIdx] = cIdx;
-      renderZoneAccordion();
       // 방금 답한 문제가 속한 부스는 계속 펼친 상태 유지
       expandedZones.add(zones.find(z => zoneQuestionIndices[z.id].includes(qIdx)).id);
-      refreshChoiceStyles(qIdx);
-      updateZoneCount();
-      updateToSurveyButton();
+      renderZoneAccordion();
     });
   });
 
   updateZoneCount();
   updateToSurveyButton();
-}
-
-function refreshChoiceStyles(qIdx){
-  const wrap = document.getElementById(`q-choices-${qIdx}`);
-  if(!wrap) return;
-  wrap.querySelectorAll('.choice').forEach(btn => {
-    const cIdx = Number(btn.dataset.c);
-    btn.classList.toggle('selected', answers[qIdx] === cIdx);
-  });
 }
 
 function updateZoneCount(){
