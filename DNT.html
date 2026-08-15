@@ -1921,6 +1921,8 @@
       cv.width  = cv.parentElement.clientWidth || 300;
       cv.height = 110;
       _mc = cv.getContext('2d');
+      _mc.fillStyle = '#ffffff';
+      _mc.fillRect(0, 0, cv.width, cv.height);
       _mc.strokeStyle = '#111'; _mc.lineWidth = 2.5;
       _mc.lineCap = 'round'; _mc.lineJoin = 'round';
       _ms = false; _mh = false;
@@ -1938,6 +1940,8 @@
     if (!_mc) return;
     const cv = document.getElementById('manualCanvas');
     _mc.clearRect(0, 0, cv.width, cv.height);
+    _mc.fillStyle = '#ffffff';
+    _mc.fillRect(0, 0, cv.width, cv.height);
     _mh = false;
     document.getElementById('manualHint').style.opacity = '1';
   }
