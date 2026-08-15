@@ -1904,18 +1904,8 @@
   }
 
 
-    const d = currentData;
-    const base = 'security-pledge.html';
-    const qs = new URLSearchParams({
-      sano:  d.sano  || '',
-      name:  d.name  || '',
-      dept:  d.dept  || '',
-      grade: d.grade || '',
-    }).toString();
-
-  // ── 수기출석 서명 ──────────────────────────────────────
   // ── 수기출석 서명 ──
-  let _mc = null, _ms = false, _mh = false;
+  var _mc = null, _ms = false, _mh = false;
 
   function openManualCheckin() {
     const d = currentData || {};
