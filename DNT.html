@@ -1929,14 +1929,11 @@
     document.getElementById('manualOverlay').classList.add('open');
 
     setTimeout(() => {
-      const canvas = document.getElementById('manualCanvas');
-      canvas.width  = canvas.offsetWidth;
-      canvas.height = 110;
       setupManualCanvas();
       document.getElementById('manualHint').style.opacity = '1';
       document.getElementById('manualSubmitBtn').disabled = false;
       document.getElementById('manualSubmitBtn').textContent = '출석 서명 제출';
-    }, 100);
+    }, 200);
   }
 
   function closeManualCheckin() {
@@ -1945,7 +1942,8 @@
 
   function setupManualCanvas() {
     const canvas = document.getElementById('manualCanvas');
-    canvas.width  = canvas.offsetWidth;
+    const wrap = canvas.parentElement;
+    canvas.width  = wrap.offsetWidth || 300;
     canvas.height = 110;
     manualCtx = canvas.getContext('2d');
     manualCtx.strokeStyle = '#111';
