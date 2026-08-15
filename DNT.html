@@ -1932,13 +1932,10 @@
       const canvas = document.getElementById('manualCanvas');
       canvas.width  = canvas.offsetWidth;
       canvas.height = 110;
-      canvas.width = canvas.offsetWidth;
-      canvas.height = 110;
-      manualHasSig = false;
+      setupManualCanvas();
       document.getElementById('manualHint').style.opacity = '1';
       document.getElementById('manualSubmitBtn').disabled = false;
       document.getElementById('manualSubmitBtn').textContent = '출석 서명 제출';
-      setupManualCanvas();
     }, 100);
   }
 
@@ -1947,40 +1944,48 @@
   }
 
   function setupManualCanvas() {
-    const c = document.getElementById('manualCanvas');
-    // 기존 이벤트 제거를 위해 canvas 교체
-    const newC = c.cloneNode(true);
-    c.parentNode.replaceChild(newC, c);
     const canvas = document.getElementById('manualCanvas');
-
-    const getPos = (e) => {
-      const rect = canvas.getBoundingClientRect();
-      const sx = canvas.width / rect.width;
-      const sy = canvas.height / rect.height;
-      const pt = e.touches ? e.touches[0] : e;
-      return { x: (pt.clientX - rect.left) * sx, y: (pt.clientY - rect.top) * sy };
-    };
-
-    // manualCtx 재설정
+    canvas.width  = canvas.offsetWidth;
+    canvas.height = 110;
     manualCtx = canvas.getContext('2d');
     manualCtx.strokeStyle = '#111';
     manualCtx.lineWidth = 2.5;
     manualCtx.lineCap = 'round';
     manualCtx.lineJoin = 'round';
-
-    canvas.addEventListener('mousedown',  e => { manualSigning=true; const p=getPos(e); manualCtx.beginPath(); manualCtx.moveTo(p.x,p.y); });
-    canvas.addEventListener('mousemove',  e => { if(!manualSigning) return; const p=getPos(e); manualCtx.lineTo(p.x,p.y); manualCtx.stroke(); manualHasSig=true; document.getElementById('manualHint').style.opacity='0'; });
-    canvas.addEventListener('mouseup',    () => manualSigning=false);
-    canvas.addEventListener('mouseleave', () => manualSigning=false);
-    canvas.addEventListener('touchstart', e => { e.preventDefault(); manualSigning=true; const p=getPos(e); manualCtx.beginPath(); manualCtx.moveTo(p.x,p.y); }, {passive:false});
-    canvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!manualSigning) return; const p=getPos(e); manualCtx.lineTo(p.x,p.y); manualCtx.stroke(); manualHasSig=true; document.getElementById('manualHint').style.opacity='0'; }, {passive:false});
-    canvas.addEventListener('touchend',   e => { e.preventDefault(); manualSigning=false; }, {passive:false});
+    manualSigning = false;
+    manualHasSig = false;
   }
+
+  // 수기출석 캔버스 이벤트 — 전역으로 한 번만 등록
+  (function() {
+    let _ready = false;
+    function _initManualEvents() {
+      if (_ready) return;
+      _ready = true;
+      const canvas = document.getElementById('manualCanvas');
+      if (!canvas) return;
+      const getPos = (e) => {
+        const rect = canvas.getBoundingClientRect();
+        const sx = canvas.width  / rect.width;
+        const sy = canvas.height / rect.height;
+        const pt = e.touches ? e.touches[0] : e;
+        return { x: (pt.clientX - rect.left) * sx, y: (pt.clientY - rect.top) * sy };
+      };
+      canvas.addEventListener('mousedown',  e => { if(!manualCtx) return; manualSigning=true; const p=getPos(e); manualCtx.beginPath(); manualCtx.moveTo(p.x,p.y); });
+      canvas.addEventListener('mousemove',  e => { if(!manualSigning||!manualCtx) return; const p=getPos(e); manualCtx.lineTo(p.x,p.y); manualCtx.stroke(); manualHasSig=true; document.getElementById('manualHint').style.opacity='0'; });
+      canvas.addEventListener('mouseup',    () => manualSigning=false);
+      canvas.addEventListener('mouseleave', () => manualSigning=false);
+      canvas.addEventListener('touchstart', e => { e.preventDefault(); if(!manualCtx) return; manualSigning=true; const p=getPos(e); manualCtx.beginPath(); manualCtx.moveTo(p.x,p.y); }, {passive:false});
+      canvas.addEventListener('touchmove',  e => { e.preventDefault(); if(!manualSigning||!manualCtx) return; const p=getPos(e); manualCtx.lineTo(p.x,p.y); manualCtx.stroke(); manualHasSig=true; document.getElementById('manualHint').style.opacity='0'; }, {passive:false});
+      canvas.addEventListener('touchend',   e => { e.preventDefault(); manualSigning=false; }, {passive:false});
+    }
+    document.addEventListener('DOMContentLoaded', _initManualEvents);
+  })();
 
   function clearManualSign() {
     if (!manualCtx) return;
-    const c = document.getElementById('manualCanvas');
-    manualCtx.clearRect(0, 0, c.width, c.height);
+    const canvas = document.getElementById('manualCanvas');
+    manualCtx.clearRect(0, 0, canvas.width, canvas.height);
     manualHasSig = false;
     document.getElementById('manualHint').style.opacity = '1';
   }
@@ -2227,11 +2232,11 @@
         <div style="font-weight:700;color:#111;margin-bottom:8px;">STEP 3 &nbsp;교육장 입실 후 출석체크</div>
         <div style="display:flex;flex-direction:column;gap:6px;">
           <div style="background:#E8F5E9;border-radius:8px;padding:8px 12px;">
-            <span style="font-weight:700;color:#1B5E20;">📷 QR 출결(카메라 사용 가능 시)</span><br>
+            <span style="font-weight:700;color:#1B5E20;">📷 QR 출결</span><br>
             앱 → 출석체크 → QR 촬영
           </div>
           <div style="background:#E3F2FD;border-radius:8px;padding:8px 12px;">
-            <span style="font-weight:700;color:#0C447C;">📡 비콘 출결(카메라 사용 불가 시)</span><br>
+            <span style="font-weight:700;color:#0C447C;">📡 비콘 출결</span><br>
             블루투스·위치 권한 ON → 앱에서 출석체크 → 비콘 인식
           </div>
           <div style="background:#FFF8E1;border-radius:8px;padding:8px 12px;font-size:11px;color:#7B5800;">
@@ -2273,7 +2278,7 @@
     <div class="quiz-option-list">
       <a class="quiz-option" id="quizHtml" href="#" target="_blank">
         <span class="qo-icon">💻</span>
-        <span><span class="qo-label">리더십 리인벤트 스탬프 투어</span><span class="qo-desc">C-brand VS. 자사 제품 현물 비교 전시</span></span>
+        <span><span class="qo-label">리더십 리인벤트 스탬프 투어</span><span class="qo-desc">자체 제작 퀴즈 사이트</span></span>
         <span class="qo-arrow">›</span>
       </a>
       <a class="quiz-option" id="quizMenti" href="https://www.mentimeter.com/" target="_blank">
