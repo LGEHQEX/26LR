@@ -669,6 +669,57 @@
   .step-dot-active { opacity: 1 !important; }
   .step-dot-done { opacity: 1 !important; }
 
+
+  /* ── 수기출석 팝업 ── */
+  .manual-overlay {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    z-index: 500; align-items: center; justify-content: center; padding: 20px;
+  }
+  .manual-overlay.open { display: flex; }
+  .manual-popup {
+    background: white; border-radius: 20px;
+    width: calc(100% - 0px); max-width: 360px;
+    padding: 24px 20px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.3);
+    animation: qpopIn 0.22s cubic-bezier(0.34,1.56,0.64,1);
+  }
+  .manual-title { font-size: 17px; font-weight: 700; color: #111; margin-bottom: 4px; }
+  .manual-sub   { font-size: 12px; color: #888; margin-bottom: 16px; line-height: 1.6; }
+  .manual-info-box {
+    background: #f9f9f9; border-radius: 10px;
+    padding: 12px 14px; margin-bottom: 14px; font-size: 12px; line-height: 1.8;
+  }
+  .manual-info-row { display: flex; gap: 8px; }
+  .manual-info-lbl { color: #888; min-width: 48px; }
+  .manual-info-val { color: #111; font-weight: 600; }
+  .manual-canvas-wrap {
+    border: 1.5px solid #ddd; border-radius: 10px;
+    background: white; position: relative;
+    margin-bottom: 6px; overflow: hidden;
+  }
+  #manualCanvas { display: block; width: 100%; height: 110px; cursor: crosshair; touch-action: none; }
+  .manual-canvas-hint {
+    position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);
+    font-size: 12px; color: #ccc; pointer-events: none; transition: opacity 0.2s;
+  }
+  .manual-clear-btn {
+    font-size: 12px; color: #888; background: none; border: none;
+    cursor: pointer; text-decoration: underline; padding: 2px 0;
+    font-family: inherit; margin-bottom: 14px; display: block;
+  }
+  .manual-submit-btn {
+    width: 100%; padding: 13px; background: var(--lg-red); color: white;
+    border: none; border-radius: 10px; font-size: 15px; font-weight: 700;
+    font-family: inherit; cursor: pointer; margin-bottom: 8px;
+  }
+  .manual-submit-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .manual-cancel-btn {
+    width: 100%; padding: 12px; background: white; color: #888;
+    border: 1px solid #eee; border-radius: 10px; font-size: 14px;
+    font-family: inherit; cursor: pointer;
+  }
+
   /* ── 슬라이드 네비게이션 ── */
   .slide-nav {
     display: flex; align-items: center; justify-content: center;
@@ -1861,6 +1912,105 @@
       dept:  d.dept  || '',
       grade: d.grade || '',
     }).toString();
+
+  // ── 수기출석 서명 ──────────────────────────────────────
+  let manualCtx, manualSigning = false, manualHasSig = false;
+
+  function openManualCheckin() {
+    const d = currentData;
+    // 정보 세팅
+    const _s = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    _s('manualName', d ? d.name : '—');
+    _s('manualDept', d ? d.dept : '—');
+    _s('manualSano', d ? d.sano : '—');
+    const now = new Date();
+    _s('manualDate', `${now.getFullYear()}.${String(now.getMonth()+1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} ${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`);
+
+    document.getElementById('manualOverlay').classList.add('open');
+
+    setTimeout(() => {
+      const canvas = document.getElementById('manualCanvas');
+      canvas.width  = canvas.offsetWidth;
+      canvas.height = 110;
+      manualCtx = canvas.getContext('2d');
+      manualCtx.strokeStyle = '#111';
+      manualCtx.lineWidth = 2.5;
+      manualCtx.lineCap = 'round';
+      manualCtx.lineJoin = 'round';
+      manualHasSig = false;
+      document.getElementById('manualHint').style.opacity = '1';
+      document.getElementById('manualSubmitBtn').disabled = false;
+      document.getElementById('manualSubmitBtn').textContent = '출석 서명 제출';
+      setupManualCanvas();
+    }, 100);
+  }
+
+  function closeManualCheckin() {
+    document.getElementById('manualOverlay').classList.remove('open');
+  }
+
+  function setupManualCanvas() {
+    const c = document.getElementById('manualCanvas');
+    const getPos = (e) => {
+      const rect = c.getBoundingClientRect();
+      const sx = c.width / rect.width;
+      const sy = c.height / rect.height;
+      const pt = e.touches ? e.touches[0] : e;
+      return { x: (pt.clientX - rect.left) * sx, y: (pt.clientY - rect.top) * sy };
+    };
+    c.onmousedown  = e => { manualSigning=true; const p=getPos(e); manualCtx.beginPath(); manualCtx.moveTo(p.x,p.y); };
+    c.onmousemove  = e => { if(!manualSigning) return; const p=getPos(e); manualCtx.lineTo(p.x,p.y); manualCtx.stroke(); manualHasSig=true; document.getElementById('manualHint').style.opacity='0'; };
+    c.onmouseup    = () => manualSigning=false;
+    c.addEventListener('touchstart', e => { e.preventDefault(); manualSigning=true; const p=getPos(e); manualCtx.beginPath(); manualCtx.moveTo(p.x,p.y); }, {passive:false});
+    c.addEventListener('touchmove',  e => { e.preventDefault(); if(!manualSigning) return; const p=getPos(e); manualCtx.lineTo(p.x,p.y); manualCtx.stroke(); manualHasSig=true; document.getElementById('manualHint').style.opacity='0'; }, {passive:false});
+    c.addEventListener('touchend',   e => { e.preventDefault(); manualSigning=false; }, {passive:false});
+  }
+
+  function clearManualSign() {
+    if (!manualCtx) return;
+    const c = document.getElementById('manualCanvas');
+    manualCtx.clearRect(0, 0, c.width, c.height);
+    manualHasSig = false;
+    document.getElementById('manualHint').style.opacity = '1';
+  }
+
+  async function submitManualCheckin() {
+    if (!manualHasSig) { alert('서명을 먼저 진행해주세요.'); return; }
+    const btn = document.getElementById('manualSubmitBtn');
+    btn.disabled = true;
+    btn.textContent = '제출 중...';
+
+    try {
+      const d = currentData || {};
+      const canvas = document.getElementById('manualCanvas');
+      const imageData = canvas.toDataURL('image/png').split(',')[1];
+      const now = new Date();
+      const dateStr = `${now.getFullYear()}${String(now.getMonth()+1).padStart(2,'0')}${String(now.getDate()).padStart(2,'0')}`;
+      const timeStr = `${String(now.getHours()).padStart(2,'0')}${String(now.getMinutes()).padStart(2,'0')}`;
+      const fileName = `수기출석_${dateStr}_${timeStr}_${d.sano || ''}_${d.name || ''}`;
+
+      const res = await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain' },
+        body: JSON.stringify({ imageData, fileName, sano: d.sano, name: d.name, dept: d.dept, token: _tk, type: 'manual' })
+      });
+      const result = await res.json();
+
+      if (result.success) {
+        alert('수기 출석 서명이 완료되었습니다.');
+        closeManualCheckin();
+      } else {
+        alert('제출 실패: ' + (result.message || '다시 시도해주세요.'));
+        btn.disabled = false;
+        btn.textContent = '출석 서명 제출';
+      }
+    } catch(err) {
+      alert('오류: ' + err.message);
+      btn.disabled = false;
+      btn.textContent = '출석 서명 제출';
+    }
+  }
+
   function openQuizPopup() {
     document.getElementById('quizOverlay').classList.add('open');
   }
@@ -1995,13 +2145,41 @@
 </div>
 
 
+
+<!-- 수기출석 서명 팝업 -->
+<div class="manual-overlay" id="manualOverlay" onclick="if(event.target===this)closeManualCheckin()">
+  <div class="manual-popup" onclick="event.stopPropagation()">
+    <div class="manual-title">✍️ 수기 출석 서명</div>
+    <div class="manual-sub">비콘/QR 출결이 불가한 경우<br>아래에 서명하여 출석을 확인해 주세요</div>
+
+    <div class="manual-info-box">
+      <div class="manual-info-row"><span class="manual-info-lbl">성명</span><span class="manual-info-val" id="manualName">—</span></div>
+      <div class="manual-info-row"><span class="manual-info-lbl">소속</span><span class="manual-info-val" id="manualDept">—</span></div>
+      <div class="manual-info-row"><span class="manual-info-lbl">사번</span><span class="manual-info-val" id="manualSano">—</span></div>
+      <div class="manual-info-row"><span class="manual-info-lbl">일시</span><span class="manual-info-val" id="manualDate">—</span></div>
+    </div>
+
+    <div style="font-size:13px;font-weight:700;color:#111;margin-bottom:8px;">서명란</div>
+    <div class="manual-canvas-wrap">
+      <canvas id="manualCanvas"></canvas>
+      <div class="manual-canvas-hint" id="manualHint">이 곳에 서명하세요</div>
+    </div>
+    <button class="manual-clear-btn" onclick="clearManualSign()">서명 지우기</button>
+
+    <button class="manual-submit-btn" id="manualSubmitBtn" onclick="submitManualCheckin()">출석 서명 제출</button>
+    <button class="manual-cancel-btn" onclick="closeManualCheckin()">닫기</button>
+  </div>
+</div>
+
 <!-- 고용24 출결 팝업 -->
 <div class="quiz-overlay" id="goyong24Overlay" onclick="if(event.target===this)document.getElementById('goyong24Overlay').classList.remove('open')">
   <div class="quiz-popup" onclick="event.stopPropagation()" style="max-height:90vh;overflow-y:auto;">
     <div class="quiz-popup-title">🏛️ 고용24 비콘/QR 출결 안내</div>
     <div class="quiz-popup-sub" style="line-height:1.8;">
       1) 아래 순서대로 진행해 주세요<br>
-      2) 출결이 불가한 경우 운영자에게 말씀해 주세요
+      2) 출결이 불가한 경우
+      <button onclick="openManualCheckin()" style="display:inline;background:none;border:none;color:var(--lg-red);font-weight:700;font-size:12px;cursor:pointer;text-decoration:underline;padding:0;font-family:inherit;">수기 출석 서명</button>
+      을 남겨주세요
     </div>
 
     <div style="display:flex;flex-direction:column;gap:10px;margin-bottom:16px;">
