@@ -1060,7 +1060,7 @@
       대강당 입장 전 반드시 출결을 완료해야 합니다.<br>
       <strong>담당자에게 패스코드를 확인</strong>하신 후<br>
       아래 버튼을 눌러 출결을 진행해 주세요.<br><br>
-      <span style="font-size:12px;color:#888;">✅ 출결 완료 후 보안 서약서 서명이 이어집니다</span>
+
     </div>
     <button class="notice-btn" onclick="closeNoticeAndOpenPasscode()">지금 출결하기</button>
     <button class="notice-skip" onclick="closeNotice()">나중에 할게요</button>
@@ -1291,7 +1291,6 @@
         btn.textContent = t ? `✅ 출결완료 ${t}` : '✅ 출결완료';
         setTimeout(() => {
           closePasscode();
-          setTimeout(() => openSecurityPledge(), 300);
         }, 2200);
       } else if (json.alreadyCheckedIn) {
         const t = json.timestamp ? String(json.timestamp).slice(11,16) : '';
