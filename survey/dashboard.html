@@ -265,7 +265,7 @@ select.filter{padding:7px 10px; border:1px solid var(--line); border-radius:8px;
       <div class="grid g-2">
         <div class="panel">
           <h3>모듈별 만족도</h3>
-          <p class="desc">M1~M7 모듈 평균 (1~5점 척도)</p>
+          <p class="desc">M1~M6 모듈 평균 (1~5점 척도)</p>
           <div class="chart-wrap tall"><canvas id="moduleChart"></canvas></div>
         </div>
         <div class="panel">
@@ -381,7 +381,7 @@ let currentData = null;
 let charts = {};
 let heatmapMode = 'module';
 let instructorLoaded = false;
-const MODULE_ORDER = ['M1','M2','M3','M4','M5','M7'];
+const MODULE_ORDER = ['M1','M2','M3','M4','M5','M6'];
 
 // 분반 목록은 Code.gs BANJI_LIST와 반드시 동일하게 유지하세요.
 const BANJI_LIST = [
