@@ -275,7 +275,7 @@
 
   /* ===== 입소 안내 모달 ===== */
   .modal-info {
-    max-width: 400px; max-height: 82vh; overflow-y: auto;
+    max-width: 460px; max-height: 82vh; overflow-y: auto;
     text-align: left; padding: 26px 22px;
   }
   .info-title {
@@ -299,6 +299,9 @@
   .info-line { font-size: 15.5px; margin-bottom: 8px; }
   .info-line:last-child { margin-bottom: 0; }
   .info-line b { color: var(--lg-red); margin-right: 4px; }
+  .info-more {
+    margin-top: 14px; font-size: 13px; color: var(--gray);
+  }
   .modal-info button {
     margin-top: 18px;
   }
@@ -441,6 +444,7 @@
       <li>숙소 내 음식물 반입 금지, 취식은 채움관 1층 아지트 이용</li>
       <li>교육 종료일 퇴실 시 개인 짐 모두 챙기기</li>
     </ul>
+    <p class="info-more">자세한 내용은 <a href="https://lgehqex.github.io/learningcenter" target="_blank" class="teams-link">러닝센터 시설안내 페이지</a>를 확인해 주세요.</p>
     <button onclick="closeStayInfoModal()">확인</button>
   </div>
 </div>
