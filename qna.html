@@ -213,6 +213,90 @@
     margin-top: 6px;
   }
   .error-msg.active { display: block; }
+
+  /* 탭 전환 (문의하기 / 자주 묻는 질문) */
+  .tab-row {
+    display: flex;
+    background: var(--gray-100);
+    margin: 0 24px;
+    border-radius: 8px;
+    padding: 4px;
+    gap: 4px;
+    position: relative;
+    top: -18px;
+  }
+  .tab-btn {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 9px 0;
+    border-radius: 6px;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--gray-600);
+    cursor: pointer;
+    transition: all 0.15s ease;
+  }
+  .tab-btn.active {
+    background: var(--white);
+    color: var(--lg-red);
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+
+  /* FAQ 아코디언 */
+  .faq-panel { display: none; }
+  .faq-panel.active { display: block; }
+  .faq-list {
+    padding: 0 24px 24px;
+  }
+  .faq-item {
+    border: 1.5px solid var(--gray-300);
+    border-radius: 8px;
+    margin-bottom: 8px;
+    overflow: hidden;
+  }
+  .faq-item:last-child { margin-bottom: 0; }
+  .faq-question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 13px 14px;
+    cursor: pointer;
+    font-size: 13.5px;
+    font-weight: 600;
+    color: var(--gray-900);
+    user-select: none;
+  }
+  .faq-question .faq-q-mark {
+    color: var(--lg-red);
+    flex-shrink: 0;
+  }
+  .faq-question .faq-toggle-icon {
+    color: var(--gray-600);
+    font-size: 12px;
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+  }
+  .faq-item.open .faq-toggle-icon { transform: rotate(180deg); }
+  .faq-answer {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease;
+  }
+  .faq-item.open .faq-answer { max-height: 400px; }
+  .faq-answer-inner {
+    padding: 0 14px 14px 34px;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--gray-600);
+  }
+  .faq-answer-inner a {
+    color: var(--lg-red);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .faq-answer-inner a:hover { text-decoration: underline; }
 </style>
 </head>
 <body>
@@ -224,6 +308,12 @@
     <p>리더십 리인벤트 2.0 과정 관련 문의사항이 있으신 경우 아래 양식에 맞게 작성해 주시면, 운영자가 확인 후 순차적으로 답변드리겠습니다.</p>
   </div>
 
+  <div class="tab-row">
+    <button class="tab-btn active" id="tabInquiryBtn" onclick="switchTab('inquiry')">문의하기</button>
+    <button class="tab-btn" id="tabFaqBtn" onclick="switchTab('faq')">자주 묻는 질문</button>
+  </div>
+
+  <div class="faq-panel" id="inquiryPanel" style="display:block;">
   <div id="formView">
     <div class="modal-body">
 
@@ -268,6 +358,87 @@
     <h3>문의가 접수되었습니다</h3>
     <p>운영자가 확인 후 순차적으로<br>답변드리겠습니다.</p>
   </div>
+  </div>
+
+  <div class="faq-panel" id="faqPanel">
+    <div class="faq-list" id="faqList">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><span class="faq-q-mark">Q.</span> 교육 차수를 변경할 수 있나요? 차수 변경은 어떻게 하나요?</span>
+          <span class="faq-toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            수강신청 페이지에서 잔여 좌석이 있는 차수로 변경할 수 있습니다. 다만, 기존 교육일 또는 변경 희망 교육일이 3일 이내인 경우에는 일정 변경이 불가합니다. 이 경우 변경을 희망하는 차수와 함께 문의하기를 통해 요청해 주시기 바랍니다.<br>
+            <a href="https://lgehqex.github.io/26LR/reg" target="_blank" rel="noopener">수강신청 페이지 바로가기</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><span class="faq-q-mark">Q.</span> 현재 안내된 차수 외에 추가 차수가 있나요?</span>
+          <span class="faq-toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            리더십 리인벤트 과정은 총 11차수로 운영되며, 9월 중 종료 예정입니다. 별도의 추가 차수는 운영되지 않습니다.
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><span class="faq-q-mark">Q.</span> 숙박 사용 여부를 변경할 수 있나요?</span>
+          <span class="faq-toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            수강신청 페이지에서 사전입소, 당일입소, 출퇴근 등 변경이 가능합니다.<br>
+            <a href="https://lgehqex.github.io/26LR/reg" target="_blank" rel="noopener">수강신청 페이지 바로가기</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><span class="faq-q-mark">Q.</span> 숙소는 1인실인가요? / 러닝센터 시설은 어떻게 되어 있나요?</span>
+          <span class="faq-toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            숙소는 1인 1실로 배정됩니다. 숙소 및 러닝센터 시설에 대한 자세한 내용은 러닝센터 시설안내 페이지에서 확인해 주시기 바랍니다.<br>
+            <a href="https://lgehqex.github.io/learningcenter/" target="_blank" rel="noopener">러닝센터 시설안내 바로가기</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><span class="faq-q-mark">Q.</span> 교육 신청 및 신청 내역은 어디서 확인하나요?</span>
+          <span class="faq-toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            수강신청 페이지 우측 상단의 '내 신청 확인' 버튼을 통해 신청 내역을 확인할 수 있습니다.<br>
+            <a href="https://lgehqex.github.io/26LR/reg" target="_blank" rel="noopener">수강신청 페이지 바로가기</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          <span><span class="faq-q-mark">Q.</span> 모든 교육 일정에 참여하기 어려운 경우 어떻게 해야 하나요?</span>
+          <span class="faq-toggle-icon">▼</span>
+        </div>
+        <div class="faq-answer">
+          <div class="faq-answer-inner">
+            본 과정은 리더 필수 과정으로 본부별 이수율이 관리되고 있습니다. 가급적 교육 일정에 맞춰 참여해 주시기 바랍니다. 부득이하게 해외 출장, 건강 등의 사유로 참여가 어려운 경우에는 문의하기를 통해 사유를 함께 남겨주시기 바랍니다.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
 </div>
 
@@ -276,6 +447,33 @@
   const GAS_URL = "https://script.google.com/macros/s/AKfycbyo8r0fcYqXH8K3FmIbCJ1S_P7ck39-oCv5Z64pDTvAV7Fg-cRmsIN0NCqrfXUQ9QZQ/exec";
 
   let selectedType = "";
+
+  function switchTab(tab) {
+    const inquiryPanel = document.getElementById("inquiryPanel");
+    const faqPanel = document.getElementById("faqPanel");
+    const tabInquiryBtn = document.getElementById("tabInquiryBtn");
+    const tabFaqBtn = document.getElementById("tabFaqBtn");
+
+    if (tab === "faq") {
+      inquiryPanel.classList.remove("active");
+      inquiryPanel.style.display = "none";
+      faqPanel.classList.add("active");
+      tabFaqBtn.classList.add("active");
+      tabInquiryBtn.classList.remove("active");
+    } else {
+      faqPanel.classList.remove("active");
+      inquiryPanel.style.display = "block";
+      tabInquiryBtn.classList.add("active");
+      tabFaqBtn.classList.remove("active");
+    }
+  }
+
+  function toggleFaq(el) {
+    const item = el.closest(".faq-item");
+    const wasOpen = item.classList.contains("open");
+    document.querySelectorAll("#faqList .faq-item").forEach(i => i.classList.remove("open"));
+    if (!wasOpen) item.classList.add("open");
+  }
 
   const typeGrid = document.getElementById("typeGrid");
   const submitBtn = document.getElementById("submitBtn");
