@@ -25,7 +25,7 @@
     line-height: 1.55;
     -webkit-font-smoothing: antialiased;
   }
-  .wrap { max-width: 640px; margin: 0 auto; padding: 0 16px 80px; }
+  .wrap { max-width: 760px; margin: 0 auto; padding: 0 16px 80px; }
 
   /* ===== 헤더 ===== */
   .hero {
@@ -37,22 +37,22 @@
   }
   .hero-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
   .hero .eyebrow {
-    font-size: 12px; letter-spacing: 2px; opacity: .8;
+    font-size: 14px; letter-spacing: 2px; opacity: .8;
     font-weight: 600; margin-bottom: 0;
   }
-  .hero h1 { font-size: 24px; font-weight: 800; letter-spacing: -0.5px; }
-  .hero p { font-size: 14px; opacity: .85; margin-top: 6px; }
+  .hero h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.5px; }
+  .hero p { font-size: 16px; opacity: .85; margin-top: 6px; }
   .btn-mystatus {
     padding: 7px 13px; border: 1.5px solid rgba(255,255,255,.55);
     background: rgba(255,255,255,.12); color: #fff;
-    border-radius: 20px; font-size: 12.5px; font-weight: 700;
+    border-radius: 20px; font-size: 14.5px; font-weight: 700;
     font-family: inherit; cursor: pointer; white-space: nowrap;
     transition: background .15s;
   }
   .btn-mystatus:active { background: rgba(255,255,255,.25); }
 
   .privacy-note {
-    margin-top: 14px; font-size: 12px; color: var(--gray);
+    margin-top: 14px; font-size: 14px; color: var(--gray);
     background: var(--bg); border-radius: 8px; padding: 9px 11px;
     line-height: 1.5;
   }
@@ -63,20 +63,20 @@
     border-radius: 14px; padding: 22px 20px; margin-bottom: 18px;
   }
   .card h2 {
-    font-size: 15px; font-weight: 700; margin-bottom: 14px;
+    font-size: 17px; font-weight: 700; margin-bottom: 14px;
     display: flex; align-items: center; gap: 8px;
   }
   .card h2.h2-row { justify-content: space-between; }
   .card h2.h2-row span:first-child { display: flex; align-items: center; gap: 8px; }
   .sub-note {
-    font-size: 11.5px; font-weight: 500; color: var(--gray);
+    font-size: 13.5px; font-weight: 500; color: var(--gray);
     margin-left: 2px;
   }
   .btn-info {
     display: flex; align-items: center; gap: 4px;
     padding: 6px 11px; border: 1.5px solid var(--line);
     background: #fff; color: var(--gray);
-    border-radius: 20px; font-size: 12px; font-weight: 600;
+    border-radius: 20px; font-size: 14px; font-weight: 600;
     font-family: inherit; cursor: pointer;
   }
   .btn-info:active { background: var(--bg); }
@@ -85,28 +85,28 @@
     display: inline-flex; align-items: center; justify-content: center;
     width: 22px; height: 22px; border-radius: 50%;
     background: var(--lg-red); color: #fff;
-    font-size: 12px; font-weight: 700; flex-shrink: 0;
+    font-size: 14px; font-weight: 700; flex-shrink: 0;
   }
 
   /* ===== 입력 ===== */
   .field { margin-bottom: 14px; }
-  .field label { display: block; font-size: 13px; font-weight: 600; color: var(--gray); margin-bottom: 6px; }
+  .field label { display: block; font-size: 15px; font-weight: 600; color: var(--gray); margin-bottom: 6px; }
   .field input {
     width: 100%; padding: 12px 14px;
     border: 1.5px solid var(--line); border-radius: 10px;
-    font-size: 16px; font-family: inherit;
+    font-size: 18px; font-family: inherit;
     transition: border-color .15s;
   }
   .field input:focus { outline: none; border-color: var(--lg-red); }
   .field textarea {
     width: 100%; padding: 12px 14px;
     border: 1.5px solid var(--line); border-radius: 10px;
-    font-size: 14.5px; font-family: inherit; line-height: 1.5;
+    font-size: 16.5px; font-family: inherit; line-height: 1.5;
     resize: vertical;
   }
   .field textarea:focus { outline: none; border-color: var(--lg-red); }
   .optional-tag {
-    font-size: 11px; font-weight: 700; color: var(--gray);
+    font-size: 13px; font-weight: 700; color: var(--gray);
     background: var(--bg); border-radius: 6px;
     padding: 2px 7px; margin-left: 2px;
   }
@@ -115,14 +115,14 @@
   .btn-lookup {
     padding: 0 16px; border: 1.5px solid var(--lg-red);
     background: #fff; color: var(--lg-red);
-    border-radius: 10px; font-size: 14px; font-weight: 700;
+    border-radius: 10px; font-size: 16px; font-weight: 700;
     cursor: pointer; white-space: nowrap; font-family: inherit;
   }
   .btn-lookup:active { background: var(--lg-red-light); }
   .my-status {
     display: none; margin-top: 10px; padding: 12px 14px;
     background: var(--lg-red-light); border-radius: 10px;
-    font-size: 13.5px; color: var(--lg-red-dark);
+    font-size: 15.5px; color: var(--lg-red-dark);
   }
   .my-status strong { font-weight: 700; }
 
@@ -150,22 +150,22 @@
   .session.locked:hover { border-color: #F59E0B; }
   .session.locked .s-num, .session.locked .s-date { color: #92400E; }
   .s-locked-note {
-    margin-top: 9px; font-size: 11.5px; font-weight: 600;
+    margin-top: 9px; font-size: 13.5px; font-weight: 600;
     color: #B45309;
   }
   .s-top { display: flex; justify-content: space-between; align-items: baseline; }
-  .s-num { font-size: 15px; font-weight: 800; color: var(--lg-red); }
+  .s-num { font-size: 17px; font-weight: 800; color: var(--lg-red); }
   .s-badge {
     display: inline-block; margin-left: 6px;
-    font-size: 10.5px; font-weight: 700; color: var(--lg-red-dark);
+    font-size: 12.5px; font-weight: 700; color: var(--lg-red-dark);
     background: var(--lg-red-light); border-radius: 6px;
     padding: 2px 6px; vertical-align: middle;
   }
-  .s-seats { font-size: 12px; font-weight: 600; color: var(--ok); }
+  .s-seats { font-size: 14px; font-weight: 600; color: var(--ok); }
   .s-seats.warn { color: #B45309; }
   .s-seats.closed { color: var(--full); }
   .s-seats.locked { color: #B45309; }
-  .s-date { font-size: 13.5px; color: var(--ink); margin-top: 4px; font-weight: 500; }
+  .s-date { font-size: 15.5px; color: var(--ink); margin-top: 4px; font-weight: 500; }
   .s-gauge {
     margin-top: 9px; height: 5px; border-radius: 3px;
     background: #EEF0F3; overflow: hidden;
@@ -180,7 +180,7 @@
     display: none; position: absolute; top: -8px; right: -8px;
     width: 24px; height: 24px; border-radius: 50%;
     background: var(--lg-red); color: #fff;
-    font-size: 14px; text-align: center; line-height: 24px;
+    font-size: 16px; text-align: center; line-height: 24px;
   }
   .session.selected .s-check { display: block; }
 
@@ -205,15 +205,15 @@
     content: ''; position: absolute; inset: 3px;
     border-radius: 50%; background: var(--lg-red);
   }
-  .l-title { font-size: 14.5px; font-weight: 600; }
-  .l-desc { font-size: 12.5px; color: var(--gray); }
+  .l-title { font-size: 16.5px; font-weight: 600; }
+  .l-desc { font-size: 14.5px; color: var(--gray); }
 
   /* ===== 제출 ===== */
   .btn-submit {
     width: 100%; padding: 16px;
     background: var(--lg-red); color: #fff;
     border: none; border-radius: 12px;
-    font-size: 16px; font-weight: 700; font-family: inherit;
+    font-size: 18px; font-weight: 700; font-family: inherit;
     cursor: pointer; transition: background .15s;
   }
   .btn-submit:hover { background: var(--lg-red-dark); }
@@ -221,18 +221,27 @@
 
   .closed-box {
     text-align: center; padding: 32px 16px;
-    color: var(--gray); font-size: 14px; font-weight: 600;
+    color: var(--gray); font-size: 16px; font-weight: 600;
     background: var(--bg); border-radius: 12px; border: 1px dashed #C9CDD4;
   }
   .lodging.disabled { opacity: .45; pointer-events: none; }
 
   /* ===== 안내 ===== */
   .notice {
-    font-size: 12.5px; color: var(--gray);
+    font-size: 14.5px; color: var(--gray);
     margin-top: 14px; padding-left: 4px;
   }
   .notice li { margin-bottom: 4px; list-style-position: inside; }
   .teams-link { color: var(--lg-red); font-weight: 700; text-decoration: underline; }
+  .notice-wrap { }
+  .btn-qna {
+    display: inline-block; margin-top: 10px;
+    padding: 8px 16px; border: 1.5px solid var(--lg-red);
+    background: #fff; color: var(--lg-red);
+    border-radius: 20px; font-size: 14.5px; font-weight: 700;
+    font-family: inherit; cursor: pointer; white-space: nowrap;
+  }
+  .btn-qna:active { background: var(--lg-red-light); }
 
   /* ===== 토스트 / 결과 ===== */
   .overlay {
@@ -246,12 +255,12 @@
     padding: 30px 26px; max-width: 360px; width: 100%;
     text-align: center;
   }
-  .modal .icon { font-size: 44px; margin-bottom: 12px; }
-  .modal h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
-  .modal p { font-size: 14px; color: var(--gray); margin-bottom: 6px; }
+  .modal .icon { font-size: 46px; margin-bottom: 12px; }
+  .modal h3 { font-size: 20px; font-weight: 800; margin-bottom: 8px; }
+  .modal p { font-size: 16px; color: var(--gray); margin-bottom: 6px; }
   .modal .detail {
     background: var(--bg); border-radius: 10px;
-    padding: 12px; margin: 14px 0; font-size: 13.5px; text-align: left;
+    padding: 12px; margin: 14px 0; font-size: 15.5px; text-align: left;
   }
   .modal .detail div { display: flex; justify-content: space-between; padding: 3px 0; }
   .modal .detail span:first-child { color: var(--gray); }
@@ -260,9 +269,9 @@
     margin-top: 8px; width: 100%; padding: 13px;
     background: var(--lg-red); color: #fff;
     border: none; border-radius: 10px;
-    font-size: 15px; font-weight: 700; font-family: inherit; cursor: pointer;
+    font-size: 17px; font-weight: 700; font-family: inherit; cursor: pointer;
   }
-  .loading-text { text-align: center; color: var(--gray); font-size: 14px; padding: 30px 0; }
+  .loading-text { text-align: center; color: var(--gray); font-size: 16px; padding: 30px 0; }
 
   /* ===== 입소 안내 모달 ===== */
   .modal-info {
@@ -270,13 +279,13 @@
     text-align: left; padding: 26px 22px;
   }
   .info-title {
-    font-size: 15px; font-weight: 800; color: var(--lg-red);
+    font-size: 17px; font-weight: 800; color: var(--lg-red);
     margin-bottom: 8px;
   }
   .info-title.warn-title { color: #B45309; margin-top: 18px; }
   .info-list { padding-left: 2px; margin-bottom: 4px; }
   .info-list li {
-    list-style: none; font-size: 13.5px; color: var(--ink);
+    list-style: none; font-size: 15.5px; color: var(--ink);
     padding-left: 14px; position: relative; margin-bottom: 7px; line-height: 1.55;
   }
   .info-list li::before {
@@ -287,7 +296,7 @@
     background: var(--bg); border-radius: 10px;
     padding: 12px 14px; margin: 12px 0 6px;
   }
-  .info-line { font-size: 13.5px; margin-bottom: 8px; }
+  .info-line { font-size: 15.5px; margin-bottom: 8px; }
   .info-line:last-child { margin-bottom: 0; }
   .info-line b { color: var(--lg-red); margin-right: 4px; }
   .modal-info button {
@@ -303,10 +312,10 @@
     display: flex; align-items: center; justify-content: space-between;
     padding: 14px 18px; border-bottom: 1px solid var(--line); flex-shrink: 0;
   }
-  .qna-head h3 { font-size: 15px; font-weight: 700; }
+  .qna-head h3 { font-size: 17px; font-weight: 700; }
   .modal-qna .qna-close {
     width: auto; margin-top: 0; background: transparent; color: var(--gray);
-    border: none; font-size: 20px; font-weight: 400;
+    border: none; font-size: 22px; font-weight: 400;
     padding: 4px 6px; line-height: 1; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
   }
@@ -390,11 +399,14 @@
 
   <button class="btn-submit" id="btnSubmit" onclick="submitForm()">신청하기</button>
 
-  <ul class="notice">
-    <li>재신청 시 <b>가장 최근 신청 내용으로 자동 변경</b>됩니다.</li>
-    <li>정원이 마감된 차수는 선택할 수 없습니다.</li>
-    <li><b>차수 변경은 교육 시작 3일 전까지</b> 가능합니다. 이후 차수 변경을 희망하시는 경우 교육서비스센터 메일로 문의해주시기 바랍니다. (<a href="mailto:learningservice@lge.com" class="teams-link">learningservice@lge.com</a>)</li>
-  </ul>
+  <div class="notice-wrap">
+    <ul class="notice">
+      <li>재신청 시 <b>가장 최근 신청 내용으로 자동 변경</b>됩니다.</li>
+      <li>정원이 마감된 차수는 선택할 수 없습니다.</li>
+      <li><b>차수 변경은 교육 시작 3일 전까지</b> 가능합니다. 이후 차수 변경을 희망하시는 경우 아래 <b>문의하기</b>를 통해 연락해주시기 바랍니다.</li>
+    </ul>
+    <button type="button" class="btn-qna" onclick="openQnaModal()">문의하기</button>
+  </div>
 
 </div>
 
@@ -616,7 +628,7 @@ async function lookupMe() {
     box.innerHTML =
       '📌 <strong>' + d.session + '차 (' + d.scheduleText + ')</strong><br>' +
       '숙소 신청: <strong>' + d.lodging + '</strong>' +
-      '<br><span style="font-size:12px;opacity:.75;">' + d.submittedAt + ' 신청</span>';
+      '<br><span style="font-size:14px;opacity:.75;">' + d.submittedAt + ' 신청</span>';
   } catch (e) {
     box.innerHTML = '조회 중 오류가 발생했습니다.';
   }
