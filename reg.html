@@ -165,6 +165,9 @@
   .s-seats.warn { color: #B45309; }
   .s-seats.closed { color: var(--full); }
   .s-seats.locked { color: #B45309; }
+  .s-seats.mine { color: var(--lg-red); }
+  .s-gauge span.mine { background: var(--lg-red); }
+  .session:has(.s-seats.mine) { border-color: rgba(165,0,52,.35); }
   .s-date { font-size: 15.5px; color: var(--ink); margin-top: 4px; font-weight: 500; }
   .s-gauge {
     margin-top: 9px; height: 5px; border-radius: 3px;
@@ -483,6 +486,7 @@ let SCHEDULE = {};
 let CAPACITY = {};
 let COUNTS = {};
 let selectedSession = null;
+let myCurrentSession = null; // 사번 조회로 확인된, 이미 등록돼 있는 본인 차수
 let selectedLodging = null;
 
 // 이 페이지에서 노출할 차수 (null이면 전체 노출)
@@ -531,8 +535,9 @@ function renderSessions() {
   let keys = Object.keys(SCHEDULE).sort((a,b) => Number(a) - Number(b));
   if (ALLOWED_SESSIONS) keys = keys.filter(k => ALLOWED_SESSIONS.includes(k));
   keys.forEach(k => {
+    const isMine = (k === myCurrentSession); // 이미 이 차수에 등록된 본인 → 마감이어도 재선택 허용
     const remain = CAPACITY[k] - (COUNTS[k] || 0);
-    const isFull = remain <= 0;
+    const isFull = remain <= 0 && !isMine;
     const isLocked = LOCKED_SESSIONS.includes(k);
     const div = document.createElement('div');
     div.className = 'session' + (isFull ? ' full' : '') + (isLocked ? ' locked' : '') + (selectedSession === k ? ' selected' : '');
@@ -544,6 +549,7 @@ function renderSessions() {
 
     let seatCls = 'ok', seatTxt = '신청 ' + applied + ' / ' + cap + '명';
     if (isLocked) { seatCls = 'locked'; seatTxt = '🔒 문의 필요'; }
+    else if (isMine && remain <= 0) { seatCls = 'mine'; seatTxt = '내 신청 차수 · 숙소 변경 가능'; }
     else if (isFull) { seatCls = 'closed'; seatTxt = '마감 (' + cap + '명)'; }
     else if (remain <= Math.ceil(cap * 0.1)) { seatCls = 'warn'; } // 잔여 10% 이하 경고
 
@@ -595,6 +601,35 @@ function digitsOnly_(el) {
 }
 digitsOnly_(document.getElementById('empId'));
 digitsOnly_(document.getElementById('empIdCheck'));
+
+/* ===== 사번 입력 시 조용히 "이미 등록된 차수" 확인 =====
+   → 그 차수가 마감이어도 본인 것이면 카드 재선택(숙소 변경 등)이 가능하도록 */
+let empIdWatchTimer_ = null;
+document.getElementById('empId').addEventListener('input', function() {
+  clearTimeout(empIdWatchTimer_);
+  const val = this.value.trim();
+  if (val.length < 3) { // 너무 짧으면 조회 안 함
+    if (myCurrentSession !== null) { myCurrentSession = null; renderSessions(); }
+    return;
+  }
+  empIdWatchTimer_ = setTimeout(() => checkMyCurrentSession_(val), 500);
+});
+
+async function checkMyCurrentSession_(empId) {
+  try {
+    const res = await fetch(GAS_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({ action: 'lookup', empId: empId })
+    });
+    const data = await res.json();
+    const found = (data.ok && data.found) ? data.data.session : null;
+    if (found !== myCurrentSession) {
+      myCurrentSession = found;
+      renderSessions();
+    }
+  } catch (e) { /* 조용히 무시 - 조회 실패해도 기존처럼 동작 */ }
+}
 
 /* ===== 내 신청 확인 모달 ===== */
 function openMyStatusModal() {
