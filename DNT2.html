@@ -195,6 +195,7 @@
   }
   .badge-front { position: relative; }
   .badge-back { position: relative; }
+  .pc-only { display: none; }
 
   .badge-header {
     background: var(--lg-red); padding: 20px 22px 32px;
@@ -415,6 +416,8 @@
     }
     .slide-nav { display: none !important; }
     .badge-front { cursor: default; }
+    .pc-only { display: block !important; }
+    .mobile-btn-list { display: none !important; }
   }
 
   .dining-close {
@@ -998,8 +1001,8 @@
           </div>
         </div>
       </div>
-          <!-- 바로가기 버튼 목록 -->
-          <div class="btn-list" style="padding:12px 0 4px;">
+          <!-- 바로가기 버튼 목록 (모바일 전용) -->
+          <div class="btn-list mobile-btn-list" style="padding:12px 0 4px;">
             <a class="action-btn dining" id="quizHtml" href="#" target="_blank">
               <div class="btn-icon">🗺️</div>
               <div class="btn-text">
@@ -1008,7 +1011,7 @@
               </div>
               <span class="btn-arrow">›</span>
             </a>
-            <a class="action-btn" href="https://www.mentimeter.com/" target="_blank">
+            <a class="action-btn" href="https://www.menti.com" target="_blank">
               <div class="btn-icon">📊</div>
               <div class="btn-text">
                 <div class="btn-label">멘티미터</div>
@@ -1024,7 +1027,7 @@
               </div>
               <span class="btn-arrow">›</span>
             </a>
-            <a class="action-btn facility" href="https://lgehqex.github.io/26LR/submit_nonegoogle.html" target="_blank">
+            <a class="action-btn dining" href="https://lgehqex.github.io/26LR/submit_nonegoogle.html" target="_blank">
               <div class="btn-icon">💻</div>
               <div class="btn-text">
                 <div class="btn-label">과제 실습 바로가기</div>
@@ -1041,6 +1044,70 @@
               <span class="btn-arrow">›</span>
             </a>
           </div>
+
+      </div>
+
+      <!-- 뒷면 (PC 전용) -->
+      <div class="badge-face badge-back pc-only">
+        <div class="back-header">
+          <div class="lg-logo-dark">LG</div>
+          <div>
+            <div class="back-title">바로가기</div>
+            <div class="back-sub">앞으로 돌아가려면 아래 버튼을 누르세요</div>
+          </div>
+        </div>
+        <div class="back-body">
+          <div class="back-name-row">
+            <div class="back-avatar" id="backAvatar"></div>
+            <div>
+              <div class="back-name" id="backName"></div>
+              <div class="back-dept" id="backDept"></div>
+            </div>
+          </div>
+          <div class="back-divider"></div>
+          <div class="btn-list">
+            <a class="action-btn dining" id="quizHtmlPc" href="#" target="_blank">
+              <div class="btn-icon">🗺️</div>
+              <div class="btn-text">
+                <div class="btn-label">리더십 리인벤트 스탬프 투어</div>
+                <div class="btn-desc">스탬프 투어에 참여하세요</div>
+              </div>
+              <span class="btn-arrow">›</span>
+            </a>
+            <a class="action-btn" href="https://www.menti.com" target="_blank">
+              <div class="btn-icon">📊</div>
+              <div class="btn-text">
+                <div class="btn-label">멘티미터</div>
+                <div class="btn-desc">화면에 안내된 코드를 입력하여 참여해 주세요</div>
+              </div>
+              <span class="btn-arrow">›</span>
+            </a>
+            <a class="action-btn" href="https://quizn.show/quz/pin/gamePinForm.do" target="_blank">
+              <div class="btn-icon">🎯</div>
+              <div class="btn-text">
+                <div class="btn-label">퀴즈앤</div>
+                <div class="btn-desc">화면에 안내된 코드를 입력하여 참여해 주세요</div>
+              </div>
+              <span class="btn-arrow">›</span>
+            </a>
+            <a class="action-btn dining" href="https://lgehqex.github.io/26LR/submit_nonegoogle.html" target="_blank">
+              <div class="btn-icon">💻</div>
+              <div class="btn-text">
+                <div class="btn-label">과제 실습 바로가기</div>
+                <div class="btn-desc">리더십 REINVENT Teach Back</div>
+              </div>
+              <span class="btn-arrow">›</span>
+            </a>
+            <a class="action-btn facility" id="facilityBtnPc" href="https://lgehqex.github.io/learningcenter/" target="_blank">
+              <div class="btn-icon">🏢</div>
+              <div class="btn-text">
+                <div class="btn-label">러닝센터 시설안내</div>
+                <div class="btn-desc">시설 이용 안내를 확인하세요</div>
+              </div>
+              <span class="btn-arrow">›</span>
+            </a>
+          </div>
+        </div>
       </div>
 
     </div>
@@ -1428,6 +1495,13 @@
       if (d.quizUrl) { quizHtmlBtn.href = d.quizUrl; quizHtmlBtn.style.opacity = '1'; quizHtmlBtn.style.pointerEvents = 'auto'; }
       else { quizHtmlBtn.href = '#'; quizHtmlBtn.style.opacity = '0.4'; quizHtmlBtn.style.pointerEvents = 'none'; }
     }
+    const quizHtmlPcBtn = document.getElementById('quizHtmlPc');
+    if (quizHtmlPcBtn) {
+      if (d.quizUrl) { quizHtmlPcBtn.href = d.quizUrl; quizHtmlPcBtn.style.opacity = '1'; quizHtmlPcBtn.style.pointerEvents = 'auto'; }
+      else { quizHtmlPcBtn.href = '#'; quizHtmlPcBtn.style.opacity = '0.4'; quizHtmlPcBtn.style.pointerEvents = 'none'; }
+    }
+    const facilityBtnPc = document.getElementById('facilityBtnPc');
+    if (facilityBtnPc) facilityBtnPc.href = d.facilityUrl || 'https://lgehqex.github.io/learningcenter/';
 
     // 숙소 정보 반영
     renderLodging(d.lodging || null);
@@ -2265,7 +2339,7 @@
         <div style="font-size:36px;margin-bottom:8px;">📊</div>
         <div style="font-size:15px;font-weight:700;margin-bottom:6px;">멘티미터</div>
         <div style="font-size:12px;color:#888;margin-bottom:16px;">화면에 안내된 코드를 입력하여 참여해 주세요</div>
-        <a href="https://www.menti.com/" target="_blank"
+        <a href="https://www.menti.com" target="_blank"
           style="display:inline-flex;align-items:center;gap:8px;padding:12px 28px;background:var(--lg-red);color:white;border-radius:10px;font-size:14px;font-weight:700;text-decoration:none;">
           멘티미터 열기 →
         </a>
