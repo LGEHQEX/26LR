@@ -1408,9 +1408,10 @@
     }
     fsPill.style.cssText = 'background:var(--lg-red-light);color:var(--lg-red)';
 
-    document.getElementById('backAvatar').textContent = d.name ? d.name[0] : '?';
-    document.getElementById('backName').textContent = d.name || '';
-    document.getElementById('backDept').textContent = [d.dept, [d.ban, d.team].filter(Boolean).join(' / ')].filter(Boolean).join(' · ');
+    const _b = (id, val) => { const el = document.getElementById(id); if(el) el.textContent = val; };
+    _b('backAvatar', d.name ? d.name[0] : '?');
+    _b('backName', d.name || '');
+    _b('backDept', [d.dept, [d.ban, d.team].filter(Boolean).join(' / ')].filter(Boolean).join(' · '));
 
 
 
