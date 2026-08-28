@@ -1066,7 +1066,7 @@
           <div class="lg-logo-dark">LG</div>
           <div>
             <div class="back-title">바로가기</div>
-            <div class="back-sub"></div>
+            <div class="back-sub">앞으로 돌아가려면 아래 버튼을 누르세요</div>
           </div>
         </div>
         <div class="back-body">
@@ -1274,6 +1274,8 @@
 
   // ── 출결 안내 팝업 ──────────────────────────────────────
   function showCheckinNotice() {
+    // 이미 출결 완료한 사번이면 팝업 안 띄움
+    if (currentData && localStorage.getItem('checkinDone_' + currentData.sano) === '1') return;
     document.getElementById('noticeOverlay').classList.add('open');
     document.body.style.overflow = 'hidden';
   }
@@ -1376,9 +1378,12 @@
         const btn = document.getElementById('btnCheckin');
         btn.classList.remove('armed'); btn.classList.add('done');
         btn.textContent = t ? `✅ 출결완료 ${t}` : '✅ 출결완료';
+        // 출결 완료 저장
+        localStorage.setItem('checkinDone_' + (currentData?.sano || ''), '1');
         setTimeout(() => {
           closePasscode();
         }, 2200);
+        localStorage.setItem('checkinDone_' + (currentData?.sano || ''), '1');
       } else if (json.alreadyCheckedIn) {
         const t = json.timestamp ? String(json.timestamp).slice(11,16) : '';
         document.getElementById('pcErrorMsg').textContent =
