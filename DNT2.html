@@ -190,7 +190,6 @@
     width: 100%;
   }
   .badge-face {
-    width: 100%;
     border-radius: 20px; overflow: hidden; box-shadow: var(--shadow); background: var(--card-bg);
   }
   .badge-front { position: relative; }
@@ -2071,6 +2070,7 @@
 
     if (isPC) {
       document.body.style.maxWidth = '960px';
+      document.getElementById('badgeWrap').style.maxWidth = '900px';
       container.style.cssText = 'width:100%; max-width:900px;';
       flipper.style.cssText = 'display:flex; flex-direction:row; gap:24px; justify-content:center; align-items:flex-start;';
       faces.forEach(f => { f.style.width = '420px'; f.style.minWidth = '420px'; f.style.flexShrink = '0'; });
@@ -2078,6 +2078,7 @@
       if (mobileBtns) mobileBtns.style.display = 'none';
     } else {
       document.body.style.maxWidth = '';
+      document.getElementById('badgeWrap').style.maxWidth = '420px';
       container.style.cssText = 'width:100%;';
       flipper.style.cssText = 'display:flex; flex-direction:column; gap:12px;';
       faces.forEach(f => { f.style.width = '100%'; f.style.minWidth = ''; f.style.flexShrink = ''; });
