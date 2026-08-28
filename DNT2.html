@@ -1378,12 +1378,12 @@
         const btn = document.getElementById('btnCheckin');
         btn.classList.remove('armed'); btn.classList.add('done');
         btn.textContent = t ? `✅ 출결완료 ${t}` : '✅ 출결완료';
-        // 출결 완료 저장
-        localStorage.setItem('checkinDone_' + (currentData?.sano || ''), '1');
+        // 출결 완료 저장 (시간 포함)
+        localStorage.setItem('checkinDone_' + (currentData?.sano || ''), t || '완료');
         setTimeout(() => {
           closePasscode();
         }, 2200);
-        localStorage.setItem('checkinDone_' + (currentData?.sano || ''), '1');
+        localStorage.setItem('checkinDone_' + (currentData?.sano || ''), t || '완료');
       } else if (json.alreadyCheckedIn) {
         const t = json.timestamp ? String(json.timestamp).slice(11,16) : '';
         document.getElementById('pcErrorMsg').textContent =
@@ -1558,9 +1558,19 @@
     wrap.classList.add('visible');
     document.getElementById('badgeActions').style.display = 'flex';
 
-    // 패스코드 있고 아직 출결 전이면 안내 팝업
-    if (d.passcode && String(d.passcode).trim() !== '') {
-      setTimeout(showCheckinNotice, 500);
+    // 출결 완료 여부 확인 후 버튼 상태 복원
+    const savedCheckin = localStorage.getItem('checkinDone_' + d.sano);
+    const btn = document.getElementById('btnCheckin');
+    if (savedCheckin) {
+      btn.classList.remove('armed'); btn.classList.add('done');
+      btn.textContent = '✅ 출결완료 ' + savedCheckin;
+    } else {
+      btn.classList.remove('done');
+      btn.textContent = '🏛️ 대강당 출결';
+      // 패스코드 있고 아직 출결 전이면 안내 팝업
+      if (d.passcode && String(d.passcode).trim() !== '') {
+        setTimeout(showCheckinNotice, 500);
+      }
     }
 
     const sano = document.getElementById('sanoInput').value.trim();
