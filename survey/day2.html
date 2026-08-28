@@ -102,7 +102,7 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbx841khpQSOjBcTgrd9CD5w
 const MODULES = [
   {code:'M4', name:'M4. 리인벤트 2.0 내재화 ― 이기는 실행'},
   {code:'M5', name:'M5. 리인벤트 2.0 내재화 ― 리더의 역할'},
-  {code:'M6', name:'M6. 리더의 멘탈 케어링'}
+  {code:'M7', name:'M7. 리더의 멘탈 케어링'}
 ];
 const OVERALL_ITEMS = [
   {code:'OA1', label:'교육만족도', question:'전체적으로 교육 과정에 만족하였다'},
@@ -220,17 +220,30 @@ function collectPayload(){
     modules: modules,
     overall: overall,
     overallPositive: document.getElementById('overallPositive').value,
-    overallImprove: document.getElementById('overallImprove').value
+    overallImprove: document.getElementById('overallImprove').value,
+    clientRequestId: clientRequestId
   };
 }
 
+let isSubmitting = false;
+let clientRequestId = null;
+const SUBMITTED_FLAG_KEY = 'lr_reinvent_day2_submitted';
+
+function makeRequestId(){
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'req-' + Date.now() + '-' + Math.random().toString(36).slice(2);
+}
+
 async function submitForm(){
+  if (isSubmitting) return;
+  isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = '제출 중...';
   try {
     const res = await callGAS('submitDay2', collectPayload());
     if (res && res.ok){
+      try { localStorage.setItem(SUBMITTED_FLAG_KEY, '1'); } catch (e) {}
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('submitBar').style.display = 'none';
       document.getElementById('resultWrap').style.display = 'block';
@@ -238,15 +251,33 @@ async function submitForm(){
       alert('제출 중 문제가 발생했습니다: ' + (res && res.error));
       btn.disabled = false;
       btn.textContent = '설문 제출하기';
+      isSubmitting = false;
     }
   } catch (err) {
     alert('네트워크 오류로 제출에 실패했습니다. 다시 시도해 주세요.');
     btn.disabled = false;
     btn.textContent = '설문 제출하기';
+    isSubmitting = false;
   }
 }
 
 async function init(){
+  let alreadySubmitted = false;
+  try { alreadySubmitted = localStorage.getItem(SUBMITTED_FLAG_KEY) === '1'; } catch (e) {}
+
+  if (alreadySubmitted){
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('resultWrap').innerHTML = `
+      <div class="check">✓</div>
+      <h2>이미 제출하셨습니다</h2>
+      <p>이 기기에서 Day 2 설문을 이미 제출한 기록이 있습니다. 잘못 표시된 것 같다면 담당자에게 문의해 주세요.</p>
+    `;
+    document.getElementById('resultWrap').style.display = 'block';
+    return;
+  }
+
+  clientRequestId = makeRequestId();
+
   try {
     const cohortList = await callGAS('getCohortList', {});
     document.getElementById('loadingBox').style.display = 'none';
