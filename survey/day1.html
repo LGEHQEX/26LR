@@ -175,16 +175,28 @@ function collectPayload(){
       improve: document.querySelector(`textarea[data-mod="${m.code}"][data-field="improve"]`).value
     };
   });
-  return { cohort: cohort, banji: banji, modules: modules };
+  return { cohort: cohort, banji: banji, modules: modules, clientRequestId: clientRequestId };
+}
+
+let isSubmitting = false;
+let clientRequestId = null;
+const SUBMITTED_FLAG_KEY = 'lr_reinvent_day1_submitted';
+
+function makeRequestId(){
+  if (window.crypto && crypto.randomUUID) return crypto.randomUUID();
+  return 'req-' + Date.now() + '-' + Math.random().toString(36).slice(2);
 }
 
 async function submitForm(){
+  if (isSubmitting) return; // 중복 클릭 방지 (버튼 disabled 우회 상황 대비 이중 안전장치)
+  isSubmitting = true;
   const btn = document.getElementById('submitBtn');
   btn.disabled = true;
   btn.textContent = '제출 중...';
   try {
     const res = await callGAS('submitDay1', collectPayload());
     if (res && res.ok){
+      try { localStorage.setItem(SUBMITTED_FLAG_KEY, '1'); } catch (e) {}
       document.getElementById('formWrap').style.display = 'none';
       document.getElementById('submitBar').style.display = 'none';
       document.getElementById('resultWrap').style.display = 'block';
@@ -192,15 +204,34 @@ async function submitForm(){
       alert('제출 중 문제가 발생했습니다: ' + (res && res.error));
       btn.disabled = false;
       btn.textContent = '설문 제출하기';
+      isSubmitting = false;
     }
   } catch (err) {
+    // 네트워크 오류 시에도 clientRequestId는 그대로 유지 → 재시도해도 서버가 중복 저장하지 않음
     alert('네트워크 오류로 제출에 실패했습니다. 다시 시도해 주세요.');
     btn.disabled = false;
     btn.textContent = '설문 제출하기';
+    isSubmitting = false;
   }
 }
 
 async function init(){
+  let alreadySubmitted = false;
+  try { alreadySubmitted = localStorage.getItem(SUBMITTED_FLAG_KEY) === '1'; } catch (e) {}
+
+  if (alreadySubmitted){
+    document.getElementById('loadingBox').style.display = 'none';
+    document.getElementById('resultWrap').innerHTML = `
+      <div class="check">✓</div>
+      <h2>이미 제출하셨습니다</h2>
+      <p>이 기기에서 Day 1 설문을 이미 제출한 기록이 있습니다. 잘못 표시된 것 같다면 담당자에게 문의해 주세요.</p>
+    `;
+    document.getElementById('resultWrap').style.display = 'block';
+    return;
+  }
+
+  clientRequestId = makeRequestId();
+
   try {
     const cohortList = await callGAS('getCohortList', {});
     document.getElementById('loadingBox').style.display = 'none';
