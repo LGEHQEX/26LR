@@ -182,7 +182,7 @@
   .toast.error   { background: #C0392B; }
 
   /* ── 명찰 슬라이드 ── */
-  .flip-container { width: 100%; }
+  .flip-container { width: 100%; display: flex; flex-direction: column; }
   .flipper {
     display: flex;
     flex-direction: column;
@@ -397,8 +397,12 @@
 
     .top-bar { max-width: 900px; width: 100%; }
     .lookup-card { max-width: 420px; width: 100%; align-self: center; }
+    .badge-wrap { max-width: 900px !important; width: 100%; align-self: center; }
+    .badge-actions { max-width: 900px; width: 100%; align-self: center; }
 
     .flip-container {
+      display: flex;
+      flex-direction: row;
       width: 100%;
       max-width: 900px;
       overflow: visible !important;
@@ -407,6 +411,7 @@
       flex-direction: row !important;
       gap: 24px !important;
       justify-content: center;
+      align-items: flex-start;
     }
     .badge-face {
       min-width: 420px !important;
@@ -416,7 +421,7 @@
     .slide-nav { display: none !important; }
     .badge-front { cursor: default; }
     .pc-only { display: flex !important; flex-direction: column; }
-    .mobile-btn-list { display: none; }
+    .mobile-btn-list { display: none !important; }
   }
 
   .dining-close {
