@@ -401,7 +401,7 @@
   @media (min-width: 768px) {
     body { align-items: center; padding: 32px 20px; }
 
-    #mainWrap { width: 100%; max-width: 900px; align-items: stretch; }
+    #mainWrap { width: 100%; max-width: 900px; align-items: stretch; margin: 0 auto; }
     .top-bar { width: 100%; }
     .lookup-card { max-width: 420px; width: 100%; align-self: center; }
     .badge-actions { width: 100%; }
@@ -2084,7 +2084,8 @@
     const isPC = window.innerWidth >= 768;
 
     if (isPC) {
-      document.body.style.maxWidth = '960px';
+      document.body.style.maxWidth = '';
+      document.body.style.margin = '0 auto';
       document.getElementById('badgeWrap').style.maxWidth = '900px';
       container.style.cssText = 'width:100%; max-width:900px;';
       flipper.style.cssText = 'display:flex; flex-direction:row; gap:24px; justify-content:center; align-items:flex-start;';
