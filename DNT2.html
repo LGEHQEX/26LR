@@ -2063,17 +2063,22 @@
   // PC/모바일 레이아웃 분기
   function applyLayout() {
     const flipper = document.getElementById('flipper');
+    const container = document.querySelector('.flip-container');
     const pcBack = document.querySelector('.badge-back.pc-only');
     const mobileBtns = document.querySelector('.mobile-btn-list');
     const faces = document.querySelectorAll('.badge-face');
     const isPC = window.innerWidth >= 768;
 
     if (isPC) {
+      document.body.style.maxWidth = '960px';
+      container.style.cssText = 'width:100%; max-width:900px;';
       flipper.style.cssText = 'display:flex; flex-direction:row; gap:24px; justify-content:center; align-items:flex-start;';
       faces.forEach(f => { f.style.width = '420px'; f.style.minWidth = '420px'; f.style.flexShrink = '0'; });
       if (pcBack)    { pcBack.style.display = 'flex'; pcBack.style.flexDirection = 'column'; }
       if (mobileBtns) mobileBtns.style.display = 'none';
     } else {
+      document.body.style.maxWidth = '';
+      container.style.cssText = 'width:100%;';
       flipper.style.cssText = 'display:flex; flex-direction:column; gap:12px;';
       faces.forEach(f => { f.style.width = '100%'; f.style.minWidth = ''; f.style.flexShrink = ''; });
       if (pcBack)    pcBack.style.display = 'none';
