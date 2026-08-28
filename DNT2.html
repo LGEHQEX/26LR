@@ -2059,6 +2059,31 @@
   }
 
 
+
+  // PC/모바일 레이아웃 분기
+  function applyLayout() {
+    const flipper = document.getElementById('flipper');
+    const pcBack = document.querySelector('.badge-back.pc-only');
+    const mobileBtns = document.querySelector('.mobile-btn-list');
+    const isPC = window.innerWidth >= 768;
+
+    if (isPC) {
+      flipper.style.flexDirection = 'row';
+      flipper.style.gap = '24px';
+      flipper.style.justifyContent = 'center';
+      if (pcBack) pcBack.style.display = 'flex';
+      if (mobileBtns) mobileBtns.style.display = 'none';
+    } else {
+      flipper.style.flexDirection = 'column';
+      flipper.style.gap = '12px';
+      flipper.style.justifyContent = '';
+      if (pcBack) pcBack.style.display = 'none';
+      if (mobileBtns) mobileBtns.style.display = 'flex';
+    }
+  }
+  window.addEventListener('load', applyLayout);
+  window.addEventListener('resize', applyLayout);
+
   function switchQuizTab(idx) {
     document.querySelectorAll('.quiz-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
     document.querySelectorAll('.quiz-tab-content').forEach((c,i) => c.classList.toggle('active', i===idx));
