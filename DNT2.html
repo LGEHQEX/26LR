@@ -391,13 +391,20 @@
     }
   }
 
+  #mainWrap {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   /* ── PC 양면 나란히 ── */
   @media (min-width: 768px) {
     body { align-items: center; padding: 32px 20px; }
 
-    .top-bar { max-width: 900px; width: 100%; }
-    .lookup-card { max-width: 420px; width: 100%; }
-    .badge-actions { max-width: 900px; width: 100%; }
+    #mainWrap { width: 100%; max-width: 900px; align-items: stretch; }
+    .top-bar { width: 100%; }
+    .lookup-card { max-width: 420px; width: 100%; align-self: center; }
+    .badge-actions { width: 100%; }
     .badge-wrap { max-width: 900px !important; width: 100%; }
     .badge-wrap.visible { display: flex; flex-direction: column; align-items: stretch; }
 
@@ -893,6 +900,7 @@
 </head>
 <body>
 
+<div id="mainWrap">
 <div class="top-bar">
   <div class="lg-mark">LG</div>
   <span class="site-title">LG Electronics 러닝센터 모바일 명찰</span>
@@ -1117,6 +1125,7 @@
 
     </div>
   </div>
+</div>
   <div class="slide-nav" id="slideNav" style="display:none;">
     <button class="slide-arrow" id="slideLeft" onclick="slideTo(0)">‹</button>
     <div class="slide-dots">
