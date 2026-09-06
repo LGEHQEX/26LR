@@ -1,0 +1,189 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LG전자 REINVENT 2.0 실습 코치</title>
+<style>
+  :root {
+    --lg-red: #A6093D;
+    --lg-red-dark: #7E0730;
+    --bg: #F5F6F8;
+    --card-bg: #FFFFFF;
+    --border: #E5E7EB;
+    --text-main: #1A1A1A;
+    --text-sub: #5B5F66;
+    --badge-bg: #FCE9EF;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text-main);
+    padding: 56px 24px 80px;
+  }
+
+  .container {
+    max-width: 1140px;
+    margin: 0 auto;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--badge-bg);
+    color: var(--lg-red);
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 20px;
+  }
+
+  h1 {
+    font-size: 34px;
+    font-weight: 800;
+    color: var(--lg-red);
+    margin: 0 0 16px;
+    letter-spacing: -0.5px;
+  }
+
+  .subtitle {
+    color: var(--text-sub);
+    font-size: 15.5px;
+    line-height: 1.7;
+    margin: 0 0 44px;
+  }
+
+  .subtitle p { margin: 0; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 26px 26px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+  }
+
+  .icon-box {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 18px;
+  }
+
+  .icon-1 { background: #E8EEFC; }
+  .icon-2 { background: #EFEAFB; }
+  .icon-3 { background: #E8F6EF; }
+
+  .icon-box svg { width: 22px; height: 22px; }
+
+  .card h3 {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.4;
+    margin: 0 0 12px;
+    color: var(--text-main);
+  }
+
+  .card p {
+    font-size: 14px;
+    line-height: 1.7;
+    color: var(--text-sub);
+    margin: 0 0 24px;
+    flex-grow: 1;
+  }
+
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: var(--lg-red);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 13px 0;
+    border-radius: 10px;
+    transition: background 0.15s ease;
+  }
+
+  .cta:hover { background: var(--lg-red-dark); }
+
+  @media (max-width: 900px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <span class="badge">🚀 REINVENT 2.0</span>
+    <h1>LG전자 REINVENT 2.0 실습 코치</h1>
+    <div class="subtitle">
+      <p>REINVENT 2.0 과정 실습을 위한 AI 코치 모음입니다.</p>
+      <p>각 코치 카드의 버튼을 클릭하면 AI 코치 세션을 시작할 수 있습니다.</p>
+    </div>
+
+    <div class="grid">
+
+      <!-- GEMS 01 -->
+      <div class="card">
+        <div class="icon-box icon-1">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#3B5FE0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+        </div>
+        <h3>01_문제 드러내기</h3>
+        <p>LG전자 REINVENT 2.0의 철학과 문제 드러내기 원칙을 기반으로, 실장·팀장급 리더가 자신과 팀의 현업 문제를 깊이 탐색하고, 표면적 현상이나 막연한 고민을 넘어 진짜 문제를 정의하고 30% 혁신 목표를 세우는 것을 돕는 'REINVENT 2.0 문제드러내기 코치'입니다.</p>
+        <a class="cta" href="https://m365.cloud.microsoft/chat/?titleId=T_20fb380e-cdfa-8177-873d-811941490965&source=embedded-builder" target="_blank" rel="noopener">AI 코치 시작하기 →</a>
+      </div>
+
+      <!-- GEMS 02 -->
+      <div class="card">
+        <div class="icon-box icon-2">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#7A4FDB" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9"></circle>
+            <circle cx="12" cy="12" r="5"></circle>
+            <circle cx="12" cy="12" r="1"></circle>
+          </svg>
+        </div>
+        <h3>02_이기는 실행하기</h3>
+        <p>LG전자 REINVENT 2.0의 철학과 실천 방법론을 기반으로, 문제 드러내기에서 정의한 진짜 문제와 30% 혁신 목표를 실행할 수 있도록 '나와 팀의 일하는 방식을 리디자인하는 것'을 돕고 실천할 수 있도록 돕는 대화형 실행 코치입니다.</p>
+        <a class="cta" href="https://m365.cloud.microsoft/chat/?titleId=T_9d70cb51-9b01-8da8-c024-50ae38e0c490&source=embedded-builder" target="_blank" rel="noopener">AI 코치 시작하기 →</a>
+      </div>
+
+      <!-- GEMS 03 -->
+      <div class="card">
+        <div class="icon-box icon-3">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#1E9E64" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+          </svg>
+        </div>
+        <h3>03_리더십 실천 코치</h3>
+        <p>LG전자 REINVENT 2.0을 실/팀에서 실천하고 내재화하기 위해서 리더에게 필요한 리더십 가이드라인과 소통 스킬 학습을 돕는 코치입니다.</p>
+        <a class="cta" href="https://teams.microsoft.com/l/app/?source=embedded-builder&titleId=T_b4746e5f-3189-6561-e4e6-e4d48a3e65a7" target="_blank" rel="noopener">AI 코치 시작하기 →</a>
+      </div>
+
+    </div>
+  </div>
+</body>
+</html>
