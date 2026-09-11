@@ -289,6 +289,15 @@
 
   .prompt-menu-btn:hover { background: var(--lg-red-dark); }
 
+  .prompt-menu-note {
+    margin: 14px 0 0;
+    font-size: 12.5px;
+    line-height: 2.1;
+    color: var(--text-sub);
+    text-align: right;
+    max-width: 240px;
+  }
+
   .prompt-menu-panel {
     display: none;
     position: absolute;
@@ -335,6 +344,32 @@
   }
 
   .prompt-menu-item.copied .check { opacity: 1; }
+
+  .toast {
+    position: fixed;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #1A1A1A;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 14px 24px;
+    border-radius: 10px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    z-index: 2000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
 </style>
 </head>
 <body>
@@ -350,6 +385,7 @@
       </div>
       <div class="prompt-menu">
         <button class="prompt-menu-btn" onclick="togglePromptMenu()">📋 프롬프트 복사하기</button>
+        <p class="prompt-menu-note">에이전트 실행이 불가하신 경우, 위 버튼으로 프롬프트를 복사해 Copilot 새 채팅에 붙여넣어 주세요.</p>
         <div class="prompt-menu-panel" id="prompt-menu-panel">
           <button class="prompt-menu-item" id="menu-item-01" onclick="copyMenuPrompt('01')">
             <span>문제 드러내기 프롬프트 복사</span>
@@ -875,6 +911,8 @@
 </div>
     </div>
   </div>
+
+  <div class="toast" id="toast">✓ 복사되었습니다</div>
 
   <script>
     const PROMPT_01 = `문제 드러내기 프롬프트LGE REINVENT 2.0 – 문제 드러내기 코치
@@ -2538,6 +2576,15 @@ AI는 속도를 만들고,
 사람은 그 속도 위에서 더 큰 가치를 만드는 구조입니다."
 `;
 
+    let toastTimer = null;
+    function showToast(message) {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.classList.add('show');
+      if (toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => { toast.classList.remove('show'); }, 2000);
+    }
+
     function copyPrompt() {
       const text = document.getElementById('prompt-text').innerText;
       navigator.clipboard.writeText(text).then(() => {
@@ -2545,6 +2592,7 @@ AI는 속도를 만들고,
         const original = btn.textContent;
         btn.textContent = '복사됨 ✓';
         setTimeout(() => { btn.textContent = original; }, 1500);
+        showToast('✓ 프롬프트가 복사되었습니다');
       });
     }
 
@@ -2562,14 +2610,17 @@ AI는 속도를 만들고,
 
     function copyMenuPrompt(which) {
       let text = '';
-      if (which === '01') text = PROMPT_01;
-      else if (which === '02') text = PROMPT_02;
-      else if (which === '03') text = document.getElementById('prompt-text').innerText;
+      let label = '';
+      if (which === '01') { text = PROMPT_01; label = '문제 드러내기'; }
+      else if (which === '02') { text = PROMPT_02; label = '이기는 실행하기'; }
+      else if (which === '03') { text = document.getElementById('prompt-text').innerText; label = '리더십 실천코치'; }
 
       navigator.clipboard.writeText(text).then(() => {
         const item = document.getElementById('menu-item-' + which);
         item.classList.add('copied');
         setTimeout(() => { item.classList.remove('copied'); }, 1200);
+        document.getElementById('prompt-menu-panel').classList.remove('active');
+        showToast('✓ ' + label + ' 프롬프트가 복사되었습니다');
       });
     }
   </script>
