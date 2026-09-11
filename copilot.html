@@ -195,17 +195,29 @@
   .modal-close:hover { color: var(--text-main); }
 
   .modal-title {
-    font-size: 16px;
+    font-size: 20px;
     font-weight: 800;
     color: var(--lg-red);
     margin: 0 0 10px;
   }
 
   .modal-desc {
-    font-size: 13px;
+    font-size: 18px;
     color: var(--text-sub);
     margin: 0 0 16px;
     line-height: 1.6;
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 4px;
+  }
+
+  .modal-header-text {
+    flex: 1;
   }
 
   .modal-content {
@@ -235,6 +247,9 @@
     cursor: pointer;
     font-family: inherit;
     transition: background 0.15s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+    margin-top: 2px;
   }
 
   .copy-button:hover { background: #F8D2DF; }
@@ -297,8 +312,13 @@
   <div class="modal-overlay" id="prompt-modal">
     <div class="modal-box">
       <button class="modal-close" onclick="document.getElementById('prompt-modal').classList.remove('active')">&times;</button>
-      <p class="modal-title">03_리더십 실천 코치 프롬프트</p>
-      <p class="modal-desc">아래 프롬프트를 새로운 Copilot 채팅창에 붙여넣어 주세요</p>
+      <div class="modal-header">
+        <div class="modal-header-text">
+          <p class="modal-title">03_리더십 실천 코치 프롬프트</p>
+          <p class="modal-desc">아래 프롬프트를 새로운 Copilot 채팅창에 붙여넣어 주세요</p>
+        </div>
+        <button class="copy-button" onclick="copyPrompt()" id="copy-btn">전체복사하기</button>
+      </div>
       <div class="modal-content" id="prompt-text">LGE REINVENT 2.0 - Leadership 실천 코치
  
 # REINVENT 2.0 리더십 실천 코치
@@ -750,7 +770,6 @@
  
 팀장으로서 이 대화를 시작하는 첫 2~3문장을 실제 말하듯 작성해 주세요.&quot;
 </div>
-      <button class="copy-button" onclick="copyPrompt()" id="copy-btn">전체복사하기</button>
     </div>
   </div>
 
