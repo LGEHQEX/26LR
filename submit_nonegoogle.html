@@ -136,28 +136,6 @@
   }
   #sidebar.collapsed .sidebar-footer { opacity: 0; }
 
-  #contactBtn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 0 14px 14px;
-    padding: 12px 10px;
-    background: #4f6bed;
-    color: #fff;
-    border-radius: 10px;
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    transition: background 0.15s ease;
-    white-space: nowrap;
-    overflow: hidden;
-  }
-  #contactBtn:hover { background: #3d54c9; }
-  #contactBtn .icon { font-size: 15px; flex-shrink: 0; }
-  #sidebar.collapsed #contactBtn { padding: 12px 0; }
-  #sidebar.collapsed #contactBtn .label { display: none; }
-
   /* Main area */
   #main {
     flex: 1;
@@ -331,6 +309,99 @@
     #iframeWrap.split { flex-direction: column; }
     #iframeWrap.split .frame-pane { border-right: none; border-bottom: 1px solid var(--border); }
   }
+
+  /* 실습 코치 카드 (copilot 페이지 재현) */
+  .practice-page {
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 44px 32px 60px;
+    overflow-y: auto;
+    flex: 1;
+  }
+  .practice-page-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #fdeef1;
+    color: var(--lg-red);
+    font-size: 12.5px;
+    font-weight: 700;
+    padding: 6px 14px;
+    border-radius: 999px;
+    margin-bottom: 16px;
+  }
+  .practice-page h2 {
+    font-size: 26px;
+    font-weight: 800;
+    color: var(--lg-red);
+    margin: 0 0 12px;
+    letter-spacing: -0.5px;
+  }
+  .practice-page-sub {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.7;
+    margin: 0 0 32px;
+  }
+  .practice-page-sub p { margin: 0; }
+
+  .practice-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  @media (max-width: 820px) {
+    .practice-grid { grid-template-columns: 1fr; }
+  }
+  .practice-card {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px 22px 22px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  }
+  .practice-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+    background: #fdeef1;
+  }
+  .practice-card h3 {
+    font-size: 16.5px;
+    font-weight: 800;
+    color: #1c1c1e;
+    margin: 0 0 10px;
+    line-height: 1.4;
+  }
+  .practice-card p {
+    font-size: 13px;
+    line-height: 1.65;
+    color: #666;
+    margin: 0 0 20px;
+    flex-grow: 1;
+  }
+  .practice-card-cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: var(--lg-red);
+    color: #fff;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    padding: 12px 0;
+    border-radius: 10px;
+  }
+  .practice-card-cta:hover { background: var(--lg-red-dark); }
 
   /* 유의사항 탭 (사이드바에서 선택 시 메인 영역에 표시) */
   .notice-page {
@@ -567,20 +638,6 @@
     margin-bottom: 10px;
   }
   .lookup-error.visible { display: block; }
-  .notice-page-contact {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    margin-top: 28px;
-    padding: 13px 22px;
-    background: #4f6bed;
-    color: #fff;
-    border-radius: 10px;
-    font-size: 14px;
-    font-weight: 700;
-    text-decoration: none;
-  }
-  .notice-page-contact:hover { background: #3d54c9; }
 
   .fallback-notice {
     position: absolute;
@@ -649,11 +706,6 @@
     </div>
   </div>
 
-  <a id="contactBtn" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="lg_teams_chat" rel="noopener">
-    <span class="icon">💬</span>
-    <span class="label">문의하기</span>
-  </a>
-
   <div class="sidebar-footer">리더십 REINVENT 2.0<br>실습 &amp; 제출 통합 페이지</div>
 </div>
 
@@ -675,15 +727,45 @@
         <span>📘 과제 실습</span>
         <a href="https://lgehqex.github.io/26LR/copilot" target="lg_reinvent_ext" rel="noopener">↗ 새 창</a>
       </div>
-      <iframe id="frame-practice" src="https://lgehqex.github.io/26LR/copilot"></iframe>
+      <div class="practice-page">
+        <span class="practice-page-badge">🚀 REINVENT 2.0</span>
+        <h2>LG전자 REINVENT 2.0 실습 코치</h2>
+        <div class="practice-page-sub">
+          <p>REINVENT 2.0 과정 실습을 위한 AI 코치 모음입니다.</p>
+          <p>각 코치 카드의 버튼을 클릭하여 Agent를 설치 후 AI 코치 세션을 시작할 수 있습니다.</p>
+        </div>
+
+        <div class="practice-grid">
+          <div class="practice-card">
+            <div class="practice-card-icon">🔍</div>
+            <h3>01_문제 드러내기</h3>
+            <p>LG전자 REINVENT 2.0의 철학과 문제 드러내기 원칙을 기반으로, 실장·팀장급 리더가 자신과 팀의 현업 문제를 깊이 탐색하고, 표면적 현상이나 막연한 고민을 넘어 진짜 문제를 정의하고 30% 혁신 목표를 세우는 것을 돕는 'REINVENT 2.0 문제드러내기 코치'입니다.</p>
+            <a class="practice-card-cta" href="https://m365.cloud.microsoft/chat/?titleId=T_20fb380e-cdfa-8177-873d-811941490965&source=embedded-builder" target="lg_copilot_chat" rel="noopener">AI 코치 시작하기 →</a>
+          </div>
+
+          <div class="practice-card">
+            <div class="practice-card-icon">🎯</div>
+            <h3>02_이기는 실행하기</h3>
+            <p>LG전자 REINVENT 2.0의 철학과 실천 방법론을 기반으로, 문제 드러내기에서 정의한 진짜 문제와 30% 혁신 목표를 실행할 수 있도록 '나와 팀의 일하는 방식을 리디자인하는 것'을 돕고 실천할 수 있도록 돕는 대화형 실행 코치입니다.</p>
+            <a class="practice-card-cta" href="https://m365.cloud.microsoft/chat/?titleId=T_9d70cb51-9b01-8da8-c024-50ae38e0c490&source=embedded-builder" target="lg_copilot_chat" rel="noopener">AI 코치 시작하기 →</a>
+          </div>
+
+          <div class="practice-card">
+            <div class="practice-card-icon">✨</div>
+            <h3>03_리더십 실천 코치</h3>
+            <p>LG전자 REINVENT 2.0을 실/팀에서 실천하고 내재화하기 위해서 리더에게 필요한 리더십 가이드라인과 소통 스킬 학습을 돕는 코치입니다.</p>
+            <a class="practice-card-cta" href="https://m365.cloud.microsoft/chat/agent/T_b4746e5f-3189-6561-e4e6-e4d48a3e65a7.fddc88e4-054e-4bc3-a60d-6bb88f7b8d10.gpt.78c284de-c5b1-41bb-ae8a-e5362aa37201" target="lg_copilot_chat" rel="noopener">AI 코치 시작하기 →</a>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="frame-pane" id="pane-submit">
       <div class="pane-label">
         <span>📝 과제 제출</span>
-        <a href="http://conlms.lge.com/doc/int/001/A003/2026/08/20/ee923fc9-8849-4a69-80ae-d25567ee41dd/Leadership_REINVENT_format_v2.html" target="lg_submit_ext" rel="noopener">↗ 새 창</a>
+        <a href="http://conlms.lge.com/doc/int/002/B002/2026/08/12/a8ccf37f-abd2-46a5-bfb5-b202073d8f4c/Leadership_Reinvent_format_F_0812.html" target="lg_submit_ext" rel="noopener">↗ 새 창</a>
       </div>
-      <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/001/A003/2026/08/20/ee923fc9-8849-4a69-80ae-d25567ee41dd/Leadership_REINVENT_format_v2.html"></iframe>
+      <iframe id="frame-submit" src="http://conlms.lge.com/doc/int/002/B002/2026/08/12/a8ccf37f-abd2-46a5-bfb5-b202073d8f4c/Leadership_Reinvent_format_F_0812.html"></iframe>
     </div>
 
     <div class="frame-pane visible" id="pane-notice">
@@ -696,7 +778,7 @@
         <div class="notice-section">
           <div class="notice-section-title"><span class="num">1</span> 접속 준비</div>
           <div class="notice-section-body">
-            <p class="notice-text"><span class="hl">EDGE 브라우저로 접속, WIFI를 반드시 LGEWLESS로 변경</span>해 주시기 바랍니다.</p>
+            <p class="notice-text"><span class="hl">WIFI를 반드시 LGEWLESS로 변경</span>해 주시기 바랍니다.</p>
             <div class="wifi-info-wrap">
               <div class="wifi-info">
                 <div class="le-title">📶 WIFI 접속 정보</div>
@@ -718,8 +800,7 @@
         <div class="notice-section">
           <div class="notice-section-title"><span class="num">3</span> 문의 안내</div>
           <div class="notice-section-body">
-            <p class="notice-text">실습 진행 중 문의사항이나 오류가 발생하는 경우 아래 <span class="hl">[문의하기]</span> 버튼을 눌러 교육 운영자에게 알려주시기 바랍니다.</p>
-            <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/19:-tM-2nDBZO7c8RhcI8Z9tIeyL1N-gRIqvnPrcOVo3E01@thread.tacv2/1779858516759?tenantId=5069cde4-642a-45c0-8094-d0c2dec10be3&groupId=995fedeb-78a2-4c22-9cf2-289b281f3945&parentMessageId=1779858516759&teamName=2026%20%ED%94%BC%ED%94%8C%EB%A6%AC%EB%8D%94%EC%8B%AD%20%EA%B3%BC%EC%A0%95&channelName=General&createdTime=1779858516759" target="lg_teams_chat" rel="noopener">💬 문의하기</a>
+            <p class="notice-text">실습 진행 중 문의사항이나 오류가 발생하는 경우 교육 운영자에게 알려주시기 바랍니다.</p>
           </div>
         </div>
 
@@ -739,7 +820,7 @@ const SITES = {
     target: "lg_reinvent_ext"
   },
   submit: {
-    url: "http://conlms.lge.com/doc/int/001/A003/2026/08/20/ee923fc9-8849-4a69-80ae-d25567ee41dd/Leadership_REINVENT_format_v2.html",
+    url: "http://conlms.lge.com/doc/int/002/B002/2026/08/12/a8ccf37f-abd2-46a5-bfb5-b202073d8f4c/Leadership_Reinvent_format_F_0812.html",
     label: "과제 제출",
     display: "conlms.lge.com",
     warnIntranet: true,
