@@ -136,6 +136,28 @@
   }
   #sidebar.collapsed .sidebar-footer { opacity: 0; }
 
+  #contactBtn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin: 0 14px 14px;
+    padding: 12px 10px;
+    background: #4f6bed;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.15s ease;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  #contactBtn:hover { background: #3d54c9; }
+  #contactBtn .icon { font-size: 15px; flex-shrink: 0; }
+  #sidebar.collapsed #contactBtn { padding: 12px 0; }
+  #sidebar.collapsed #contactBtn .label { display: none; }
+
   /* Main area */
   #main {
     flex: 1;
@@ -464,6 +486,21 @@
   }
   .lookup-error.visible { display: block; }
 
+  .notice-page-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 4px;
+    padding: 13px 22px;
+    background: #4f6bed;
+    color: #fff;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .notice-page-contact:hover { background: #3d54c9; }
+
   .fallback-notice {
     position: absolute;
     top: 16px;
@@ -531,6 +568,11 @@
     </div>
   </div>
 
+  <a id="contactBtn" href="https://teams.microsoft.com/l/message/48:notes/1788928094811?context=%7B%22contextType%22%3A%22chat%22%2C%22oid%22%3A%228%3Aorgid%3A9bdf642e-854f-423e-89b1-db048942fb0f%22%7D" target="lg_teams_chat" rel="noopener">
+    <span class="icon">💬</span>
+    <span class="label">문의하기</span>
+  </a>
+
   <div class="sidebar-footer">리더십 REINVENT 2.0<br>실습 &amp; 제출 통합 페이지</div>
 </div>
 
@@ -595,7 +637,8 @@
         <div class="notice-section">
           <div class="notice-section-title"><span class="num">3</span> 문의 안내</div>
           <div class="notice-section-body">
-            <p class="notice-text">실습 진행 중 문의사항이나 오류가 발생하는 경우 교육 운영자에게 알려주시기 바랍니다.</p>
+            <p class="notice-text">실습 진행 중 문의사항이나 오류가 발생하는 경우 아래 <span class="hl">[문의하기]</span> 버튼을 눌러 교육 운영자에게 알려주시기 바랍니다.</p>
+            <a class="notice-page-contact" href="https://teams.microsoft.com/l/message/48:notes/1788928094811?context=%7B%22contextType%22%3A%22chat%22%2C%22oid%22%3A%228%3Aorgid%3A9bdf642e-854f-423e-89b1-db048942fb0f%22%7D" target="lg_teams_chat" rel="noopener">💬 문의하기</a>
           </div>
         </div>
 
