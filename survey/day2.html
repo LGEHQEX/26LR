@@ -111,14 +111,18 @@ const OVERALL_ITEMS = [
   {code:'OA4', label:'현업적용도', question:'나는 학습한 내용을 실무에 활용할 것이다'}
 ];
 
-// 분반 목록은 Code.gs BANJI_LIST와 반드시 동일하게 유지하세요.
-const BANJI_LIST = [
+// 분반 목록은 차수별로 다를 수 있어(예: 11차만 강의실 변경) 서버가
+// getCohortList 응답의 각 차수 객체에 담아주는 banjiList를 사용합니다.
+// 아래는 목록을 못 받아왔을 때만 쓰이는 기본값입니다.
+// (Code.gs BANJI_LIST 기본값과 동일하게 유지하세요.)
+const BANJI_LIST_DEFAULT = [
   '1반 (채움관 201호)',
   '2반 (채움관 205호)',
   '3반 (채움관 301호)',
-  '4반 (채움관 303호)',
-  '5반 (채움관 307호)'
+  '4반 (채움관 302호)',
+  '5반 (채움관 303호)'
 ];
+let cohortListCache = [];
 
 async function callGAS(action, payload){
   const res = await fetch(GAS_URL, {
@@ -129,9 +133,17 @@ async function callGAS(action, payload){
   return res.json();
 }
 
-function buildBanjiOptions(){
+// 선택된 차수에 맞는 분반 목록으로 분반 드롭다운을 다시 채웁니다.
+// 차수가 바뀌면 강의실 배정이 달라질 수 있으므로 선택값은 초기화합니다.
+function updateBanjiOptions(){
   const sel = document.getElementById('banji');
-  BANJI_LIST.forEach(b => {
+  const cohortVal = document.getElementById('cohort').value;
+  sel.innerHTML = '<option value="">분반을 선택하세요</option>';
+
+  if (!cohortVal) return;
+  const found = cohortListCache.find(c => String(c.cohort) === String(cohortVal));
+  const list = (found && Array.isArray(found.banjiList) && found.banjiList.length) ? found.banjiList : BANJI_LIST_DEFAULT;
+  list.forEach(b => {
     const opt = document.createElement('option');
     opt.value = b;
     opt.textContent = b;
@@ -284,14 +296,15 @@ async function init(){
     document.getElementById('formWrap').style.display = 'block';
     document.getElementById('submitBar').style.display = 'flex';
 
-    buildCohortOptions(Array.isArray(cohortList) ? cohortList : []);
-    buildBanjiOptions();
+    cohortListCache = Array.isArray(cohortList) ? cohortList : [];
+    buildCohortOptions(cohortListCache);
+    updateBanjiOptions();
     const container = document.getElementById('moduleContainer');
     MODULES.forEach(m => container.appendChild(buildModuleCard(m)));
     const overallContainer = document.getElementById('overallContainer');
     OVERALL_ITEMS.forEach((o,i) => overallContainer.appendChild(buildOverallRow(o,i)));
 
-    document.getElementById('cohort').addEventListener('change', checkValid);
+    document.getElementById('cohort').addEventListener('change', () => { updateBanjiOptions(); checkValid(); });
     document.getElementById('banji').addEventListener('change', checkValid);
     document.querySelectorAll('.scale input').forEach(r => r.addEventListener('change', checkValid));
     document.getElementById('submitBtn').addEventListener('click', submitForm);
