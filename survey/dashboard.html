@@ -383,14 +383,17 @@ let heatmapMode = 'module';
 let instructorLoaded = false;
 const MODULE_ORDER = ['M1','M2','M3','M4','M5','M7'];
 
-// 분반 목록은 Code.gs BANJI_LIST와 반드시 동일하게 유지하세요.
-const BANJI_LIST = [
+// 분반 목록은 차수별로 다를 수 있어 getCohortList가 내려주는 각 차수의
+// banjiList를 사용합니다. 아래는 데이터 로드 실패 시에만 쓰이는 기본값입니다.
+// (Code.gs BANJI_LIST 기본값과 동일하게 유지하세요.)
+const BANJI_LIST_DEFAULT = [
   '1반 (채움관 201호)',
   '2반 (채움관 205호)',
   '3반 (채움관 301호)',
-  '4반 (채움관 303호)',
-  '5반 (채움관 307호)'
+  '4반 (채움관 302호)',
+  '5반 (채움관 303호)'
 ];
+let dashCohortListCache = [];
 
 async function callGAS(action, payload){
   const res = await fetch(GAS_URL, {
@@ -445,8 +448,9 @@ function switchHeatmap(mode){
 async function initFilters(){
   try {
     const cohortList = await callGAS('getCohortList', {});
+    dashCohortListCache = Array.isArray(cohortList) ? cohortList : [];
     const cohortSel = document.getElementById('cohortFilter');
-    cohortList.forEach(c => {
+    dashCohortListCache.forEach(c => {
       const opt = document.createElement('option');
       opt.value = c.cohort;
       opt.textContent = c.name || (c.cohort + '차');
@@ -455,15 +459,46 @@ async function initFilters(){
   } catch (err) {
     console.error('차수 목록 로드 실패', err);
   }
+  updateBanjiFilterOptions();
+  document.getElementById('cohortFilter').addEventListener('change', () => {
+    updateBanjiFilterOptions();
+    loadData();
+  });
+  document.getElementById('banjiFilter').addEventListener('change', loadData);
+}
+
+// 선택된 차수(전체 포함)에 맞는 분반 목록으로 분반 필터 옵션을 다시 채웁니다.
+// 11차처럼 분반 구성이 다른 차수를 선택하면 그 차수의 강의실만 표시되고,
+// "전체 차수"에서는 모든 차수의 분반을 합쳐서 보여줍니다.
+function updateBanjiFilterOptions(){
   const banjiSel = document.getElementById('banjiFilter');
-  BANJI_LIST.forEach(b => {
+  const cohortVal = document.getElementById('cohortFilter').value;
+  const prevBanji = banjiSel.value;
+
+  let list;
+  if (cohortVal){
+    const found = dashCohortListCache.find(c => String(c.cohort) === String(cohortVal));
+    list = (found && Array.isArray(found.banjiList) && found.banjiList.length) ? found.banjiList : BANJI_LIST_DEFAULT;
+  } else {
+    const seen = {};
+    list = [];
+    dashCohortListCache.forEach(c => {
+      (Array.isArray(c.banjiList) ? c.banjiList : BANJI_LIST_DEFAULT).forEach(b => {
+        if (!seen[b]) { seen[b] = true; list.push(b); }
+      });
+    });
+    if (!list.length) list = BANJI_LIST_DEFAULT;
+  }
+
+  banjiSel.innerHTML = '<option value="전체">전체 분반</option>';
+  list.forEach(b => {
     const opt = document.createElement('option');
     opt.value = b;
     opt.textContent = b;
     banjiSel.appendChild(opt);
   });
-  document.getElementById('cohortFilter').addEventListener('change', loadData);
-  document.getElementById('banjiFilter').addEventListener('change', loadData);
+  // 이전에 선택했던 분반이 새 목록에도 있으면 유지, 없으면 전체로 초기화
+  banjiSel.value = list.includes(prevBanji) ? prevBanji : '전체';
 }
 
 /* ── 대시보드 데이터 로드 ────────────────────────────── */
@@ -635,7 +670,7 @@ function renderHeatmap(){
     table.innerHTML = html;
   } else {
     const rows = currentData.heatmapBanji;
-    const banjis = currentData.banjiList;
+    const banjis = currentData.heatmapBanjiList || currentData.banjiList;
     let html = '<tr><th>차수</th>' + banjis.map(b => `<th>${shortBanji(b)}</th>`).join('') + '</tr>';
     rows.forEach(r => {
       html += `<tr><td><b>${r.cohort}차</b></td>` + banjis.map(b => {
