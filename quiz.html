@@ -285,7 +285,7 @@
   <!-- 1) 시작 화면 -->
   <div id="screen-start">
     <h1>C-Brand Vs. 자사 제품 현물 비교 전시</h1>
-    <p class="desc">6개 부스를 모두 방문하고 O/X·퀴즈와 설문을 완료하면, 정답자에 한해 커피쿠폰이 발행됩니다. 이름과 사번을 입력한 후 시작해주세요.</p>
+    <p class="desc">5개 부스를 모두 방문하고 O/X·퀴즈와 설문을 완료하면, 정답자에 한해 커피쿠폰이 발행됩니다. 이름과 사번을 입력한 후 시작해주세요.</p>
 
     <label for="input-name">이름</label>
     <input type="text" id="input-name" placeholder="예: 홍길동">
@@ -300,9 +300,9 @@
   <div id="screen-tour" class="hidden">
     <div class="section-head">
       <span class="section-title">🗺️ 스탬프 투어</span>
-      <span class="section-count" id="zone-count">0 / 6</span>
+      <span class="section-count" id="zone-count">0 / 5</span>
     </div>
-    <p class="desc" style="margin-bottom:14px;">부스를 눌러 펼친 뒤, 그 부스의 문제를 풀어주세요. 6개 부스 문제를 모두 풀면 설문으로 이동할 수 있어요.</p>
+    <p class="desc" style="margin-bottom:14px;">부스를 눌러 펼친 뒤, 그 부스의 문제를 풀어주세요. 5개 부스 문제를 모두 풀면 설문으로 이동할 수 있어요.</p>
 
     <div id="zone-accordion-list"></div>
 
@@ -363,12 +363,11 @@ const zones = [
   {id:'ecm', name:'ECM ZONE', emoji:'♻️'},
   {id:'saenggi', name:'생기원 ZONE', emoji:'🔧'},
   {id:'ms', name:'MS ZONE', emoji:'🔊'},
-  {id:'vs', name:'VS ZONE', emoji:'🚗'},
   {id:'es', name:'ES ZONE', emoji:'🔌'}
 ];
 
 /* =========================================================
-   ② 문제 / 보기 편집 영역 (10문항 · O/X + 4지선다 혼합)
+   ② 문제 / 보기 편집 영역 (8문항 · O/X + 4지선다 혼합)
    ※ 정답(answerIndex)과 해설(explain)은 여기 없습니다 — Code.gs 쪽에서만 관리됩니다.
      문제 순서를 바꾸면 Code.gs의 QUESTION_KEY 순서도 반드시 똑같이 맞춰주세요.
    ========================================================= */
@@ -406,21 +405,6 @@ const QUESTIONS = [
   {
     zone:'ES', type:'ox',
     text:'자사 에어컨 모터는 외장형 PCB 형태로, C-Brand 대비 가격 경쟁력 우위이다.',
-    choices:['O','X']
-  },
-  {
-    zone:'VS', type:'mc',
-    text:'다음 중 Head Unit / Telematics에 대한 설명으로 옳은 것은?',
-    choices:[
-      'C-Brand 및 자사 원가 Gap은 $300이다.',
-      '자사는 부품등급은 우위이나, 통합형 적용이 되지 않아 원가 열위이다.',
-      '동작온도는 C-Brand가 우위이다.',
-      'C-Brand는 원재료 변경으로 원가 절감을 실현했다.'
-    ]
-  },
-  {
-    zone:'VS', type:'ox',
-    text:'C-Brand 차량용 Display의 원가 경쟁력은 생태계 내 SCM 활용에서 비롯된다.',
     choices:['O','X']
   },
   {
@@ -473,7 +457,7 @@ document.getElementById('btn-start').addEventListener('click', () => {
 /* ---------- 부스별 아코디언(스탬프+퀴즈 통합) ---------- */
 
 // zones의 id와 QUESTIONS의 zone 라벨을 매핑
-const ZONE_LABEL_TO_ID = { 'HS':'hs', 'MS':'ms', 'ES':'es', 'VS':'vs', '생기원':'saenggi', 'HS ECM':'ecm' };
+const ZONE_LABEL_TO_ID = { 'HS':'hs', 'MS':'ms', 'ES':'es', '생기원':'saenggi', 'HS ECM':'ecm' };
 
 // zoneId -> 해당 zone에 속한 QUESTIONS의 index 배열
 const zoneQuestionIndices = {};
