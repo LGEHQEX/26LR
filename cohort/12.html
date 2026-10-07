@@ -428,7 +428,7 @@
         <a href="#directions" class="tab-item">찾아오는 길</a>
         <a href="#confirmation" class="tab-item tab-pc-only">교육참가 확인서</a>
         <a href="#faq" class="tab-item">FAQ</a>
-        <a href="#center-life" onclick="openDrawer(); return false;" class="tab-item" style="color:var(--lg-red);font-weight:700;border-bottom:2px solid var(--lg-red);">🏨 러닝센터 생활안내</a>
+        <a class="tab-item" href="#" onclick="openDrawer(); return false;" style="color:var(--lg-red);font-weight:700;border-bottom:2px solid var(--lg-red);">🏨 러닝센터 생활안내</a>
         </div>
 </div>
 
@@ -484,7 +484,7 @@
                     <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:4px;">🏨 숙소 신청 <span style="font-size:0.78rem;color:var(--lg-red);font-weight:600;">(전원 필참)</span></div>
                     <div style="font-size:0.82rem;color:var(--lg-gray);line-height:1.7;margin-bottom:8px;">교육 참가 전 숙소 신청을 완료해 주세요.</div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
-                        <a href="https://moaform.com/q/6STx6g" target="_blank" style="display:inline-block;padding:6px 14px;border:1px solid var(--lg-red);color:var(--lg-red);border-radius:6px;font-size:0.8rem;font-weight:600;text-decoration:none;">숙소 신청하기 →</a>
+                        <a href="https://moaform.com/q/6STx6g" target="_blank" style="display:inline-block;padding:6px 14px;border:1px solid var(--lg-red);color:var(--lg-red);border-radius:6px;font-size:0.8rem;font-weight:600;text-decoration:none;">숙소 신청하기 (클릭)</a>
                         <button onclick="openCheckInModal()" style="padding:6px 14px;border:1px solid #888;color:#555;background:none;border-radius:6px;font-size:0.8rem;font-weight:600;cursor:pointer;">🏨 입소 안내</button>
                     </div>
                 </div>
@@ -618,7 +618,7 @@
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;background:#f8f4f5;border:1px solid #e8d0d4;border-radius:12px;padding:14px 20px;margin-top:16px;">
             <div>
                 <div style="font-size:0.88rem;font-weight:700;color:var(--lg-dark);margin-bottom:3px;">🪪 모바일 명찰</div>
-                <div style="font-size:0.8rem;color:var(--lg-gray);">모바일 명찰은 교육 당일 활성화됩니다.</div>
+                <div style="font-size:0.8rem;color:var(--lg-gray);">모바일 명찰은 교육 전일 활성화됩니다.</div>
             </div>
             <a href="https://lgehqex.github.io/26LR/DNT" target="_blank" style="display:inline-flex;align-items:center;gap:7px;padding:10px 20px;background:#1a1a2e;color:#fff;font-size:0.84rem;font-weight:700;border-radius:10px;text-decoration:none;white-space:nowrap;flex-shrink:0;">
                 🪪 모바일 명찰 확인하기
@@ -664,6 +664,18 @@
 </section>
 
 <!-- ===== 담당자 연락처 ===== -->
+<div id="centerLifeDrawer" style="position:fixed;top:0;right:-100%;width:40%;height:100vh;background:#fff;z-index:1000;box-shadow:-8px 0 40px rgba(0,0,0,0.15);transition:right 0.4s cubic-bezier(0.4,0,0.2,1);display:flex;flex-direction:column;">
+    <div style="flex-shrink:0;background:#fff;border-bottom:1px solid var(--lg-border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;">
+        <div>
+            <div style="font-size:0.76rem;color:var(--lg-red);font-weight:700;text-transform:uppercase;letter-spacing:1px;font-family:'DM Sans',sans-serif;margin-bottom:2px;">Center Life</div>
+            <h2 style="font-size:1.1rem;font-weight:800;color:var(--lg-dark);">러닝센터 생활안내</h2>
+        </div>
+        <button onclick="closeDrawer()" style="width:36px;height:36px;border-radius:50%;border:1px solid var(--lg-border);background:#fff;font-size:1.1rem;cursor:pointer;color:var(--lg-gray);">✕</button>
+    </div>
+    <iframe src="https://lgehqex.github.io/learningcenter/" style="flex:1;width:100%;border:none;"></iframe>
+</div>
+<div id="drawerOverlay" onclick="closeDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:999;"></div>
+
 <section class="map-section" id="confirmation">
     <div class="section">
         <div class="section-header">
@@ -898,6 +910,8 @@ function printConfirmation() {
 </style>
 </head><body>${content}
 
+
+
 <!-- ── 입소 안내 모달 ── -->
 <div id="modal-checkin" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9000;align-items:center;justify-content:center;padding:20px;">
     <div style="background:#fff;border-radius:16px;max-width:520px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,0.25);">
@@ -1017,6 +1031,8 @@ document.querySelectorAll('.day-card,.tt-table-wrap,.direction-card,.faq-item,.c
         </div>
     </div>
 </div>
+
+
 
 
 <!-- ── 입소 안내 모달 ── -->
